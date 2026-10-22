@@ -2,32 +2,71 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<title>文化祭ナゾトキ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff6f61">
+
+<title>文化祭ナゾトキラリー</title>
+
+css/style.css
+
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="page-card">
+    <div class="page-card">
 
-<h1>🎊文化祭ナゾトキラリー🎊</h1>
+        <div style="font-size:2rem;">
+            🎊🎪🎊
+        </div>
 
-<p>
+        <h1>
+            文化祭ナゾトキラリー
+        </h1>
 
-司会者の合図後、
+        <p>
+            ようこそ、文化祭ナゾトキラリーへ！
+        </p>
 
-「 id="startWord">
+        <p>
+            あなたたちはナゾトキ調査隊です。
+        </p>
 
-<button onclick="startGame()">
+        <p>
+            校内に散らばる8つの挑戦をクリアし、
+            最後のキーワードを見つけ出してください。
+        </p>
 
-ゲーム開始
+        <hr>
 
-</button>
+        <h3>
+            参加方法
+        </h3>
 
-</div>
+        <ol style="text-align:left; max-width:500px; margin:auto;">
+            <li>司会者の合図を待つ</li>
+            <li>検索欄に「スタート」と入力</li>
+            <li>各教科の挑戦をクリアする</li>
+            <li>8文字のキーワードを集める</li>
+            <li>最後の答えを導き出す</li>
+        </ol>
+
+        <br>
+
+        <input
+            id="startWord"
+            placeholder="ここに入力">
+
+        <button onclick="startGame()">
+            ゲーム開始
+        </button>
+
+        <p style="margin-top:20px;color:#666;">
+            ※司会者の合図後にスタートしてください
+        </p>
+
+    </div>
 
 </div>
 
@@ -35,23 +74,41 @@
 
 function startGame(){
 
-const word=
-document.getElementById(
-"startWord"
-).value.trim();
+    const word =
+    document.getElementById(
+        "startWord"
+    ).value.trim();
 
-if(word==="スタート"){
+    if(word === "スタート"){
 
-localStorage.setItem(
-"startTime",
-Date.now()
-);
+        localStorage.setItem(
+            "startTime",
+            Date.now()
+        );
 
-location.href="start.html";
+        location.href = "start.html";
+
+    }else{
+
+        alert(
+            "「スタート」と入力してください"
+        );
+
+    }
 
 }
 
-}
+document
+.getElementById("startWord")
+.addEventListener("keypress", function(e){
+
+    if(e.key === "Enter"){
+
+        startGame();
+
+    }
+
+});
 
 </script>
 
