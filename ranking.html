@@ -72,11 +72,8 @@ tr:nth-child(even){
 
 <script>
 
-/*
-ここを公開したCSVに差し替える
-*/
-const CSV_URL =
-"https://docs.google.com/spreadsheets/d/1KTU4OyMm-1FOy6EWoaGZYg9A8S8I1bU06mraqOyjS4k/gviz/tq?gid=1890793533";
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwOvRHsxmXHXbZ3yZ9HY8dQ3c6ZalGXN-h9rWqXcXgDM9MP-5UX6WU0lBfmiQEE20hK/exec";
 
 function secToText(sec){
 
@@ -93,57 +90,35 @@ async function loadRanking(){
 
     try{
 
-const response =
-    await fetch(CSV_URL);
-
-const text =
-    await response.text();
-
-console.log(text);
-        const rows =
-            csv
-            .trim()
-            .split("\n")
-            .slice(1);
+        const response =
+            await fetch(API_URL);
 
         const data =
-            rows.map(row=>{
-
-                const cols =
-                    row
-                    .replaceAll('"','')
-                    .split(",");
-
-                return{
-                    name: cols[1],
-                    time: Number(cols[2])
-                };
-
-            });
-
-        data.sort(
-            (a,b)=>a.time-b.time
-        );
+            await response.json();
 
         const tbody =
             document.querySelector(
                 "#rankingTable tbody"
             );
 
-        tbody.innerHTML="";
+        tbody.innerHTML = "";
 
         data.forEach(
             (player,index)=>{
 
-                let cls="";
+                let cls = "";
 
-                if(index===0) cls="rank-gold";
-                if(index===1) cls="rank-silver";
-                if(index===2) cls="rank-bronze";
+                if(index === 0){
+                    cls = "rank-gold";
+                }else if(index === 1){
+                    cls = "rank-silver";
+                }else if(index === 2){
+                    cls = "rank-bronze";
+                }
 
                 tbody.innerHTML += `
                 <tr class="${cls}">
-                    <td>${index+1}</td>
+                    <td>${index + 1}</td>
                     <td>${player.name}</td>
                     <td>${secToText(player.time)}</td>
                 </tr>`;
@@ -159,7 +134,7 @@ console.log(text);
         ).innerHTML =
         `<tr>
             <td colspan="3">
-                ${e.message}
+                ランキング取得失敗
             </td>
         </tr>`;
     }
