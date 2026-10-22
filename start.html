@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+css/style.css
+
+<title>ナゾトキ本部</title>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="page-card">
+
+<h1>🎪ナゾトキ本部🎪</h1>
+
+<input id="search">
+
+<button onclick="movePage()">
+
+検索
+
+</button>
+
+<div id="timer"></div>
+
+<hr>
+
+<p>
+
+音楽の挑戦<br>
+美術の挑戦<br>
+書道の挑戦<br>
+家庭の挑戦<br>
+情報の挑戦<br>
+養護の挑戦<br>
+司書の挑戦<br>
+事務の挑戦
+
+</p>
+
+<div id="status"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function movePage(){
+
+const word =
+document.getElementById(
+"search"
+).value.trim();
+
+const pages = {
+
+"音楽の挑戦":"music.html",
+"美術の挑戦":"art.html",
+"書道の挑戦":"calligraphy.html",
+"家庭の挑戦":"home.html",
+"情報の挑戦":"it.html",
+"養護の挑戦":"nurse.html",
+"司書の挑戦":"library.html",
+"事務の挑戦":"office.html"
+
+};
+
+if(pages[word]){
+location.href=pages[word];
+return;
+}
+
+if(word==="ボウネンカイタノシイ"){
+location.href="final.html";
+}
+
+}
+
+const subjects=[
+"music",
+"art",
+"calligraphy",
+"home",
+"it",
+"nurse",
+"library",
+"office"
+];
+
+let html="";
+
+subjects.forEach(s=>{
+
+if(localStorage.getItem(
+"clear_"+s
+)){
+
+html+="✅ "+s+"<br>";
+
+}else{
+
+html+="⬜ "+s+"<br>";
+
+}
+
+});
+
+document.getElementById(
+"status"
+).innerHTML=html;
+
+setInterval(()=>{
+
+const start=
+localStorage.getItem(
+"startTime"
+);
+
+if(!start)return;
+
+const sec=
+Math.floor(
+(Date.now()-start)/1000
+);
+
+document.getElementById(
+"timer"
+).innerHTML=
+"経過時間 "
++
+Math.floor(sec/60)
++
+"分"
++
+(sec%60)
++
+"秒";
+
+},1000);
+
+</script>
+
+</body>
+</html>

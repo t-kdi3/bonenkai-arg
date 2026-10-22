@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+css/style.css
+<title>クリア</title>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="page-card">
+
+<h1>
+
+🏆完全制覇🏆
+
+</h1>
+
+<div
+id="result"
+class="timer">
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const start=
+localStorage.getItem(
+"startTime"
+);
+
+const sec=
+Math.floor(
+(Date.now()-start)/1000
+);
+
+document.getElementById(
+"result"
+).innerHTML=
+
+Math.floor(sec/60)
++
+"分"
++
+(sec%60)
++
+"秒";
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<body class="home">
+<h2>🍳 家庭の挑戦 🍳</h2>
+<p>【問題文】</p>
+<input id="ans">
+<button onclick="check()">回答</button>
+<button onclick="location.href='start.html'">本部へ戻る</button>
+
+<script>
+function check(){
+if(document.getElementById("ans").value.trim()==="【答え】"){
+location.href="home-clear.html";
+}else{
+alert("不正解");
+}
+}
+</script>
+</body>

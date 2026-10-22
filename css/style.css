@@ -1,0 +1,132 @@
+body{
+    margin:0;
+    padding:15px;
+    text-align:center;
+    font-family:"Yu Gothic","Meiryo",sans-serif;
+    background:#f8f9fa;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+.page-card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+h1{
+    color:white;
+    background:#ff6f61;
+    padding:15px;
+    border-radius:15px;
+}
+
+h2{
+    color:white;
+    padding:12px;
+    border-radius:12px;
+}
+
+input{
+    width:100%;
+    box-sizing:border-box;
+    padding:14px;
+    font-size:18px;
+    border-radius:10px;
+    border:2px solid #ccc;
+}
+
+button{
+    width:100%;
+    max-width:400px;
+    margin-top:12px;
+    padding:14px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#4dabf7;
+    color:white;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.back-btn{
+    background:#868e96;
+}
+
+.keyword{
+    font-size:72px;
+    font-weight:bold;
+    color:#ff9800;
+}
+
+.timer{
+    font-size:30px;
+    color:#d6336c;
+    font-weight:bold;
+}
+
+/* 教科カラー */
+
+.music{
+    background:#fff0f6;
+}
+.music h2{
+    background:#e64980;
+}
+
+.art{
+    background:#f3f0ff;
+}
+.art h2{
+    background:#7950f2;
+}
+
+.calligraphy{
+    background:#f8f9fa;
+}
+.calligraphy h2{
+    background:#495057;
+}
+
+.home{
+    background:#fff4e6;
+}
+.home h2{
+    background:#f08c00;
+}
+
+.it{
+    background:#e7f5ff;
+}
+.it h2{
+    background:#1c7ed6;
+}
+
+.nurse{
+    background:#ebfbee;
+}
+.nurse h2{
+    background:#37b24d;
+}
+
+.library{
+    background:#fff9db;
+}
+.library h2{
+    background:#fab005;
+}
+
+.office{
+    background:#f1f3f5;
+}
+.office h2{
+    background:#868e96;
+}

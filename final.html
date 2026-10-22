@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+css/style.css
+<title>FINAL</title>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="page-card">
+
+<h1>FINAL</h1>
+
+<p>
+
+集めた文字を並べ替えよ
+
+</p>
+
+<input id="finalWord">
+
+<button onclick="checkFinal()">
+
+送信
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function checkFinal(){
+
+const ans =
+document.getElementById(
+"finalWord"
+).value.trim();
+
+if(ans==="ボウネンカイタノシイ"){
+
+location.href="ending.html";
+
+}else{
+
+alert("違います");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
