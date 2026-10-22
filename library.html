@@ -2,54 +2,267 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
+
 <title>司書の挑戦</title>
+
+<style>
+.board{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:20px;
+}
+
+.card{
+    min-height:100px;
+    padding:10px;
+    border:2px solid #1e3a5f;
+    border-radius:10px;
+    background:#1e3a5f;
+    color:transparent;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:0.9rem;
+    transition:0.3s;
+    user-select:none;
+}
+
+.card.open{
+    background:#ffffff;
+    color:#333;
+}
+
+.card.matched{
+    background:#dff0d8;
+    border-color:#4caf50;
+    color:#333;
+    cursor:default;
+}
+
+#complete{
+    display:none;
+    margin-top:30px;
+    padding:20px;
+    border:2px solid #4caf50;
+    border-radius:10px;
+    background:#f6fff5;
+}
+
+.keyword{
+    font-size:2rem;
+    font-weight:bold;
+    color:#1e3a5f;
+    margin:15px 0;
+}
+</style>
 </head>
 
-<body class="library">
+<body>
 
 <div class="container">
-<div class="page-card">
 
-<h2>📚 司書の挑戦 📚</h2>
+    <div class="page-card">
 
-<p>
-【問題文】
-</p>
+        <h1>📚 司書の挑戦</h1>
 
-<input id="ans">
+        <p>
+            「冒頭文」「作品名」「作者名」の
+            3枚を組にしてそろえよう。
+        </p>
 
-<button onclick="check()">
-回答
-</button>
+        <p>
+            全4組を完成させるとキーワードを獲得できます。
+        </p>
 
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
-</button>
+        <div id="board" class="board"></div>
+
+        <div id="complete">
+
+            <h2>🎉 COMPLETE! 🎉</h2>
+
+            <p>すべての作品を対応させました。</p>
+
+            <p>獲得キーワード</p>
+
+            <div class="keyword">
+                としょかん
+            </div>
+
+            <button onclick="saveClear('library');">
+                キーワードを獲得
+            </button>
+
+            <br><br>
+
+            <button onclick="location.href='start.html'">
+                スタートページへ戻る
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
-</div>
+
+<script src="js/common.js"></script>
 
 <script>
 
-function check(){
+const groups = [
+    {
+        id:1,
+        cards:[
+            "祇園精舎の鐘の聲",
+            "平家物語",
+            "作者不詳"
+        ]
+    },
+    {
+        id:2,
+        cards:[
+            "あるくにのやがいどうぶつえんに",
+            "やさしいライオン",
+            "やなせたかし"
+        ]
+    },
+    {
+        id:3,
+        cards:[
+            "或る春の日暮れです。",
+            "杜子春",
+            "芥川龍之介"
+        ]
+    },
+    {
+        id:4,
+        cards:[
+            "旧の正月が近くなると、",
+            "最後の胡弓弾き",
+            "新美南吉"
+        ]
+    }
+];
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
+let cards = [];
+let selected = [];
+let matchedGroups = new Set();
 
-location.href=
-"library-clear.html";
+groups.forEach(group=>{
 
-}else{
+    group.cards.forEach(text=>{
 
-alert("不正解");
+        cards.push({
+            groupId:group.id,
+            text:text
+        });
+
+    });
+
+});
+
+cards.sort(()=>Math.random()-0.5);
+
+const board =
+document.getElementById("board");
+
+cards.forEach((card,index)=>{
+
+    const div =
+    document.createElement("div");
+
+    div.className = "card";
+    div.textContent = card.text;
+
+    div.dataset.group =
+    card.groupId;
+
+    div.dataset.index =
+    index;
+
+    div.onclick =
+    ()=>selectCard(div);
+
+    board.appendChild(div);
+
+});
+
+function selectCard(card){
+
+    if(card.classList.contains("matched"))
+        return;
+
+    if(card.classList.contains("open"))
+        return;
+
+    if(selected.length >= 3)
+        return;
+
+    card.classList.add("open");
+
+    selected.push(card);
+
+    if(selected.length === 3){
+
+        setTimeout(checkMatch,500);
+
+    }
 
 }
+
+function checkMatch(){
+
+    const ids =
+    selected.map(
+        c=>c.dataset.group
+    );
+
+    const same =
+    ids.every(
+        id=>id===ids[0]
+    );
+
+    if(same){
+
+        selected.forEach(card=>{
+
+            card.classList.remove("open");
+            card.classList.add("matched");
+
+        });
+
+        matchedGroups.add(ids[0]);
+
+        if(
+            matchedGroups.size === 4
+        ){
+
+            document
+            .getElementById(
+                "complete"
+            )
+            .style.display =
+            "block";
+
+        }
+
+    }else{
+
+        selected.forEach(card=>{
+
+            card.classList.remove(
+                "open"
+            );
+
+        });
+
+    }
+
+    selected = [];
 
 }
 
