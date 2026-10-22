@@ -12,52 +12,129 @@
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:12px;
-    margin-top:20px;
+    margin-top:25px;
+    padding:20px;
+
+    background:#8b5a2b;
+    border:8px solid #5c3a1e;
+    border-radius:10px;
+
+    box-shadow:
+        inset 0 0 10px rgba(0,0,0,0.3);
 }
 
 .card{
-    min-height:100px;
-    padding:10px;
-    border:2px solid #1e3a5f;
-    border-radius:10px;
-    background:#1e3a5f;
+
+    min-height:120px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1e3a5f 0%,
+            #2d537f 15%,
+            #1e3a5f 30%,
+            #2d537f 100%
+        );
+
+    border:2px solid rgba(255,255,255,0.2);
+
+    border-radius:6px;
+
     color:transparent;
-    cursor:pointer;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     text-align:center;
+
+    padding:10px;
+
+    cursor:pointer;
+
     font-size:0.9rem;
-    transition:0.3s;
+
+    writing-mode:vertical-rl;
+
+    text-orientation:mixed;
+
     user-select:none;
+
+    transition:all 0.3s ease;
+
+    box-shadow:
+        2px 2px 5px rgba(0,0,0,0.4);
+}
+
+.card:hover{
+
+    transform:
+        translateY(-5px);
+
 }
 
 .card.open{
-    background:#ffffff;
-    color:#333;
+
+    writing-mode:horizontal-tb;
+
+    background:#fffdf7;
+
+    color:#222;
+
+    border:2px solid #d8c9a7;
+
 }
 
 .card.matched{
-    background:#dff0d8;
-    border-color:#4caf50;
-    color:#333;
-    cursor:default;
+
+    writing-mode:horizontal-tb;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f5e7a1,
+            #e8d17b
+        );
+
+    color:#222;
+
+    border:2px solid #c7a53f;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 0 15px rgba(255,215,0,.5);
+
 }
 
 #complete{
+
     display:none;
+
     margin-top:30px;
-    padding:20px;
-    border:2px solid #4caf50;
+
+    padding:25px;
+
+    background:#fffdf7;
+
+    border:3px solid #c7a53f;
+
     border-radius:10px;
-    background:#f6fff5;
+
+    text-align:center;
+
 }
 
 .keyword{
+
     font-size:2rem;
+
     font-weight:bold;
-    color:#1e3a5f;
-    margin:15px 0;
+
+    color:#8b0000;
+
+    letter-spacing:0.3em;
+
 }
 </style>
 </head>
@@ -71,8 +148,8 @@
         <h1>📚 司書の挑戦</h1>
 
         <p>
-            「冒頭文」「作品名」「作者名」の
-            3枚を組にしてそろえよう。
+            本棚に並ぶ作品の情報が ばらばらになってしまいました。
+作品名・作者・冒頭文を正しく対応させ、 本棚を整理してください。
         </p>
 
         <p>
