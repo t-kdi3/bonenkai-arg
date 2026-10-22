@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="css/style.css">
+
+<title>個人ランキング</title>
+
+<style>
+.rank-gold{color:#d4af37;font-weight:bold;}
+.rank-silver{color:#808080;font-weight:bold;}
+.rank-bronze{color:#8c6239;font-weight:bold;}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#1e3a5f;
+    color:white;
+}
+
+tr:nth-child(even){
+    background:#f5f5f5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-card">
+
+        <h1>🏆 個人ランキング 🏆</h1>
+
+        <p>
+            忘年会ARG リアルタイム順位表
+        </p>
+
+        <table id="rankingTable">
+            <thead>
+                <tr>
+                    <th>順位</th>
+                    <th>名前</th>
+                    <th>タイム</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <br>
+
+        <button onclick="location.href='index.html'">
+            トップへ戻る
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/*
+ここを公開したCSVに差し替える
+*/
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/1KTU4OyMm-1FOy6EWoaGZYg9A8S8I1bU06mraqOyjS4k/gviz/tq?gid=1890793533";
+
+function secToText(sec){
+
+    const min =
+        Math.floor(sec / 60);
+
+    const remain =
+        sec % 60;
+
+    return `${min}分${remain}秒`;
+}
+
+async function loadRanking(){
+
+    try{
+
+const response =
+    await fetch(CSV_URL);
+
+const text =
+    await response.text();
+
+console.log(text);
+        const rows =
+            csv
+            .trim()
+            .split("\n")
+            .slice(1);
+
+        const data =
+            rows.map(row=>{
+
+                const cols =
+                    row
+                    .replaceAll('"','')
+                    .split(",");
+
+                return{
+                    name: cols[1],
+                    time: Number(cols[2])
+                };
+
+            });
+
+        data.sort(
+            (a,b)=>a.time-b.time
+        );
+
+        const tbody =
+            document.querySelector(
+                "#rankingTable tbody"
+            );
+
+        tbody.innerHTML="";
+
+        data.forEach(
+            (player,index)=>{
+
+                let cls="";
+
+                if(index===0) cls="rank-gold";
+                if(index===1) cls="rank-silver";
+                if(index===2) cls="rank-bronze";
+
+                tbody.innerHTML += `
+                <tr class="${cls}">
+                    <td>${index+1}</td>
+                    <td>${player.name}</td>
+                    <td>${secToText(player.time)}</td>
+                </tr>`;
+            }
+        );
+
+    }catch(e){
+
+        console.error(e);
+
+        document.querySelector(
+            "#rankingTable tbody"
+        ).innerHTML =
+        `<tr>
+            <td colspan="3">
+                ${e.message}
+            </td>
+        </tr>`;
+    }
+}
+
+loadRanking();
+
+setInterval(
+    loadRanking,
+    30000
+);
+
+</script>
+
+</body>
+</html>

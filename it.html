@@ -1,4 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<title>情報の挑戦</title>
+</head>
+
 <body class="it">
+
+<div class="container">
+<div class="page-card">
 
 <h2>💻 情報の挑戦 💻</h2>
 
@@ -12,14 +24,26 @@
 回答
 </button>
 
+<button class="back-btn"
+onclick="location.href='start.html'">
+前のページへ戻る
+</button>
+
+</div>
+</div>
+
 <script>
 
 function check(){
 
-if(document.getElementById("ans")
-.value.trim()==="【答え】"){
+if(
+document.getElementById("ans")
+.value.trim()
+==="【答え】"
+){
 
-location.href="it-clear.html";
+location.href=
+"it-clear.html";
 
 }else{
 
@@ -32,3 +56,4 @@ alert("不正解");
 </script>
 
 </body>
+</html>

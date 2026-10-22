@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-css/style.css
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
 <title>クリア</title>
 </head>
-
 <body>
 
 <div class="container">
@@ -22,34 +22,89 @@ css/style.css
 id="result"
 class="timer">
 </div>
-
+<button onclick="location.href='ranking.html'">
+    ランキングを見る
+</button>
 </div>
 
 </div>
 
 <script>
 
-const start=
-localStorage.getItem(
-"startTime"
-);
+const personalName =
+    localStorage.getItem(
+        "personalName"
+    ) || "未入力";
 
-const sec=
-Math.floor(
-(Date.now()-start)/1000
-);
+const startTime =
+    Number(
+        localStorage.getItem(
+            "startTime"
+        )
+    );
 
-document.getElementById(
-"result"
-).innerHTML=
+if(!startTime){
 
-Math.floor(sec/60)
-+
-"分"
-+
-(sec%60)
-+
-"秒";
+    document.getElementById(
+        "result"
+    ).innerHTML =
+        "<p>タイム情報がありません</p>";
+
+}else{
+
+    const sec =
+        Math.floor(
+            (
+                Date.now() - startTime
+            ) / 1000
+        );
+
+    document.getElementById(
+        "result"
+    ).innerHTML =
+        "<h2>" +
+        personalName +
+        "</h2>" +
+        "<p>クリアタイム</p>" +
+        "<h1>" +
+        Math.floor(sec / 60) +
+        "分" +
+        (sec % 60) +
+        "秒</h1>";
+
+    if(
+        !localStorage.getItem(
+            "scoreSent"
+        )
+    ){
+
+        fetch(
+            "https://docs.google.com/forms/d/e/1FAIpQLSfMbaySKz4EGPVY2xcZytkItsfD7g43yq8BjqYhFMlnLcaQdA/formResponse",
+            {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type":
+                    "application/x-www-form-urlencoded"
+                },
+                body:
+                    "entry.926650518=" +
+                    encodeURIComponent(
+                        personalName
+                    ) +
+                    "&entry.1691944671=" +
+                    encodeURIComponent(
+                        sec
+                    )
+            }
+        );
+
+        localStorage.setItem(
+            "scoreSent",
+            "true"
+        );
+    }
+}
 
 </script>
 

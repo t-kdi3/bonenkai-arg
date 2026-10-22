@@ -1,17 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<title>家庭の挑戦</title>
+</head>
+
 <body class="home">
+
+<div class="container">
+<div class="page-card">
+
 <h2>🍳 家庭の挑戦 🍳</h2>
-<p>【問題文】</p>
+
+<p>
+【問題文】
+</p>
+
 <input id="ans">
-<button onclick="check()">回答</button>
-<button onclick="location.href='start.html'">本部へ戻る</button>
+
+<button onclick="check()">
+回答
+</button>
+
+<button class="back-btn"
+onclick="location.href='start.html'">
+前のページへ戻る
+</button>
+
+</div>
+</div>
 
 <script>
+
 function check(){
-if(document.getElementById("ans").value.trim()==="【答え】"){
-location.href="home-clear.html";
+
+if(
+document.getElementById("ans")
+.value.trim()
+==="【答え】"
+){
+
+location.href=
+"home-clear.html";
+
 }else{
+
 alert("不正解");
+
 }
+
 }
+
 </script>
+
 </body>
+</html>

@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-css/style.css
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
 <title>書道の挑戦</title>
 </head>
 
@@ -25,21 +26,33 @@ css/style.css
 
 <button class="back-btn"
 onclick="location.href='start.html'">
-本部へ戻る
+前のページへ戻る
 </button>
 
 </div>
 </div>
 
 <script>
+
 function check(){
-if(document.getElementById("ans").value.trim()
-==="【答え】"){
-location.href="calligraphy-clear.html";
+
+if(
+document.getElementById("ans")
+.value.trim()
+==="【答え】"
+){
+
+location.href=
+"calligraphy-clear.html";
+
 }else{
+
 alert("不正解");
+
 }
+
 }
+
 </script>
 
 </body>

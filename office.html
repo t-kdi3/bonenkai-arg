@@ -1,8 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<title>事務の挑戦</title>
+</head>
+
 <body class="office">
+
+<div class="container">
+<div class="page-card">
 
 <h2>🗂️ 事務の挑戦 🗂️</h2>
 
-<p>【問題文】</p>
+<p>
+【問題文】
+</p>
 
 <input id="ans">
 
@@ -10,14 +24,26 @@
 回答
 </button>
 
+<button class="back-btn"
+onclick="location.href='start.html'">
+前のページへ戻る
+</button>
+
+</div>
+</div>
+
 <script>
 
 function check(){
 
-if(document.getElementById("ans")
-.value.trim()==="【答え】"){
+if(
+document.getElementById("ans")
+.value.trim()
+==="【答え】"
+){
 
-location.href="office-clear.html";
+location.href=
+"office-clear.html";
 
 }else{
 
@@ -30,3 +56,4 @@ alert("不正解");
 </script>
 
 </body>
+</html>
