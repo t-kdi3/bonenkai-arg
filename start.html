@@ -4,11 +4,10 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ff6f61">
 
-<title>ナゾトキ本部</title>
+css/style.css
 
-<link rel="stylesheet" href="css/style.css">
+<title>教科横断チャレンジ</title>
 
 </head>
 
@@ -18,50 +17,73 @@
 
 <div class="page-card">
 
-<h1>🎪 ナゾトキ本部 🎪</h1>
+<h1>教科横断チャレンジ</h1>
 
 <p>
-挑戦名を入力してください
+
+挑戦する課題名を入力してください。
+
 </p>
 
 <input
 id="search"
-placeholder="例：音楽の挑戦">
+placeholder="例：音楽からの課題">
 
 <button onclick="movePage()">
 検索
 </button>
 
-<br><br>
-
-<div id="timer" class="timer">
+<div
+id="timer"
+class="timer">
 </div>
 
 <hr>
 
-<h2 style="color:#333;background:none;">
-挑戦一覧
-</h2>
+<h3>
 
-<p>
-音楽の挑戦<br>
-美術の挑戦<br>
-書道の挑戦<br>
-家庭の挑戦<br>
-情報の挑戦<br>
-養護の挑戦<br>2 style="color:#333;background:none;">
-進捗状況
-</h2>
+課題一覧
 
-<div id="status"></div>
+</h3>
+
+<div class="challenge-list">
+
+音楽からの課題<br>
+美術からの課題<br>
+書道からの課題<br>
+家庭からの課題<br>
+情報からの課題<br>
+養護からの課題<br>
+司書からの課題<br>
+事務からの課題
+
+</div>
 
 <hr>
 
-<h2 style="color:#333;background:none;">
-獲得したキーワード
-</h2>
+<h3>
 
-<div id="keywords"></div>
+課題達成状況
+
+</h3>
+
+<div
+id="status"
+class="status">
+</div>
+
+<hr>
+
+<h3>
+
+取得した手がかり
+
+</h3>
+
+<div
+id="keywords"
+class="status">
+</div>
 
 </div>
 
@@ -69,33 +91,48 @@ placeholder="例：音楽の挑戦">
 
 <script>
 
-const challengeMap = {
+const pageMap = {
 
-    "音楽の挑戦":"music.html",
-    "美術の挑戦":"art.html",
-    "書道の挑戦":"calligraphy.html",
-    "家庭の挑戦":"home.html",
-    "情報の挑戦":"it.html",
-    "養護の挑戦":"nurse.html",
-    "司書の挑戦":"library.html",
-    "事務の挑戦":"office.html"
+    "音楽からの課題":
+        "music.html",
+
+    "美術からの課題":
+        "art.html",
+
+    "書道からの課題":
+        "calligraphy.html",
+
+    "家庭からの課題":
+        "home.html",
+
+    "情報からの課題":
+        "it.html",
+
+    "養護からの課題":
+        "nurse.html",
+
+    "司書からの課題":
+        "library.html",
+
+    "事務からの課題":
+        "office.html"
 
 };
 
 const challengeNames = {
 
-    music:"音楽の挑戦",
-    art:"美術の挑戦",
-    calligraphy:"書道の挑戦",
-    home:"家庭の挑戦",
-    it:"情報の挑戦",
-    nurse:"養護の挑戦",
-    library:"司書の挑戦",
-    office:"事務の挑戦"
+    music:"音楽からの課題",
+    art:"美術からの課題",
+    calligraphy:"書道からの課題",
+    home:"家庭からの課題",
+    it:"情報からの課題",
+    nurse:"養護からの課題",
+    library:"司書からの課題",
+    office:"事務からの課題"
 
 };
 
-const keywordMap = {
+const keywords = {
 
     music:"ボ",
     art:"ウ",
@@ -108,22 +145,46 @@ const keywordMap = {
 
 };
 
+const subjects = [
+
+    "music",
+    "art",
+    "calligraphy",
+    "home",
+    "it",
+    "nurse",
+    "library",
+    "office"
+
+];
+
+/* ------------------
+   ページ移動
+------------------ */
+
 function movePage(){
 
     const word =
-    document.getElementById("search")
-    .value.trim();
+    document
+    .getElementById(
+        "search"
+    )
+    .value
+    .trim();
 
-    if(challengeMap[word]){
+    if(pageMap[word]){
 
         location.href =
-        challengeMap[word];
+        pageMap[word];
 
         return;
 
     }
 
-    if(word==="ボウネンカイタノシイ"){
+    if(
+        word ===
+        "ボウネンカイタノシイ"
+    ){
 
         if(allClear()){
 
@@ -133,7 +194,7 @@ function movePage(){
         }else{
 
             alert(
-            "まだ全ての挑戦をクリアしていません"
+                "すべての課題を達成してから挑戦してください。"
             );
 
         }
@@ -142,47 +203,33 @@ function movePage(){
 
 }
 
+/* ------------------
+   全達成判定
+------------------ */
+
 function allClear(){
 
-    const subjects = [
+    return subjects.every(subject =>
 
-        "music",
-        "art",
-        "calligraphy",
-        "home",
-        "it",
-        "nurse",
-        "library",
-        "office"
-
-    ];
-
-    return subjects.every(
-        s => localStorage.getItem(
-            "clear_" + s
+        localStorage.getItem(
+            "clear_" + subject
         )
+
     );
 
 }
 
+/* ------------------
+   進捗表示
+------------------ */
+
 function updateStatus(){
 
-    const subjects = [
-
-        "music",
-        "art",
-        "calligraphy",
-        "home",
-        "it",
-        "nurse",
-        "library",
-        "office"
-
-    ];
+    let clearCount = 0;
 
     let statusHtml = "";
+
     let keywordHtml = "";
-    let clearCount = 0;
 
     subjects.forEach(subject=>{
 
@@ -196,92 +243,141 @@ function updateStatus(){
             clearCount++;
 
             statusHtml +=
-            "✅ "
-            + challengeNames[subject]
-            + "<br>";
+                "✅ "
+                +
+                challengeNames[
+                    subject
+                ]
+                +
+                "<br>";
 
             keywordHtml +=
-            keywordMap[subject]
-            + " ";
+                "【"
+                +
+                keywords[
+                    subject
+                ]
+                +
+                "】 ";
 
         }else{
 
             statusHtml +=
-            "⬜ "
-            + challengeNames[subject]
-            + "<br>";
+                "⬜ "
+                +
+                challengeNames[
+                    subject
+                ]
+                +
+                "<br>";
 
         }
 
     });
 
     statusHtml +=
-    "<br><strong>"
-    + clearCount
-    + " / 8 クリア"
-    + "</strong>";
+        "<hr>" +
+        "<strong>" +
+        clearCount +
+        " / 8 達成" +
+        "</strong>";
 
-    if(clearCount===8){
+    if(clearCount === 8){
 
         statusHtml +=
-        "<br><br>"
-        + "🎉 すべての挑戦を攻略！ 🎉"
-        + "<br>"
-        + "集めた文字を並べ替え、"
-        + "<br>"
-        + "検索欄に入力してください。";
+        "<br><br>" +
+        "すべての課題を達成しました。<br>" +
+        "取得した手がかりを組み合わせ、<br>" +
+        "検索欄へ入力してください。";
 
     }
 
-    document.getElementById(
+    document
+    .getElementById(
         "status"
-    ).innerHTML = statusHtml;
+    )
+    .innerHTML =
+    statusHtml;
 
-    document.getElementById(
+    document
+    .getElementById(
         "keywords"
-    ).innerHTML =
-    keywordHtml || "まだ獲得していません";
+    )
+    .innerHTML =
+
+        keywordHtml ||
+        "まだ取得していません。";
 
 }
 
 updateStatus();
 
+/* ------------------
+   タイマー
+------------------ */
+
 setInterval(()=>{
 
-    const start =
+    const startTime =
     localStorage.getItem(
         "startTime"
     );
 
-    if(!start){
+    if(!startTime){
+
         return;
+
     }
 
-    const sec =
+    const elapsed =
+
     Math.floor(
-        (Date.now()-start)
-        /1000
+
+        (Date.now() -
+        Number(startTime))
+
+        / 1000
+
     );
 
-    document.getElementById(
-        "timer"
-    ).innerHTML =
+    const min =
+    Math.floor(
+        elapsed / 60
+    );
 
-    "⏱ 経過時間 "
-    + Math.floor(sec/60)
-    + "分"
-    + (sec%60)
-    + "秒";
+    const sec =
+    elapsed % 60;
+
+    document
+    .getElementById(
+        "timer"
+    )
+    .innerHTML =
+
+        "経過時間：" +
+        min +
+        "分 " +
+        sec +
+        "秒";
 
 },1000);
 
+/* ------------------
+   Enterキー対応
+------------------ */
+
 document
-.getElementById("search")
+.getElementById(
+    "search"
+)
 .addEventListener(
 "keypress",
 function(e){
 
-    if(e.key==="Enter"){
+    if(
+        e.key ===
+        "Enter"
+    ){
 
         movePage();
 
