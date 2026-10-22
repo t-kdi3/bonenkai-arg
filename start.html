@@ -3,11 +3,12 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-css/style.css
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff6f61">
 
 <title>ナゾトキ本部</title>
+
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -17,34 +18,50 @@ css/style.css
 
 <div class="page-card">
 
-<h1>🎪ナゾトキ本部🎪</h1>
+<h1>🎪 ナゾトキ本部 🎪</h1>
 
-<input id="search">
+<p>
+挑戦名を入力してください
+</p>
+
+<input
+id="search"
+placeholder="例：音楽の挑戦">
 
 <button onclick="movePage()">
-
 検索
-
 </button>
 
-<div id="timer"></div>
+<br><br>
+
+<div id="timer" class="timer">
+</div>
 
 <hr>
 
-<p>
+<h2 style="color:#333;background:none;">
+挑戦一覧
+</h2>
 
+<p>
 音楽の挑戦<br>
 美術の挑戦<br>
 書道の挑戦<br>
 家庭の挑戦<br>
 情報の挑戦<br>
-養護の挑戦<br>
-司書の挑戦<br>
-事務の挑戦
-
-</p>
+養護の挑戦<br>2 style="color:#333;background:none;">
+進捗状況
+</h2>
 
 <div id="status"></div>
+
+<hr>
+
+<h2 style="color:#333;background:none;">
+獲得したキーワード
+</h2>
+
+<div id="keywords"></div>
 
 </div>
 
@@ -52,98 +69,225 @@ css/style.css
 
 <script>
 
-function movePage(){
+const challengeMap = {
 
-const word =
-document.getElementById(
-"search"
-).value.trim();
-
-const pages = {
-
-"音楽の挑戦":"music.html",
-"美術の挑戦":"art.html",
-"書道の挑戦":"calligraphy.html",
-"家庭の挑戦":"home.html",
-"情報の挑戦":"it.html",
-"養護の挑戦":"nurse.html",
-"司書の挑戦":"library.html",
-"事務の挑戦":"office.html"
+    "音楽の挑戦":"music.html",
+    "美術の挑戦":"art.html",
+    "書道の挑戦":"calligraphy.html",
+    "家庭の挑戦":"home.html",
+    "情報の挑戦":"it.html",
+    "養護の挑戦":"nurse.html",
+    "司書の挑戦":"library.html",
+    "事務の挑戦":"office.html"
 
 };
 
-if(pages[word]){
-location.href=pages[word];
-return;
+const challengeNames = {
+
+    music:"音楽の挑戦",
+    art:"美術の挑戦",
+    calligraphy:"書道の挑戦",
+    home:"家庭の挑戦",
+    it:"情報の挑戦",
+    nurse:"養護の挑戦",
+    library:"司書の挑戦",
+    office:"事務の挑戦"
+
+};
+
+const keywordMap = {
+
+    music:"ボ",
+    art:"ウ",
+    calligraphy:"ネ",
+    home:"ン",
+    it:"カ",
+    nurse:"イ",
+    library:"タ",
+    office:"ノ"
+
+};
+
+function movePage(){
+
+    const word =
+    document.getElementById("search")
+    .value.trim();
+
+    if(challengeMap[word]){
+
+        location.href =
+        challengeMap[word];
+
+        return;
+
+    }
+
+    if(word==="ボウネンカイタノシイ"){
+
+        if(allClear()){
+
+            location.href =
+            "final.html";
+
+        }else{
+
+            alert(
+            "まだ全ての挑戦をクリアしていません"
+            );
+
+        }
+
+    }
+
 }
 
-if(word==="ボウネンカイタノシイ"){
-location.href="final.html";
-}
+function allClear(){
+
+    const subjects = [
+
+        "music",
+        "art",
+        "calligraphy",
+        "home",
+        "it",
+        "nurse",
+        "library",
+        "office"
+
+    ];
+
+    return subjects.every(
+        s => localStorage.getItem(
+            "clear_" + s
+        )
+    );
 
 }
 
-const subjects=[
-"music",
-"art",
-"calligraphy",
-"home",
-"it",
-"nurse",
-"library",
-"office"
-];
+function updateStatus(){
 
-let html="";
+    const subjects = [
 
-subjects.forEach(s=>{
+        "music",
+        "art",
+        "calligraphy",
+        "home",
+        "it",
+        "nurse",
+        "library",
+        "office"
 
-if(localStorage.getItem(
-"clear_"+s
-)){
+    ];
 
-html+="✅ "+s+"<br>";
+    let statusHtml = "";
+    let keywordHtml = "";
+    let clearCount = 0;
 
-}else{
+    subjects.forEach(subject=>{
 
-html+="⬜ "+s+"<br>";
+        const cleared =
+        localStorage.getItem(
+            "clear_" + subject
+        );
+
+        if(cleared){
+
+            clearCount++;
+
+            statusHtml +=
+            "✅ "
+            + challengeNames[subject]
+            + "<br>";
+
+            keywordHtml +=
+            keywordMap[subject]
+            + " ";
+
+        }else{
+
+            statusHtml +=
+            "⬜ "
+            + challengeNames[subject]
+            + "<br>";
+
+        }
+
+    });
+
+    statusHtml +=
+    "<br><strong>"
+    + clearCount
+    + " / 8 クリア"
+    + "</strong>";
+
+    if(clearCount===8){
+
+        statusHtml +=
+        "<br><br>"
+        + "🎉 すべての挑戦を攻略！ 🎉"
+        + "<br>"
+        + "集めた文字を並べ替え、"
+        + "<br>"
+        + "検索欄に入力してください。";
+
+    }
+
+    document.getElementById(
+        "status"
+    ).innerHTML = statusHtml;
+
+    document.getElementById(
+        "keywords"
+    ).innerHTML =
+    keywordHtml || "まだ獲得していません";
 
 }
 
-});
-
-document.getElementById(
-"status"
-).innerHTML=html;
+updateStatus();
 
 setInterval(()=>{
 
-const start=
-localStorage.getItem(
-"startTime"
-);
+    const start =
+    localStorage.getItem(
+        "startTime"
+    );
 
-if(!start)return;
+    if(!start){
+        return;
+    }
 
-const sec=
-Math.floor(
-(Date.now()-start)/1000
-);
+    const sec =
+    Math.floor(
+        (Date.now()-start)
+        /1000
+    );
 
-document.getElementById(
-"timer"
-).innerHTML=
-"経過時間 "
-+
-Math.floor(sec/60)
-+
-"分"
-+
-(sec%60)
-+
-"秒";
+    document.getElementById(
+        "timer"
+    ).innerHTML =
+
+    "⏱ 経過時間 "
+    + Math.floor(sec/60)
+    + "分"
+    + (sec%60)
+    + "秒";
 
 },1000);
+
+document
+.getElementById("search")
+.addEventListener(
+"keypress",
+function(e){
+
+    if(e.key==="Enter"){
+
+        movePage();
+
+    }
+
+});
 
 </script>
 
