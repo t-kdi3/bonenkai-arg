@@ -1,132 +1,449 @@
-body{
-    margin:0;
-    padding:15px;
-    text-align:center;
-    font-family:"Yu Gothic","Meiryo",sans-serif;
-    background:#f8f9fa;
+/* =====================================
+   共通設定
+===================================== */
+
+*{
+    box-sizing:border-box;
 }
 
+body{
+    margin:0;
+    padding:20px;
+
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        "Meiryo",
+        sans-serif;
+
+    background:#f5f6f8;
+    color:#333333;
+
+    line-height:1.8;
+}
+
+/* =====================================
+   レイアウト
+===================================== */
+
 .container{
-    max-width:700px;
-    margin:auto;
+    width:100%;
+    max-width:800px;
+    margin:0 auto;
 }
 
 .page-card{
-    background:white;
-    border-radius:20px;
-    padding:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.15);
+
+    background:#ffffff;
+
+    padding:24px;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
 }
 
+/* =====================================
+   タイトル
+===================================== */
+
 h1{
+
+    margin-top:0;
+
+    background:#23395d;
+
     color:white;
-    background:#ff6f61;
-    padding:15px;
-    border-radius:15px;
+
+    padding:16px;
+
+    border-radius:10px;
+
+    text-align:center;
+
+    font-size:1.8rem;
+
+    font-weight:600;
+
 }
 
 h2{
+
     color:white;
+
     padding:12px;
-    border-radius:12px;
+
+    border-radius:8px;
+
+    text-align:center;
+
+    font-size:1.3rem;
+
+    font-weight:600;
+
 }
+
+/* =====================================
+   テキスト
+===================================== */
+
+p{
+    margin:12px 0;
+}
+
+hr{
+
+    border:none;
+
+    border-top:1px solid #dddddd;
+
+    margin:24px 0;
+
+}
+
+/* =====================================
+   入力欄
+===================================== */
 
 input{
+
     width:100%;
-    box-sizing:border-box;
+
     padding:14px;
-    font-size:18px;
-    border-radius:10px;
-    border:2px solid #ccc;
+
+    border:1px solid #b5b5b5;
+
+    border-radius:6px;
+
+    font-size:16px;
+
+    background:white;
+
+    margin-top:8px;
+
 }
 
+input:focus{
+
+    outline:none;
+
+    border-color:#23395d;
+
+    box-shadow:
+        0 0 0 3px rgba(35,57,93,0.15);
+
+}
+
+/* =====================================
+   ボタン
+===================================== */
+
 button{
+
+    display:block;
+
     width:100%;
-    max-width:400px;
-    margin-top:12px;
-    padding:14px;
-    font-size:18px;
+
+    max-width:350px;
+
+    margin:14px auto 0;
+
+    padding:12px;
+
     border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#4dabf7;
+
+    border-radius:6px;
+
+    background:#23395d;
+
     color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:0.2s;
+
 }
 
 button:hover{
-    opacity:0.9;
+
+    background:#1a2b45;
+
 }
 
 .back-btn{
-    background:#868e96;
+
+    background:#6c757d;
+
 }
+
+.back-btn:hover{
+
+    background:#5c636a;
+
+}
+
+/* =====================================
+   スタートページ
+===================================== */
+
+.status{
+
+    text-align:left;
+
+    background:#fafafa;
+
+    border:1px solid #dddddd;
+
+    border-radius:8px;
+
+    padding:15px;
+
+}
+
+.challenge-list{
+
+    text-align:left;
+
+    max-width:350px;
+
+    margin:0 auto;
+
+}
+
+/* =====================================
+   キーワード表示
+===================================== */
 
 .keyword{
+
     font-size:72px;
+
     font-weight:bold;
-    color:#ff9800;
+
+    text-align:center;
+
+    color:#23395d;
+
+    letter-spacing:10px;
+
+    margin:25px 0;
+
 }
+
+/* =====================================
+   タイマー
+===================================== */
 
 .timer{
-    font-size:30px;
-    color:#d6336c;
+
+    font-size:1.2rem;
+
     font-weight:bold;
+
+    text-align:center;
+
+    color:#495057;
+
+    margin-top:15px;
+
 }
 
-/* 教科カラー */
+/* =====================================
+   正解ページ
+===================================== */
 
-.music{
-    background:#fff0f6;
+.success-message{
+
+    text-align:center;
+
+    font-size:1.1rem;
+
+    margin:20px 0;
+
 }
+
+/* =====================================
+   教科別カラー
+===================================== */
+
+/* 音楽 */
+
+body.music{
+    background:#f8f4f8;
+}
+
 .music h2{
-    background:#e64980;
+    background:#6b496b;
 }
 
-.art{
-    background:#f3f0ff;
+/* 美術 */
+
+body.art{
+    background:#f7f7fb;
 }
+
 .art h2{
-    background:#7950f2;
+    background:#4f5d75;
 }
 
-.calligraphy{
-    background:#f8f9fa;
+/* 書道 */
+
+body.calligraphy{
+    background:#fafafa;
 }
+
 .calligraphy h2{
-    background:#495057;
+    background:#444444;
 }
 
-.home{
-    background:#fff4e6;
+/* 家庭 */
+
+body.home{
+    background:#faf7f2;
 }
+
 .home h2{
-    background:#f08c00;
+    background:#8a6d46;
 }
 
-.it{
-    background:#e7f5ff;
+/* 情報 */
+
+body.it{
+    background:#f2f6fb;
 }
+
 .it h2{
-    background:#1c7ed6;
+    background:#2f6690;
 }
 
-.nurse{
-    background:#ebfbee;
+/* 養護 */
+
+body.nurse{
+    background:#f4f8f4;
 }
+
 .nurse h2{
-    background:#37b24d;
+    background:#4e7d5a;
 }
 
-.library{
-    background:#fff9db;
+/* 司書 */
+
+body.library{
+    background:#faf8f0;
 }
+
 .library h2{
-    background:#fab005;
+    background:#6d5d3e;
 }
 
-.office{
-    background:#f1f3f5;
+/* 事務 */
+
+body.office{
+    background:#f5f5f5;
 }
+
 .office h2{
-    background:#868e96;
+    background:#666666;
+}
+
+/* =====================================
+   最終課題ページ
+===================================== */
+
+.final-page h1{
+    background:#23395d;
+}
+
+.final-answer{
+
+    margin-top:20px;
+
+    font-size:1.1rem;
+
+}
+
+/* =====================================
+   エンディング
+===================================== */
+
+.ending-title{
+
+    text-align:center;
+
+    color:#23395d;
+
+    font-size:2rem;
+
+    font-weight:bold;
+
+}
+
+.ending-message{
+
+    text-align:center;
+
+    font-size:1.1rem;
+
+    margin:20px 0;
+
+}
+
+/* =====================================
+   スマホ対応
+===================================== */
+
+@media screen and (max-width:600px){
+
+    body{
+
+        padding:12px;
+
+    }
+
+    .page-card{
+
+        padding:18px;
+
+    }
+
+    h1{
+
+        font-size:1.5rem;
+
+        padding:14px;
+
+    }
+
+    h2{
+
+        font-size:1.1rem;
+
+    }
+
+    input{
+
+        font-size:16px;
+
+    }
+
+    button{
+
+        width:100%;
+
+        font-size:16px;
+
+    }
+
+    .keyword{
+
+        font-size:56px;
+
+        letter-spacing:6px;
+
+    }
+
 }
