@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ff6f61">
 
-<title>文化祭ナゾトキラリー</title>
+<link rel="stylesheet" href="css/style.css">
 
-css/style.css
+<title>教科横断チャレンジ</title>
 
 </head>
 
@@ -15,58 +15,47 @@ css/style.css
 
 <div class="container">
 
-    <div class="page-card">
+<div class="page-card">
 
-        <div style="font-size:2rem;">
-            🎊🎪🎊
-        </div>
+<h1>教科横断チャレンジ</h1>
 
-        <h1>
-            文化祭ナゾトキラリー
-        </h1>
+<p>
 
-        <p>
-            ようこそ、文化祭ナゾトキラリーへ！
-        </p>
+各分野から出題される課題に挑戦し、
+最後のキーワードを導き出してください。
 
-        <p>
-            あなたたちはナゾトキ調査隊です。
-        </p>
+</p>
 
-        <p>
-            校内に散らばる8つの挑戦をクリアし、
-            最後のキーワードを見つけ出してください。
-        </p>
+<p>
 
-        <hr>
+課題を解決すると、
+最終課題につながる手がかりを得ることができます。
 
-        <h3>
-            参加方法
-        </h3>
+</p>
 
-        <ol style="text-align:left; max-width:500px; margin:auto;">
-            <li>司会者の合図を待つ</li>
-            <li>検索欄に「スタート」と入力</li>
-            <li>各教科の挑戦をクリアする</li>
-            <li>8文字のキーワードを集める</li>
-            <li>最後の答えを導き出す</li>
-        </ol>
+<hr>
 
-        <br>
+<p>
 
-        <input
-            id="startWord"
-            placeholder="ここに入力">
+開始する場合は、
 
-        <button onclick="startGame()">
-            ゲーム開始
-        </button>
+<strong>スタート</strong>
 
-        <p style="margin-top:20px;color:#666;">
-            ※司会者の合図後にスタートしてください
-        </p>
+と入力してください。
 
-    </div>
+</p>
+
+<input
+id="startWord"
+placeholder="スタート">
+
+<button onclick="startGame()">
+
+開始する
+
+</button>
+
+</div>
 
 </div>
 
@@ -81,17 +70,26 @@ function startGame(){
 
     if(word === "スタート"){
 
-        localStorage.setItem(
-            "startTime",
-            Date.now()
-        );
+        /*
+           最初の開始時刻を保存
+        */
 
-        location.href = "start.html";
+        if(
+            !localStorage.getItem(
+                "startTime"
+            )
+        ){
 
-    }else{
+            localStorage.setItem(
+                "startTime",
+                Date.now()
+            );
 
-        alert(
-            "「スタート」と入力してください"
+        }
+
+        location.href =
+            alert(
+            "「スタート」と入力してください。"
         );
 
     }
@@ -100,7 +98,9 @@ function startGame(){
 
 document
 .getElementById("startWord")
-.addEventListener("keypress", function(e){
+.addEventListener(
+"keypress",
+function(e){
 
     if(e.key === "Enter"){
 
