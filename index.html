@@ -1,116 +1,461 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="css/style.css">
+<title>忘年会ARG</title>
 
-<title>教科横断チャレンジ</title>
+<style>
+body{
+    font-family:sans-serif;
+    background:#111;
+    color:white;
+    text-align:center;
+    margin:0;
+    padding:40px;
+}
 
+.page{
+    display:none;
+    max-width:800px;
+    margin:auto;
+}
+
+.active{
+    display:block;
+}
+
+input{
+    width:80%;
+    max-width:400px;
+    padding:12px;
+    font-size:18px;
+}
+
+button{
+    padding:12px 20px;
+    margin-top:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.challenge{
+    border:1px solid #555;
+    padding:15px;
+    margin:10px;
+}
+
+.keyword{
+    font-size:40px;
+    color:gold;
+    font-weight:bold;
+}
+
+.timer{
+    font-size:28px;
+    color:lime;
+}
+
+h1{
+    color:#ffd700;
+}
+
+h2{
+    color:#87ceeb;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- トップ -->
 
-<div class="page-card">
-
-<h1>教科横断チャレンジ</h1>
+<div id="top" class="page active">
+<h1>忘年会ARG2026</h1>
 
 <p>
-
-各分野から出題される課題に挑戦し、
-最後のキーワードを導き出してください。
-
+司会者の指示があるまでお待ちください。
 </p>
 
 <p>
-
-課題を解決すると、
-最終課題につながる手がかりを得ることができます。
-
-</p>
-
-<hr>
-
-<p>
-
-開始する場合は、
-
+ゲーム開始後、
+<br>
+検索窓に
+<br>
 <strong>スタート</strong>
-
+<br>
 と入力してください。
-
 </p>
 
-<input
-id="startWord"
-placeholder="スタート">
+<input id="commandBox">
+<br>
+<button onclick="search()">送信</button>
+</div>
 
-<button onclick="startGame()">
+<!-- スタート -->
 
-開始する
+<div id="start" class="page">
 
-</button>
+<h1>ミッション開始</h1>
+
+<p>
+以下の挑戦を攻略せよ。
+</p>
+
+<div class="challenge">音楽の挑戦</div>
+<div class="challenge">美術の挑戦</div>
+<div class="challenge">書道の挑戦</div>
+<div class="challenge">家庭の挑戦</div>
+<div class="challenge">情報の挑戦</div>
+<div class="challenge">養護の挑戦</div>
+<div class="challenge">司書の挑戦</div>
+<div class="challenge">事務の挑戦</div>
+
+<p>
+挑戦名を検索窓に入力してください。
+</p>
+
+<input id="commandBox2">
+<br>
+<button onclick="search2()">送信</button>
+
+<p id="timer"></p>
 
 </div>
+
+<!-- 問題ページ -->
+
+<div id="music" class="page">
+<h2>音楽の挑戦</h2>
+<p>「ふるさと」を作曲した人物の姓は？</p>
+
+<input id="musicAns">
+<br>
+<button onclick="check('music')">回答</button>
+</div>
+
+<div id="art" class="page">
+<h2>美術の挑戦</h2>
+<p>モナリザを描いた人物の姓は？</p>
+
+<input id="artAns">
+<br>
+<button onclick="check('art')">回答</button>
+</div>
+
+<div id="calligraphy" class="page">
+<h2>書道の挑戦</h2>
+<p>日本で一般的に使われる文字は「漢字」「ひらがな」とあと一つは？</p>
+
+<input id="calligraphyAns">
+<br>
+<button onclick="check('calligraphy')">回答</button>
+</div>
+
+<div id="home" class="page">
+<h2>家庭の挑戦</h2>
+<p>卵を加熱するとどうなる？（漢字2文字）</p>
+
+<input id="homeAns">
+<br>
+<button onclick="check('home')">回答</button>
+</div>
+
+<div id="it" class="page">
+<h2>情報の挑戦</h2>
+<p>コンピュータが扱う数値は何進数？</p>
+
+<input id="itAns">
+<br>
+<button onclick="check('it')">回答</button>
+</div>
+
+<div id="nurse" class="page">
+<h2>養護の挑戦</h2>
+<p>平熱はおよそ何度？（数字のみ）</p>
+
+<input id="nurseAns">
+<br>
+<button onclick="check('nurse')">回答</button>
+</div>
+
+<div id="library" class="page">
+<h2>司書の挑戦</h2>
+<p>本を借りる場所は？</p>
+
+<input id="libraryAns">
+<br>
+<button onclick="check('library')">回答</button>
+</div>
+
+<div id="office" class="page">
+<h2>事務の挑戦</h2>
+<p>給与が振り込まれる場所は？</p>
+
+<input id="officeAns">
+<br>
+<button onclick="check('office')">回答</button>
+</div>
+
+<!-- 正解ページ -->
+
+<div id="clear_music" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">ボ</div>
+</div>
+
+<div id="clear_art" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">ウ</div>
+</div>
+
+<div id="clear_calligraphy" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">ネ</div>
+</div>
+
+<div id="clear_home" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">ン</div>
+</div>
+
+<div id="clear_it" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">カ</div>
+</div>
+
+<div id="clear_nurse" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">イ</div>
+</div>
+
+<div id="clear_library" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">タ</div>
+</div>
+
+<div id="clear_office" class="page">
+<h1>正解</h1>
+<p>キーワード</p>
+<div class="keyword">ノ</div>
+</div>
+
+<!-- 最終 -->
+
+<div id="final" class="page">
+
+<h1>FINAL</h1>
+
+<p>
+集めた文字を並べ替えよ。
+</p>
+
+<p>
+答えを入力してください。
+</p>
+
+<input id="finalAnswer">
+<br>
+<button onclick="finalCheck()">送信</button>
+
+</div>
+
+<!-- クリア -->
+
+<div id="ending" class="page">
+
+<h1>🎉完全制覇🎉</h1>
+
+<p>
+おめでとうございます！
+</p>
+
+<p>
+クリアタイム
+</p>
+
+<div class="timer" id="finalTime"></div>
 
 </div>
 
 <script>
 
-function startGame(){
+const answers = {
 
-    const word =
-    document.getElementById(
-        "startWord"
-    ).value.trim();
+music : "おかの",
+art : "ダヴィンチ",
+calligraphy : "カタカナ",
+home : "凝固",
+it : "2",
+nurse : "36",
+library : "図書館",
+office : "銀行"
 
-    if(word === "スタート"){
+};
 
-        /*
-           最初の開始時刻を保存
-        */
+function showPage(id){
 
-        if(
-            !localStorage.getItem(
-                "startTime"
-            )
-        ){
+document
+.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
 
-            localStorage.setItem(
-                "startTime",
-                Date.now()
-            );
-
-        }
-
-        location.href =
-            alert(
-            "「スタート」と入力してください。"
-        );
-
-    }
+document
+.getElementById(id)
+.classList.add("active");
 
 }
 
-document
-.getElementById("startWord")
-.addEventListener(
-"keypress",
-function(e){
+function search(){
 
-    if(e.key === "Enter"){
+const v =
+document.getElementById("commandBox")
+.value.trim();
 
-        startGame();
+if(v==="スタート"){
 
-    }
+localStorage.setItem(
+"startTime",
+Date.now()
+);
 
-});
+showPage("start");
+updateTimer();
+}
+
+}
+
+function search2(){
+
+const v =
+document.getElementById("commandBox2")
+.value.trim();
+
+const map = {
+
+"音楽の挑戦":"music",
+"美術の挑戦":"art",
+"書道の挑戦":"calligraphy",
+"家庭の挑戦":"home",
+"情報の挑戦":"it",
+"養護の挑戦":"nurse",
+"司書の挑戦":"library",
+"事務の挑戦":"office",
+
+"ボウネンカイタノシイ":"final"
+
+};
+
+if(map[v]){
+showPage(map[v]);
+}
+
+}
+
+function check(subject){
+
+const ans =
+document.getElementById(
+subject+"Ans"
+).value.trim();
+
+if(ans===answers[subject]){
+
+showPage(
+"clear_"+subject
+);
+
+}
+else{
+alert("不正解");
+}
+
+}
+
+function finalCheck(){
+
+const ans =
+document.getElementById(
+"finalAnswer"
+).value.trim();
+
+if(ans==="ボウネンカイタノシイ"){
+
+let start =
+Number(
+localStorage.getItem(
+"startTime"
+)
+);
+
+let sec =
+Math.floor(
+(Date.now()-start)/1000
+);
+
+document.getElementById(
+"finalTime"
+).innerHTML=
+Math.floor(sec/60)+"分"+
+(sec%60)+"秒";
+
+showPage("ending");
+}
+else{
+
+alert("違います");
+
+}
+
+}
+
+function updateTimer(){
+
+setInterval(()=>{
+
+const start =
+Number(
+localStorage.getItem(
+"startTime"
+)
+);
+
+const sec =
+Math.floor(
+(Date.now()-start)/1000
+);
+
+const el =
+document.getElementById(
+"timer"
+);
+
+if(el){
+
+el.innerHTML=
+"経過時間 : "
++
+Math.floor(sec/60)
++
+"分"
++
+(sec%60)
++
+"秒";
+
+}
+
+},1000);
+
+}
 
 </script>
-
 </body>
 </html>
