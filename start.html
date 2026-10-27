@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
 <title>課題選択</title>
-<script src="js/common.js"></script>
-</head>
 
+<link rel="stylesheet" href="css/style.css">
+<script src="js/common.js"></script>
+
+</head>
 <body>
 
 <div class="container">
@@ -20,45 +21,23 @@
 
 <div id="timer"></div>
 
-<div class="button-grid">
+<h2>進行状況</h2>
 
-<button onclick="location.href='art.html'">
-🎨 美術
-</button>
+<div id="progressArea" class="progress-box"></div>
 
-<button onclick="location.href='calligraphy.html'">
-🖌️ 書道
-</button>
+<h2>取得したキーワード</h2>
 
-<button onclick="location.href='music.html'">
-🎵 音楽
-</button>
-
-<button onclick="location.href='home.html'">
-🍳 家庭科
-</button>
-
-<button onclick="location.href='nurse.html'">
-💊 養護
-</button>
-
-<button onclick="location.href='office.html'">
-🗂️ 事務
-</button>
-
-<button onclick="location.href='library.html'">
-📚 司書
-</button>
-
-<button onclick="location.href='it.html'">
-💻 情報
-</button>
-
-</div>
+<div id="keywordArea" class="keyword-progress"></div>
 
 <hr>
 
-<h2>最終課題</h2>
+<h2>挑戦できる課題</h2>
+
+<div id="subjectArea" class="button-grid"></div>
+
+<hr>
+
+<h2>最後の課題</h2>
 
 <p>
 手がかりが集まったと思ったら、
@@ -68,6 +47,8 @@
 <input
 id="finalInput"
 placeholder="最後の課題">
+
+<br><br>
 
 <button onclick="checkFinal()">
 挑戦する
@@ -79,25 +60,209 @@ placeholder="最後の課題">
 
 <script>
 
-document.getElementById("playerName").textContent =
+document.getElementById(
+    "playerName"
+).textContent =
 "挑戦者：" +
-(localStorage.getItem("playerName") || "名無し");
+(
+    localStorage.getItem(
+        "playerName"
+    ) || "名無し"
+);
+
+const subjects = [
+
+{
+    key:"art",
+    title:"🎨 美術",
+    file:"art.html"
+},
+
+{
+    key:"calligraphy",
+    title:"🖌️ 書道",
+    file:"calligraphy.html"
+},
+
+{
+    key:"music",
+    title:"🎵 音楽",
+    file:"music.html"
+},
+
+{
+    key:"home",
+    title:"🍳 家庭科",
+    file:"home.html"
+},
+
+{
+    key:"nurse",
+    title:"💊 養護",
+    file:"nurse.html"
+},
+
+{
+    key:"office",
+    title:"🗂️ 事務",
+    file:"office.html"
+},
+
+{
+    key:"library",
+    title:"📚 司書",
+    file:"library.html"
+},
+
+{
+    key:"it",
+    title:"💻 情報",
+    file:"it.html"
+}
+
+];
+
+function displaySubjects(){
+
+    const clears = JSON.parse(
+        localStorage.getItem("clears")
+        || "{}"
+    );
+
+    const remainingSubjects =
+    subjects.filter(subject =>
+        !clears[subject.key]
+    );
+
+    remainingSubjects.sort(
+        () => Math.random() - 0.5
+    );
+
+    const area =
+    document.getElementById(
+        "subjectArea"
+    );
+
+    area.innerHTML = "";
+
+    if(
+        remainingSubjects.length === 0
+    ){
+        area.innerHTML =
+        "<p>未クリアの課題はありません。</p>";
+        return;
+    }
+
+    remainingSubjects.forEach(subject => {
+
+        area.innerHTML += `
+        <button
+        onclick="location.href='${subject.file}'">
+            ${subject.title}
+        </button>
+        `;
+
+    });
+
+}
+
+function showProgress(){
+
+    const clears = JSON.parse(
+        localStorage.getItem("clears")
+        || "{}"
+    );
+
+    let count = 0;
+
+    let html = "";
+
+    subjects.forEach(subject => {
+
+        const done =
+        clears[subject.key];
+
+        if(done) count++;
+
+        html += `
+        <div class="progress-row">
+
+            <span>
+            ${subject.title}
+            </span>
+
+            <span>
+            ${done ? "✅" : "⬜"}
+            </span>
+
+        </div>
+        `;
+
+    });
+
+    html += `
+    <div class="progress-total">
+        達成率 ${count}/8
+    </div>
+    `;
+
+    document.getElementById(
+        "progressArea"
+    ).innerHTML = html;
+}
+
+function showKeywords(){
+
+    const history = JSON.parse(
+        localStorage.getItem(
+            "keywordHistory"
+        ) || "[]"
+    );
+
+    let html = "";
+
+    if(history.length === 0){
+
+        html =
+        "<p>まだキーワードを取得していません。</p>";
+
+    }else{
+
+        history.forEach(char => {
+
+            html += `
+            <span class="keyword owned">
+                ${char}
+            </span>
+            `;
+
+        });
+
+    }
+
+    document.getElementById(
+        "keywordArea"
+    ).innerHTML = html;
+
+}
 
 function checkFinal(){
 
     const word =
-        document.getElementById(
-            "finalInput"
-        )
-        .value
-        .trim();
+    document.getElementById(
+        "finalInput"
+    ).value.trim();
 
     if(
         word === "最後の課題" ||
         word === "さいごのかだい"
     ){
-        location.href="final.html";
+
+        location.href =
+        "final.html";
+
         return;
+
     }
 
     alert(
@@ -106,38 +271,38 @@ function checkFinal(){
 
 }
 
-/* タイマー */
-
 function updateTimer(){
 
     const start =
-        Number(
-            localStorage.getItem(
-                "startTime"
-            )
-        );
+    Number(
+        localStorage.getItem(
+            "startTime"
+        )
+    );
 
     if(!start) return;
 
     const sec =
-        Math.floor(
-            (Date.now()-start)/1000
-        );
+    Math.floor(
+        (Date.now()-start)/1000
+    );
 
-    const m =
-        Math.floor(sec/60);
+    const min =
+    Math.floor(sec/60);
 
-    const s =
-        sec%60;
+    const remain =
+    sec%60;
 
     document.getElementById(
         "timer"
     ).textContent =
-    "経過時間 "
-    + m + "分"
-    + s + "秒";
+    `経過時間 ${min}分${remain}秒`;
 
 }
+
+displaySubjects();
+showProgress();
+showKeywords();
 
 updateTimer();
 
