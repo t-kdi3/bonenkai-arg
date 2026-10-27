@@ -17,7 +17,7 @@
 
 <h1>課題選択</h1>
 
-<p id="playerName"></p>
+<p id="parsonalName"></p>
 
 <div id="timer"></div>
 
@@ -61,12 +61,12 @@ placeholder="最後の課題">
 <script>
 
 document.getElementById(
-    "playerName"
+    "parsonalName"
 ).textContent =
 "挑戦者：" +
 (
     localStorage.getItem(
-        "playerName"
+        "parsonalName"
     ) || "名無し"
 );
 
