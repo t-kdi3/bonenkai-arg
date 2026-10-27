@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>課題選択</title>
 
 <link rel="stylesheet" href="css/style.css">
@@ -17,19 +18,9 @@
 
 <h1>課題選択</h1>
 
-<p id="parsonalName"></p>
+<p id="playerName" class="player-name"></p>
 
 <div id="timer"></div>
-
-<h2>進行状況</h2>
-
-<div id="progressArea" class="progress-box"></div>
-
-<h2>取得したキーワード</h2>
-
-<div id="keywordArea" class="keyword-progress"></div>
-
-<hr>
 
 <h2>挑戦できる課題</h2>
 
@@ -37,7 +28,7 @@
 
 <hr>
 
-<h2>最後の課題</h2>
+<h2>🏆 最後の課題</h2>
 
 <p>
 手がかりが集まったと思ったら、
@@ -54,21 +45,54 @@ placeholder="最後の課題">
 挑戦する
 </button>
 
+<hr>
+
+<details>
+
+<summary>
+進行状況・取得キーワードを見る
+</summary>
+
+<h2>進行状況</h2>
+
+<div
+id="progressArea"
+class="progress-box">
+</div>
+
+<h2>取得したキーワード</h2>
+
+<div
+id="keywordArea"
+class="keyword-progress">
+</div>
+
+</details>
+
 </div>
 
 </div>
 
 <script>
 
+/* ------------------------
+   挑戦者名表示
+------------------------ */
+
+const personalName =
+    localStorage.getItem("personalName") ||
+    "";
+
 document.getElementById(
-    "parsonalName"
+    "playerName"
 ).textContent =
-"挑戦者：" +
-(
-    localStorage.getItem(
-        "parsonalName"
-    ) || "名無し"
-);
+    personalName
+    ? `挑戦者：${personalName}`
+    : "";
+
+/* ------------------------
+   課題一覧
+------------------------ */
 
 const subjects = [
 
@@ -122,6 +146,10 @@ const subjects = [
 
 ];
 
+/* ------------------------
+   未クリア課題のみ表示
+------------------------ */
+
 function displaySubjects(){
 
     const clears = JSON.parse(
@@ -130,30 +158,37 @@ function displaySubjects(){
     );
 
     const remainingSubjects =
-    subjects.filter(subject =>
-        !clears[subject.key]
-    );
+        subjects.filter(
+            subject =>
+            !clears[subject.key]
+        );
 
     remainingSubjects.sort(
         () => Math.random() - 0.5
     );
 
     const area =
-    document.getElementById(
-        "subjectArea"
-    );
+        document.getElementById(
+            "subjectArea"
+        );
 
     area.innerHTML = "";
 
     if(
         remainingSubjects.length === 0
     ){
-        area.innerHTML =
-        "<p>未クリアの課題はありません。</p>";
+
+        area.innerHTML = `
+            <p>
+            未クリアの課題はありません。
+            </p>
+        `;
+
         return;
     }
 
-    remainingSubjects.forEach(subject => {
+    remainingSubjects.forEach(
+        subject => {
 
         area.innerHTML += `
         <button
@@ -165,6 +200,10 @@ function displaySubjects(){
     });
 
 }
+
+/* ------------------------
+   進行状況表示
+------------------------ */
 
 function showProgress(){
 
@@ -180,19 +219,21 @@ function showProgress(){
     subjects.forEach(subject => {
 
         const done =
-        clears[subject.key];
+            clears[subject.key];
 
-        if(done) count++;
+        if(done){
+            count++;
+        }
 
         html += `
         <div class="progress-row">
 
             <span>
-            ${subject.title}
+                ${subject.title}
             </span>
 
             <span>
-            ${done ? "✅" : "⬜"}
+                ${done ? "✅" : "⬜"}
             </span>
 
         </div>
@@ -211,6 +252,10 @@ function showProgress(){
     ).innerHTML = html;
 }
 
+/* ------------------------
+   キーワード表示
+------------------------ */
+
 function showKeywords(){
 
     const history = JSON.parse(
@@ -221,10 +266,12 @@ function showKeywords(){
 
     let html = "";
 
-    if(history.length === 0){
+    if(
+        history.length === 0
+    ){
 
         html =
-        "<p>まだキーワードを取得していません。</p>";
+        "<p>まだ取得していません</p>";
 
     }else{
 
@@ -243,15 +290,20 @@ function showKeywords(){
     document.getElementById(
         "keywordArea"
     ).innerHTML = html;
-
 }
+
+/* ------------------------
+   最後の課題
+------------------------ */
 
 function checkFinal(){
 
     const word =
-    document.getElementById(
-        "finalInput"
-    ).value.trim();
+        document.getElementById(
+            "finalInput"
+        )
+        .value
+        .trim();
 
     if(
         word === "最後の課題" ||
@@ -259,46 +311,55 @@ function checkFinal(){
     ){
 
         location.href =
-        "final.html";
+            "final.html";
 
         return;
-
     }
 
     alert(
         "「最後の課題」と入力してください。"
     );
-
 }
+
+/* ------------------------
+   タイマー
+------------------------ */
 
 function updateTimer(){
 
     const start =
-    Number(
-        localStorage.getItem(
-            "startTime"
-        )
-    );
+        Number(
+            localStorage.getItem(
+                "startTime"
+            )
+        );
 
-    if(!start) return;
+    if(!start){
+        return;
+    }
 
     const sec =
-    Math.floor(
-        (Date.now()-start)/1000
-    );
+        Math.floor(
+            (Date.now() - start)
+            / 1000
+        );
 
     const min =
-    Math.floor(sec/60);
+        Math.floor(sec / 60);
 
     const remain =
-    sec%60;
+        sec % 60;
 
     document.getElementById(
         "timer"
     ).textContent =
-    `経過時間 ${min}分${remain}秒`;
+        `経過時間 ${min}分${remain}秒`;
 
 }
+
+/* ------------------------
+   初期化
+------------------------ */
 
 displaySubjects();
 showProgress();
