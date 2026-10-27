@@ -469,7 +469,7 @@ body.office{
     color: #c62828;
 }
 
-.timer {
+.it-timer {
     font-size: 4rem;
     font-weight: bold;
     color: #c62828;
@@ -477,7 +477,7 @@ body.office{
     margin: 20px 0;
 }
 
-.timer.warning {
+.it-timer.warning {
     animation: blink 1s infinite;
 }
 
