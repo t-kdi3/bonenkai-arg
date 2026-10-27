@@ -2,11 +2,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
-
-<title>教科横断チャレンジ</title>
+<title>課題選択</title>
+<script src="js/common.js"></script>
 </head>
 
 <body>
@@ -15,73 +14,64 @@
 
 <div class="page-card">
 
-<h1>教科横断チャレンジ</h1>
+<h1>課題選択</h1>
+
+<p id="playerName"></p>
+
+<div id="timer"></div>
+
+<div class="button-grid">
+
+<button onclick="location.href='art.html'">
+🎨 美術
+</button>
+
+<button onclick="location.href='calligraphy.html'">
+🖌️ 書道
+</button>
+
+<button onclick="location.href='music.html'">
+🎵 音楽
+</button>
+
+<button onclick="location.href='home.html'">
+🍳 家庭科
+</button>
+
+<button onclick="location.href='nurse.html'">
+💊 養護
+</button>
+
+<button onclick="location.href='office.html'">
+🗂️ 事務
+</button>
+
+<button onclick="location.href='library.html'">
+📚 司書
+</button>
+
+<button onclick="location.href='it.html'">
+💻 情報
+</button>
+
+</div>
+
+<hr>
+
+<h2>最終課題</h2>
 
 <p>
-
-挑戦する課題名を入力してください。
-
+手がかりが集まったと思ったら、
+「最後の課題」と入力して挑戦できます。
 </p>
 
 <input
-id="search"
-placeholder="例：音楽からの課題">
+id="finalInput"
+placeholder="最後の課題">
 
-<button onclick="movePage()">
-検索
+<button onclick="checkFinal()">
+挑戦する
 </button>
-
-<div
-id="timer"
-class="timer">
-</div>
-
-<hr>
-
-<h3>
-
-課題一覧
-
-</h3>
-
-<div class="challenge-list">
-
-音楽からの課題<br>
-美術からの課題<br>
-書道からの課題<br>
-家庭からの課題<br>
-情報からの課題<br>
-養護からの課題<br>
-司書からの課題<br>
-事務からの課題
-
-</div>
-
-<hr>
-
-<h3>
-
-課題達成状況
-
-</h3>
-
-<div
-id="status"
-class="status">
-</div>
-
-<hr>
-
-<h3>
-
-取得した手がかり
-
-</h3>
-
-<div
-id="keywords"
-class="status">
-</div>
 
 </div>
 
@@ -89,299 +79,72 @@ class="status">
 
 <script>
 
-const pageMap = {
+document.getElementById("playerName").textContent =
+"挑戦者：" +
+(localStorage.getItem("playerName") || "名無し");
 
-    "音楽からの課題":
-        "music.html",
-
-    "美術からの課題":
-        "art.html",
-
-    "書道からの課題":
-        "calligraphy.html",
-
-    "家庭からの課題":
-        "home.html",
-
-    "情報からの課題":
-        "it.html",
-
-    "養護からの課題":
-        "nurse.html",
-
-    "司書からの課題":
-        "library.html",
-
-    "事務からの課題":
-        "office.html"
-
-};
-
-const challengeNames = {
-
-    music:"音楽からの課題",
-    art:"美術からの課題",
-    calligraphy:"書道からの課題",
-    home:"家庭からの課題",
-    it:"情報からの課題",
-    nurse:"養護からの課題",
-    library:"司書からの課題",
-    office:"事務からの課題"
-
-};
-
-const keywords = {
-
-    music:"ボ",
-    art:"ウ",
-    calligraphy:"ネ",
-    home:"ン",
-    it:"カ",
-    nurse:"イ",
-    library:"タ",
-    office:"ノ"
-
-};
-
-const subjects = [
-
-    "music",
-    "art",
-    "calligraphy",
-    "home",
-    "it",
-    "nurse",
-    "library",
-    "office"
-
-];
-
-/* ------------------
-   ページ移動
------------------- */
-
-function movePage(){
+function checkFinal(){
 
     const word =
-    document
-    .getElementById(
-        "search"
-    )
-    .value
-    .trim();
-
-    if(pageMap[word]){
-
-        location.href =
-        pageMap[word];
-
-        return;
-
-    }
+        document.getElementById(
+            "finalInput"
+        )
+        .value
+        .trim();
 
     if(
-        word ===
-        "ボウネンカイタノシイ"
+        word === "最後の課題" ||
+        word === "さいごのかだい"
     ){
-
-        if(allClear()){
-
-            location.href =
-            "final.html";
-
-        }else{
-
-            alert(
-                "すべての課題を達成してから挑戦してください。"
-            );
-
-        }
-
+        location.href="final.html";
+        return;
     }
 
-}
-
-/* ------------------
-   全達成判定
------------------- */
-
-function allClear(){
-
-    return subjects.every(subject =>
-
-        localStorage.getItem(
-            "clear_" + subject
-        )
-
+    alert(
+        "「最後の課題」と入力してください。"
     );
 
 }
 
-/* ------------------
-   進捗表示
------------------- */
+/* タイマー */
 
-function updateStatus(){
+function updateTimer(){
 
-    let clearCount = 0;
-
-    let statusHtml = "";
-
-    let keywordHtml = "";
-
-    subjects.forEach(subject=>{
-
-        const cleared =
-        localStorage.getItem(
-            "clear_" + subject
+    const start =
+        Number(
+            localStorage.getItem(
+                "startTime"
+            )
         );
 
-        if(cleared){
+    if(!start) return;
 
-            clearCount++;
+    const sec =
+        Math.floor(
+            (Date.now()-start)/1000
+        );
 
-            statusHtml +=
-                "✅ "
-                +
-                challengeNames[
-                    subject
-                ]
-                +
-                "<br>";
+    const m =
+        Math.floor(sec/60);
 
-            keywordHtml +=
-                "【"
-                +
-                keywords[
-                    subject
-                ]
-                +
-                "】 ";
+    const s =
+        sec%60;
 
-        }else{
-
-            statusHtml +=
-                "⬜ "
-                +
-                challengeNames[
-                    subject
-                ]
-                +
-                "<br>";
-
-        }
-
-    });
-
-    statusHtml +=
-        "<hr>" +
-        "<strong>" +
-        clearCount +
-        " / 8 達成" +
-        "</strong>";
-
-    if(clearCount === 8){
-
-        statusHtml +=
-        "<br><br>" +
-        "すべての課題を達成しました。<br>" +
-        "取得した手がかりを組み合わせ、<br>" +
-        "検索欄へ入力してください。";
-
-    }
-
-    document
-    .getElementById(
-        "status"
-    )
-    .innerHTML =
-    statusHtml;
-
-    document
-    .getElementById(
-        "keywords"
-    )
-    .innerHTML =
-
-        keywordHtml ||
-        "まだ取得していません。";
+    document.getElementById(
+        "timer"
+    ).textContent =
+    "経過時間 "
+    + m + "分"
+    + s + "秒";
 
 }
 
-updateStatus();
+updateTimer();
 
-/* ------------------
-   タイマー
------------------- */
-
-setInterval(()=>{
-
-    const startTime =
-    localStorage.getItem(
-        "startTime"
-    );
-
-    if(!startTime){
-
-        return;
-
-    }
-
-    const elapsed =
-
-    Math.floor(
-
-        (Date.now() -
-        Number(startTime))
-
-        / 1000
-
-    );
-
-    const min =
-    Math.floor(
-        elapsed / 60
-    );
-
-    const sec =
-    elapsed % 60;
-
-    document
-    .getElementById(
-        "timer"
-    )
-    .innerHTML =
-
-        "経過時間：" +
-        min +
-        "分 " +
-        sec +
-        "秒";
-
-},1000);
-
-/* ------------------
-   Enterキー対応
------------------- */
-
-document
-.getElementById(
-    "search"
-)
-.addEventListener(
-"keypress",
-function(e){
-
-    if(
-        e.key ===
-        "Enter"
-    ){
-
-        movePage();
-
-    }
-
-});
+setInterval(
+    updateTimer,
+    1000
+);
 
 </script>
 
