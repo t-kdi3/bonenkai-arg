@@ -2,282 +2,144 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
-
 <title>司書の挑戦</title>
-
-<style>
-.board{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-top:25px;
-    padding:20px;
-
-    background:#8b5a2b;
-    border:8px solid #5c3a1e;
-    border-radius:10px;
-
-    box-shadow:
-        inset 0 0 10px rgba(0,0,0,0.3);
-}
-
-.card{
-
-    min-height:120px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #1e3a5f 0%,
-            #2d537f 15%,
-            #1e3a5f 30%,
-            #2d537f 100%
-        );
-
-    border:2px solid rgba(255,255,255,0.2);
-
-    border-radius:6px;
-
-    color:transparent;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-    padding:10px;
-
-    cursor:pointer;
-
-    font-size:0.9rem;
-
-    writing-mode:vertical-rl;
-
-    text-orientation:mixed;
-
-    user-select:none;
-
-    transition:all 0.3s ease;
-
-    box-shadow:
-        2px 2px 5px rgba(0,0,0,0.4);
-}
-
-.card:hover{
-
-    transform:
-        translateY(-5px);
-
-}
-
-.card.open{
-
-    writing-mode:horizontal-tb;
-
-    background:#fffdf7;
-
-    color:#222;
-
-    border:2px solid #d8c9a7;
-
-}
-
-.card.matched{
-
-    writing-mode:horizontal-tb;
-
-    background:
-        linear-gradient(
-            180deg,
-            #f5e7a1,
-            #e8d17b
-        );
-
-    color:#222;
-
-    border:2px solid #c7a53f;
-
-    font-weight:bold;
-
-    box-shadow:
-        0 0 15px rgba(255,215,0,.5);
-
-}
-
-#complete{
-
-    display:none;
-
-    margin-top:30px;
-
-    padding:25px;
-
-    background:#fffdf7;
-
-    border:3px solid #c7a53f;
-
-    border-radius:10px;
-
-    text-align:center;
-
-}
-
-.keyword{
-
-    font-size:2rem;
-
-    font-weight:bold;
-
-    color:#8b0000;
-
-    letter-spacing:0.3em;
-
-}
-</style>
+<script src="js/common.js"></script>
 </head>
 
-<body>
+<body class="library">
 
 <div class="container">
 
-    <div class="page-card">
+<div class="page-card">
 
-        <h1>📚 司書の挑戦</h1>
+<h2>📚 司書の挑戦 📚</h2>
 
-        <p>
-            本棚に並ぶ作品の情報が ばらばらになってしまいました。
-作品名・作者・冒頭文を正しく対応させ、 本棚を整理してください。
-        </p>
+<p>
+本の冒頭文・作品名・作者の3枚をそろえよう！
+</p>
 
-        <p>
-            全4組を完成させるとキーワードを獲得できます。
-        </p>
+<p>
+4作品すべて完成するとクリアです。
+</p>
 
-        <div id="board" class="board"></div>
+<div id="gameBoard" class="memory-board"></div>
 
-        <div id="complete">
+<div id="message"></div>
 
-            <h2>🎉 COMPLETE! 🎉</h2>
-
-            <p>すべての作品を対応させました。</p>
-
-            <p>獲得キーワード</p>
-
-            <div class="keyword">
-                としょかん
-            </div>
-
-            <button onclick="saveClear('library');">
-                キーワードを獲得
-            </button>
-
-            <br><br>
-
-            <button onclick="location.href='start.html'">
-                スタートページへ戻る
-            </button>
-
-        </div>
-
-    </div>
+<button
+class="back-btn"
+onclick="location.href='start.html'">
+前のページへ戻る
+</button>
 
 </div>
 
-<script src="js/common.js"></script>
+</div>
 
 <script>
 
-const groups = [
-    {
-        id:1,
-        cards:[
-            "祇園精舎の鐘の聲",
-            "平家物語",
-            "作者不詳"
-        ]
-    },
-    {
-        id:2,
-        cards:[
-            "あるくにのやがいどうぶつえんに",
-            "やさしいライオン",
-            "やなせたかし"
-        ]
-    },
-    {
-        id:3,
-        cards:[
-            "或る春の日暮れです。",
-            "杜子春",
-            "芥川龍之介"
-        ]
-    },
-    {
-        id:4,
-        cards:[
-            "旧の正月が近くなると、",
-            "最後の胡弓弾き",
-            "新美南吉"
-        ]
-    }
+const cards = [
+
+  {
+    group:"A",
+    text:"祇園精舎の鐘の聲"
+  },
+  {
+    group:"A",
+    text:"平家物語"
+  },
+  {
+    group:"A",
+    text:"作者不詳"
+  },
+
+  {
+    group:"B",
+    text:"あるくにのやがいどうぶつえんに"
+  },
+  {
+    group:"B",
+    text:"やさしいライオン"
+  },
+  {
+    group:"B",
+    text:"やなせたかし"
+  },
+
+  {
+    group:"C",
+    text:"或る春の日暮れです。"
+  },
+  {
+    group:"C",
+    text:"杜子春"
+  },
+  {
+    group:"C",
+    text:"芥川龍之介"
+  },
+
+  {
+    group:"D",
+    text:"旧の正月が近くなると、"
+  },
+  {
+    group:"D",
+    text:"最後の胡弓弾き"
+  },
+  {
+    group:"D",
+    text:"新美南吉"
+  }
+
 ];
 
-let cards = [];
-let selected = [];
-let matchedGroups = new Set();
-
-groups.forEach(group=>{
-
-    group.cards.forEach(text=>{
-
-        cards.push({
-            groupId:group.id,
-            text:text
-        });
-
-    });
-
-});
-
-cards.sort(()=>Math.random()-0.5);
+cards.sort(() => Math.random() - 0.5);
 
 const board =
-document.getElementById("board");
+document.getElementById("gameBoard");
 
-cards.forEach((card,index)=>{
+let selected = [];
+let lock = false;
+let completedGroups = new Set();
 
-    const div =
+cards.forEach(cardData => {
+
+    const card =
     document.createElement("div");
 
-    div.className = "card";
-    div.textContent = card.text;
+    card.className = "memory-card";
+    card.dataset.group =
+    cardData.group;
 
-    div.dataset.group =
-    card.groupId;
+    card.textContent = "？";
 
-    div.dataset.index =
-    index;
+    card.dataset.text =
+    cardData.text;
 
-    div.onclick =
-    ()=>selectCard(div);
+    card.addEventListener(
+        "click",
+        () => flipCard(card)
+    );
 
-    board.appendChild(div);
+    board.appendChild(card);
 
 });
 
-function selectCard(card){
+function flipCard(card){
 
-    if(card.classList.contains("matched"))
-        return;
+    if(lock) return;
 
     if(card.classList.contains("open"))
         return;
 
-    if(selected.length >= 3)
+    if(card.classList.contains("matched"))
         return;
+
+    card.textContent =
+    card.dataset.text;
 
     card.classList.add("open");
 
@@ -285,7 +147,7 @@ function selectCard(card){
 
     if(selected.length === 3){
 
-        setTimeout(checkMatch,500);
+        checkMatch();
 
     }
 
@@ -293,53 +155,72 @@ function selectCard(card){
 
 function checkMatch(){
 
-    const ids =
+    lock = true;
+
+    const groups =
     selected.map(
-        c=>c.dataset.group
+      card => card.dataset.group
     );
 
-    const same =
-    ids.every(
-        id=>id===ids[0]
+    const sameGroup =
+    groups.every(
+      group => group === groups[0]
     );
 
-    if(same){
+    setTimeout(() => {
 
-        selected.forEach(card=>{
+        if(sameGroup){
 
-            card.classList.remove("open");
-            card.classList.add("matched");
+            selected.forEach(card => {
 
-        });
+                card.classList.add(
+                  "matched"
+                );
 
-        matchedGroups.add(ids[0]);
+            });
 
-        if(
-            matchedGroups.size === 4
-        ){
+            completedGroups.add(
+                groups[0]
+            );
 
-            document
-            .getElementById(
-                "complete"
-            )
-            .style.display =
-            "block";
+            document.getElementById(
+              "message"
+            ).innerHTML =
+            `✅ ${completedGroups.size}/4 組完成`;
+
+            if(
+              completedGroups.size === 4
+            ){
+
+                saveClear("library");
+
+                setTimeout(() => {
+
+                    location.href =
+                    "library-clear.html";
+
+                }, 800);
+
+            }
+
+        }else{
+
+            selected.forEach(card => {
+
+                card.textContent = "？";
+
+                card.classList.remove(
+                  "open"
+                );
+
+            });
 
         }
 
-    }else{
+        selected = [];
+        lock = false;
 
-        selected.forEach(card=>{
-
-            card.classList.remove(
-                "open"
-            );
-
-        });
-
-    }
-
-    selected = [];
+    }, 1000);
 
 }
 
