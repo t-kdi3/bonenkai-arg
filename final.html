@@ -2,32 +2,109 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
+<title>最後の課題</title>
 
-<title>FINAL</title>
+<style>
+
+.keyword{
+    display:inline-block;
+    width:56px;
+    height:56px;
+    line-height:56px;
+
+    text-align:center;
+
+    margin:5px;
+
+    border-radius:12px;
+
+    font-size:1.7rem;
+    font-weight:bold;
+}
+
+.keyword.owned{
+    background:#ffd54f;
+    color:#222;
+    border:2px solid #ffb300;
+}
+
+.keyword.missing{
+    background:#e0e0e0;
+    color:#888;
+    border:2px dashed #bbb;
+}
+
+.special-hint{
+    color:#d32f2f;
+    font-size:1.2rem;
+    font-weight:bold;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <div class="container">
 
 <div class="page-card">
 
-<h1>FINAL</h1>
+<h1>🏆 最後の課題 🏆</h1>
 
 <p>
 
-集めた文字を並べ替えよ
+ここまでの課題で
+文字の手がかりを集めてきました。
 
 </p>
 
-<input id="finalWord">
+<h2>あなたが集めた手がかり</h2>
 
-<button onclick="checkFinal()">
+<div id="keywordArea">
 
-送信
+読み込み中...
 
+</div>
+
+<br>
+
+<p>
+
+入手した文字を並び替え、
+さらに
+
+<strong>
+あなたの今の気持ちになるように
+2文字追加して
+</strong>
+
+カタカナで入力してください。
+
+</p>
+
+<div id="extraHint"></div>
+
+<br>
+
+<input
+id="answer"
+placeholder="カタカナで入力">
+
+<br><br>
+
+<button onclick="checkAnswer()">
+回答する
+</button>
+
+<br><br>
+
+<button
+class="back-btn"
+onclick="location.href='start.html'">
+課題選択へ戻る
 </button>
 
 </div>
@@ -36,24 +113,117 @@
 
 <script>
 
-function checkFinal(){
+const keywordMap = {
 
-const ans =
-document.getElementById(
-"finalWord"
-).value.trim();
+    art:"ボ",
+    calligraphy:"ウ",
+    home:"ネ",
+    music:"ン",
+    nurse:"カ",
+    office:"イ",
+    library:"タ",
+    it:"ノ"
 
-if(ans==="ボウネンカイタノシイ"){
+};
 
-location.href="ending.html";
+function showKeywords(){
 
-}else{
+    const clears =
+        JSON.parse(
+            localStorage.getItem(
+                "clears"
+            ) || "{}"
+        );
 
-alert("違います");
+    let html = "";
+    let count = 0;
+
+    Object.keys(keywordMap)
+    .forEach(key => {
+
+        if(clears[key]){
+
+            html +=
+            `<span class="keyword owned">
+            ${keywordMap[key]}
+            </span>`;
+
+            count++;
+
+        }else{
+
+            html +=
+            `<span class="keyword missing">
+            ？
+            </span>`;
+
+        }
+
+    });
+
+    document.getElementById(
+        "keywordArea"
+    ).innerHTML = html;
+
+    if(count >= 8){
+
+        document.getElementById(
+            "extraHint"
+        ).innerHTML =
+        `
+        <p class="special-hint">
+        文字はすべて集まった！
+        あと2文字で完成しそうだ……
+        </p>
+        `;
+
+    }
 
 }
 
+showKeywords();
+
+function checkAnswer(){
+
+    const ans =
+        document.getElementById(
+            "answer"
+        )
+        .value
+        .trim()
+        .replace(/\s/g,"");
+
+    if(
+        ans ===
+        "ボウネンカイタノシイ"
+    ){
+
+        location.href =
+        "ending.html";
+
+    }else{
+
+        alert(
+            "違うようです。もう一度考えてみましょう。"
+        );
+
+    }
+
 }
+
+document
+.getElementById("answer")
+.addEventListener(
+"keypress",
+function(e){
+
+    if(e.key==="Enter"){
+
+        checkAnswer();
+
+    }
+
+});
 
 </script>
 
