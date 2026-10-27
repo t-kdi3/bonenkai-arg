@@ -2,9 +2,12 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>緊急セキュリティ確認</title>
+
 <link rel="stylesheet" href="css/style.css">
-<title>情報の挑戦</title>
+<script src="js/common.js"></script>
 </head>
 
 <body class="it">
@@ -12,45 +15,94 @@
 <div class="container">
 <div class="page-card">
 
-<h2>💻 情報の挑戦 💻</h2>
+<h1>⚠ 緊急セキュリティ確認</h1>
 
-<p>
-【問題文】
+<p class="security-alert">
+最近、個人情報流出事件が多発しています。
 </p>
 
-<input id="ans">
+<p>
+あなたのアカウントの安全性を確認します。
+</p>
 
-<button onclick="check()">
-回答
+<p>
+下記のいずれかを入力してください。
+</p>
+
+<div id="timer" class="timer">60</div>
+
+<p id="message">
+アカウント停止を防ぐため、至急確認が必要です。
+</p>
+
+<div class="it-box">
+
+<ul>
+<li>パスワード</li>
+<li>メールアドレス</li>
+<li>電話番号</li>
+<li>学校名</li>
+</ul>
+
+<input
+id="secretInput"
+type="text"
+placeholder="入力してください">
+
+<button onclick="submitInfo()">
+送信
 </button>
 
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
-</button>
+</div>
 
 </div>
 </div>
 
 <script>
 
-function check(){
+let time = 60;
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
+const timerEl = document.getElementById("timer");
+const messageEl = document.getElementById("message");
 
-location.href=
-"it-clear.html";
+const timer = setInterval(() => {
 
-}else{
+    time--;
 
-alert("不正解");
+    timerEl.textContent = time;
 
-}
+    if (time === 30) {
+        messageEl.textContent =
+        "⚠ アカウント停止まで残り30秒";
+    }
 
+    if (time === 10) {
+        messageEl.textContent =
+        "⚠ 至急入力してください";
+        timerEl.classList.add("warning");
+    }
+
+    if (time <= 0) {
+
+        clearInterval(timer);
+
+        localStorage.removeItem("itAttempts");
+
+        location.href = "it-clear.html";
+    }
+
+}, 1000);
+
+function submitInfo() {
+
+    let attempts =
+    Number(localStorage.getItem("itAttempts") || 0);
+
+    attempts++;
+
+    localStorage.setItem("itAttempts", attempts);
+
+    location.href = "it-fail.html";
 }
 
 </script>
