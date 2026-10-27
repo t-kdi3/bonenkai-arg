@@ -539,3 +539,29 @@ body.office{
 .lesson-box li {
     margin: 8px 0;
 }
+.keyword{
+    display:inline-block;
+    width:52px;
+    height:52px;
+    line-height:52px;
+    text-align:center;
+
+    margin:4px;
+
+    border-radius:12px;
+
+    font-size:1.6rem;
+    font-weight:bold;
+}
+
+.keyword.owned{
+    background:#ffd54f;
+    color:#222;
+    border:2px solid #ffb300;
+}
+
+.keyword.missing{
+    background:#e0e0e0;
+    color:#999;
+    border:2px dashed #bbb;
+}
