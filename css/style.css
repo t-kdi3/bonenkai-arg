@@ -565,3 +565,20 @@ body.office{
     color:#999;
     border:2px dashed #bbb;
 }
+
+.keyword-box{
+    display:inline-block;
+    margin:20px auto;
+    padding:15px 35px;
+
+    background:#ffd54f;
+    color:#222;
+
+    border:3px solid #ffb300;
+    border-radius:12px;
+
+    font-size:3rem;
+    font-weight:bold;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
