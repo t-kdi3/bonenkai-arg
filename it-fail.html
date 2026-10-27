@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>再挑戦</title>
+
+<link rel="stylesheet" href="css/style.css">
+<script src="js/common.js"></script>
+</head>
+
+<body class="it">
+
+<div class="container">
+<div class="page-card">
+
+<h1 class="fail-title">
+❌ あなたの入力内容に脆弱性があります
+</h1>
+
+<p>
+実際のフィッシングサイトや詐欺サイトは、
+「急いでください」
+「今すぐ確認してください」
+などと利用者を急かし、
+個人情報を入力させようとします。
+</p>
+
+<div id="hint" class="hint-box"></div>
+
+<div class="notice-box">
+今回入力された内容は保存・送信していません。<br>
+安心してください。
+</div>
+
+<button onclick="location.href='it.html'">
+もう一度挑戦する
+</button>
+
+</div>
+</div>
+
+<script>
+
+const attempt =
+Number(localStorage.getItem("itAttempts") || 1);
+
+let hint = "";
+
+if (attempt === 1) {
+    hint =
+    "ヒント：個人情報は慎重に扱いましょう。";
+}
+else if (attempt === 2) {
+    hint =
+    "ヒント：本当に入力する必要がありますか？";
+}
+else if (attempt === 3) {
+    hint =
+    "ヒント：この課題の目的を考えてみましょう。";
+}
+else if (attempt === 4) {
+    hint =
+    "ヒント：入力しないという選択肢もあります。";
+}
+else {
+    hint =
+    "大ヒント：何も入力せずに待ってみてください。";
+}
+
+document.getElementById("hint").textContent = hint;
+
+</script>
+
+</body>
+</html>
