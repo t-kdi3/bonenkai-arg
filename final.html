@@ -3,49 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
+
 <title>最後の課題</title>
 
-<style>
-
-.keyword{
-    display:inline-block;
-    width:56px;
-    height:56px;
-    line-height:56px;
-
-    text-align:center;
-
-    margin:5px;
-
-    border-radius:12px;
-
-    font-size:1.7rem;
-    font-weight:bold;
-}
-
-.keyword.owned{
-    background:#ffd54f;
-    color:#222;
-    border:2px solid #ffb300;
-}
-
-.keyword.missing{
-    background:#e0e0e0;
-    color:#888;
-    border:2px dashed #bbb;
-}
-
-.special-hint{
-    color:#d32f2f;
-    font-size:1.2rem;
-    font-weight:bold;
-}
-
-</style>
+<link rel="stylesheet" href="css/style.css">
 
 </head>
-
 <body>
 
 <div class="container">
@@ -56,24 +19,21 @@
 
 <p>
 
-ここまでの課題で
-文字の手がかりを集めてきました。
+ここまでの課題で、
+さまざまな文字を集めてきました。
 
 </p>
 
-<h2>あなたが集めた手がかり</h2>
+<h2>取得済みキーワード</h2>
 
-<div id="keywordArea">
-
-読み込み中...
-
+<div
+id="keywordArea"
+class="keyword-progress">
 </div>
-
-<br>
 
 <p>
 
-入手した文字を並び替え、
+取得したキーワードを並び替え、
 さらに
 
 <strong>
@@ -85,7 +45,11 @@
 
 </p>
 
-<div id="extraHint"></div>
+<p>
+ヒント：
+学校行事が終わったあとの
+気持ちかもしれません。
+</p>
 
 <br>
 
@@ -113,85 +77,49 @@ onclick="location.href='start.html'">
 
 <script>
 
-const keywordMap = {
-
-    art:"ボ",
-    calligraphy:"ウ",
-    home:"ネ",
-    music:"ン",
-    nurse:"カ",
-    office:"イ",
-    library:"タ",
-    it:"ノ"
-
-};
-
 function showKeywords(){
 
-    const clears =
-        JSON.parse(
-            localStorage.getItem(
-                "clears"
-            ) || "{}"
-        );
+    const history = JSON.parse(
+        localStorage.getItem(
+            "keywordHistory"
+        ) || "[]"
+    );
 
     let html = "";
-    let count = 0;
 
-    Object.keys(keywordMap)
-    .forEach(key => {
+    if(history.length === 0){
 
-        if(clears[key]){
+        html =
+        "<p>まだキーワードを取得していません。</p>";
 
-            html +=
-            `<span class="keyword owned">
-            ${keywordMap[key]}
-            </span>`;
+    }else{
 
-            count++;
+        history.forEach(char => {
 
-        }else{
+            html += `
+            <span class="keyword owned">
+                ${char}
+            </span>
+            `;
 
-            html +=
-            `<span class="keyword missing">
-            ？
-            </span>`;
+        });
 
-        }
-
-    });
+    }
 
     document.getElementById(
         "keywordArea"
     ).innerHTML = html;
-
-    if(count >= 8){
-
-        document.getElementById(
-            "extraHint"
-        ).innerHTML =
-        `
-        <p class="special-hint">
-        文字はすべて集まった！
-        あと2文字で完成しそうだ……
-        </p>
-        `;
-
-    }
-
 }
-
-showKeywords();
 
 function checkAnswer(){
 
     const ans =
-        document.getElementById(
-            "answer"
-        )
-        .value
-        .trim()
-        .replace(/\s/g,"");
+    document.getElementById(
+        "answer"
+    )
+    .value
+    .trim()
+    .replace(/\s/g,"");
 
     if(
         ans ===
@@ -214,16 +142,19 @@ function checkAnswer(){
 document
 .getElementById("answer")
 .addEventListener(
-"keypress",
-function(e){
+    "keypress",
+    function(e){
 
-    if(e.key==="Enter"){
-
-        checkAnswer();
+        if(
+            e.key === "Enter"
+        ){
+            checkAnswer();
+        }
 
     }
+);
 
-});
+showKeywords();
 
 </script>
 
