@@ -29,13 +29,19 @@
 下記のいずれかを入力してください。
 </p>
 
-<div id="timer" class="timer">60</div>
+<div id="timer" class="timer">
+45
+</div>
 
 <p id="message">
-アカウント停止を防ぐため、至急確認が必要です。
+本人確認を行っています...
 </p>
 
 <div class="it-box">
+
+<p>
+以下のいずれかを入力してください。
+</p>
 
 <ul>
 <li>パスワード</li>
@@ -60,7 +66,7 @@ placeholder="入力してください">
 
 <script>
 
-let time = 60;
+let time = 45;
 
 const timerEl = document.getElementById("timer");
 const messageEl = document.getElementById("message");
@@ -71,15 +77,45 @@ const timer = setInterval(() => {
 
     timerEl.textContent = time;
 
-    if (time === 30) {
-        messageEl.textContent =
-        "⚠ アカウント停止まで残り30秒";
+    /* 段階的なプレッシャー */
+
+    if (time === 35) {
+
+        messageEl.innerHTML =
+        "アカウント情報を確認しています...";
     }
 
-    if (time === 10) {
-        messageEl.textContent =
-        "⚠ 至急入力してください";
-        timerEl.classList.add("warning");
+    if (time === 25) {
+
+        messageEl.innerHTML =
+        "⚠ 情報が確認できていません";
+    }
+
+    if (time === 20) {
+
+        messageEl.innerHTML =
+        "⚠ このままでは確認処理が完了しません";
+    }
+
+    if (time === 15) {
+
+        messageEl.innerHTML =
+        "⚠ 未確認状態です。速やかに入力してください";
+    }
+
+if (time === 10) {
+    document.querySelector(".it-box").style.borderColor = "#ff0000";
+}
+
+if (time === 5) {
+    document.querySelector("button").textContent =
+    "至急送信";
+}
+
+    if (time <= 5 && time > 0) {
+
+        timerEl.textContent =
+        time + " 秒";
     }
 
     if (time <= 0) {
@@ -93,6 +129,8 @@ const timer = setInterval(() => {
 
 }, 1000);
 
+/* 入力した時点で失敗 */
+
 function submitInfo() {
 
     let attempts =
@@ -100,7 +138,10 @@ function submitInfo() {
 
     attempts++;
 
-    localStorage.setItem("itAttempts", attempts);
+    localStorage.setItem(
+        "itAttempts",
+        attempts
+    );
 
     location.href = "it-fail.html";
 }
