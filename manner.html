@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>午後のパーティ</title>
+
+<style>
+.item{
+border:1px solid #333;
+padding:10px;
+margin:10px;
+cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<h1>【午後】パーティ会場</h1>
+
+<p>
+間違ったマナーを6個探してください
+</p>
+
+<p>
+残り：
+<span id="remain">6</span>
+</p>
+
+<div class="item" onclick="found(this)">
+ナプキンを首にはさんでいる
+</div>
+
+<div class="item" onclick="found(this)">
+魚を裏返して食べている
+</div>
+
+<div class="item" onclick="found(this)">
+足を組んで座っている
+</div>
+
+<div class="item" onclick="found(this)">
+カトラリーを好きな順で使う
+</div>
+
+<div class="item" onclick="found(this)">
+ステーキを全部切っている
+</div>
+
+<div class="item" onclick="found(this)">
+ナプキンをきれいに畳んでいる
+</div>
+
+<script>
+
+let remain=6;
+
+function found(obj){
+
+obj.style.display="none";
+
+remain--;
+
+document.getElementById("remain").textContent=remain;
+
+if(remain===0){
+window.location.href="home-clear.html";
+}
+
+}
+</script>
+
+</body>
+</html>
