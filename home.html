@@ -225,6 +225,53 @@ return;
 renderStep();
 
 }
+
+function showIngredient(type){
+
+const area =
+document.getElementById(
+"ingredientArea"
+);
+
+if(type==="昆布を入れる"){
+
+area.innerHTML=
+'<img src="images/konbu.png" class="ingredient added">';
+
+}
+
+if(type==="かつお節を入れる"){
+
+area.innerHTML=
+'<img src="images/katsuo.png" class="ingredient added">';
+
+}
+
+if(type==="煮干しを入れる"){
+
+area.innerHTML=
+'<img src="images/niboshi.png" class="ingredient added">';
+
+}
+
+if(type==="火をつける"){
+
+area.innerHTML +=
+'<img src="images/fire.png" class="ingredient">';
+
+}
+
+if(
+type==="沸騰する" ||
+type==="沸騰する直前まで待つ"
+){
+
+area.innerHTML +=
+'<img src="images/steam.png" class="ingredient">';
+
+}
+
+}
 </script>
 
 </body>
