@@ -2,57 +2,48 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<title>家庭の挑戦</title>
+<title>家庭科の挑戦</title>
 </head>
+<body>
 
-<body class="home">
-
-<div class="container">
-<div class="page-card">
-
-<h2>🍳 家庭の挑戦 🍳</h2>
+<h1>家庭科の挑戦</h1>
 
 <p>
-【問題文】
+今日は楽しみにしていたパーティの日！
+朝から夜まで無事に過ごそう！
 </p>
 
-<input id="ans">
+<h2>【朝】だし作り</h2>
 
-<button onclick="check()">
-回答
-</button>
+<p>どのだしを作りますか？</p>
 
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
-</button>
+<button onclick="startKonbu()">昆布だし</button>
+<button onclick="startKatsuo()">かつおだし</button>
+<button onclick="startNiboshi()">煮干しだし</button>
+<button onclick="failConsomme()">コンソメ</button>
 
-</div>
-</div>
+<div id="game"></div>
 
 <script>
-
-function check(){
-
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
-
-location.href=
-"home-clear.html";
-
-}else{
-
-alert("不正解");
-
+function failConsomme(){
+document.getElementById("game").innerHTML=`
+<p>コトコト……</p>
+<p>4時間後</p>
+<p>現在時刻11:00</p>
+<p>朝ごはんに間に合わなかった！</p>`;
 }
 
+function startKonbu(){
+window.location.href="contract.html";
 }
 
+function startKatsuo(){
+window.location.href="contract.html";
+}
+
+function startNiboshi(){
+window.location.href="contract.html";
+}
 </script>
 
 </body>
