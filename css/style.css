@@ -998,3 +998,44 @@ body.home.evening .page-card{
 
     margin:15px 0;
 }
+/* =====================================
+   家庭科 調理ゲーム
+===================================== */
+
+#cookingArea{
+
+    text-align:center;
+
+    margin:20px 0;
+}
+
+.pot-image{
+
+    width:220px;
+    max-width:80%;
+
+    display:block;
+
+    margin:0 auto;
+}
+
+#ingredientArea{
+
+    min-height:80px;
+
+    margin-top:15px;
+}
+
+.ingredient{
+
+    width:70px;
+
+    margin:5px;
+
+    transition:.3s;
+}
+
+.ingredient.added{
+
+    transform:scale(1.15);
+}
