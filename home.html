@@ -2,276 +2,57 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>家庭科の挑戦</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<title>家庭の挑戦</title>
 </head>
-<body class="home morning">
 
-<h1>家庭科の挑戦</h1>
+<body class="home">
+
+<div class="container">
+<div class="page-card">
+
+<h2>🍳 家庭の挑戦 🍳</h2>
 
 <p>
-今日は楽しみにしていたパーティの日！
-朝から夜まで無事に過ごそう！
+【問題文】
 </p>
 
-<h2>【朝】だし作り</h2>
+<input id="ans">
 
-<p>どのだしを作りますか？</p>
+<button onclick="check()">
+回答
+</button>
 
-<button onclick="startKonbu()">昆布だし</button>
-<button onclick="startKatsuo()">かつおだし</button>
-<button onclick="startNiboshi()">煮干しだし</button>
-<button onclick="failConsomme()">コンソメ</button>
+<button class="back-btn"
+onclick="location.href='start.html'">
+前のページへ戻る
+</button>
 
-<div id="game"><div id="cookingArea">
-
-    <img
-        id="potImage"
-        src="images/pot.png"
-        alt="鍋"
-        class="pot-image"
-    >
-
-    <div id="ingredientArea">
-    </div>
-
-</div></div>
+</div>
+</div>
 
 <script>
-const recipes = {
 
-konbu: {
-title: "昆布だし",
-steps: [
-"昆布を入れる",
-"火をつける",
-"沸騰する直前まで待つ",
-"取り出す"
-]
-},
-
-katsuo: {
-title: "かつおだし",
-steps: [
-"火をつける",
-"かつお節を入れる",
-"1分待つ",
-"火を消す",
-"3分待つ",
-"取り出す"
-]
-},
-
-niboshi: {
-title: "煮干しだし",
-steps: [
-"煮干しを入れる",
-"火をつける",
-"沸騰する",
-"灰汁を取る",
-"取り出す"
-]
-}
-
-};
-
-let currentRecipe = null;
-let currentStep = 0;
-
-function failConsomme(){
-
-document.getElementById("gameArea").innerHTML = `
-<div class="result-fail">
-<h3>失敗！</h3>
-
-<p>コンソメを作ることにした。</p>
-
-<p>コトコト……</p>
-
-<p>4時間後</p>
-
-<p>現在時刻 11:00</p>
-
-<p>朝ごはんに間に合わなかった！</p>
-
-<button onclick="location.reload()">
-やりなおす
-</button>
-</div>
-`;
-
-}
-
-function startGame(type){
-
-currentRecipe = recipes[type];
-currentStep = 0;
-
-renderStep();
-
-}
-
-function renderStep(){
-
-const game = document.getElementById("gameArea");
-
-let buttons = "";
-
-const allActions = [
-"昆布を入れる",
-"火をつける",
-"沸騰する直前まで待つ",
-"取り出す",
-"かつお節を入れる",
-"1分待つ",
-"火を消す",
-"3分待つ",
-"煮干しを入れる",
-"沸騰する",
-"灰汁を取る"
-];
-
-allActions.sort(() => Math.random() - 0.5);
-
-allActions.forEach(action=>{
-
-buttons += `
-<button onclick="checkStep('${action}')">
-${action}
-</button>
-`;
-
-});
-
-game.innerHTML = `
-
-<div class="story-box">
-
-<h3>${currentRecipe.title}</h3>
-
-<p>
-正しい順番で操作してください。
-</p>
-
-<p>
-手順 ${currentStep + 1}
-／
-${currentRecipe.steps.length}
-</p>
-
-</div>
-
-${buttons}
-
-`;
-
-}
-
-function checkStep(action){
-
-const correct =
-currentRecipe.steps[currentStep];
-
-if(action !== correct){
-
-alert(
-"順番が違う！『あまりおいしくない……』最初からやり直そう。"
-);
-
-currentStep = 0;
-
-renderStep();
-
-return;
-}
-
-currentStep++;
+function check(){
 
 if(
-currentStep >=
-currentRecipe.steps.length
+document.getElementById("ans")
+.value.trim()
+==="【答え】"
 ){
 
-document.getElementById("gameArea").innerHTML = `
+location.href=
+"home-clear.html";
 
-<div class="result-success">
+}else{
 
-<h3>成功！</h3>
-
-<p>
-おいしい
-${currentRecipe.title}
-ができた！
-</p>
-
-<p>
-現在時刻 8:00
-</p>
-
-<p>
-パーティに向けて出発しよう！
-</p>
-
-<button onclick="location.href='contract.html'">
-午前へ進む
-</button>
-
-</div>
-
-`;
-
-return;
-}
-
-renderStep();
-
-}
-
-function showIngredient(type){
-
-const area =
-document.getElementById(
-"ingredientArea"
-);
-
-if(type==="昆布を入れる"){
-
-area.innerHTML=
-'<img src="images/konbu.png" class="ingredient added">';
-
-}
-
-if(type==="かつお節を入れる"){
-
-area.innerHTML=
-'<img src="images/katsuo.png" class="ingredient added">';
-
-}
-
-if(type==="煮干しを入れる"){
-
-area.innerHTML=
-'<img src="images/niboshi.png" class="ingredient added">';
-
-}
-
-if(type==="火をつける"){
-
-area.innerHTML +=
-'<img src="images/fire.png" class="ingredient">';
-
-}
-
-if(
-type==="沸騰する" ||
-type==="沸騰する直前まで待つ"
-){
-
-area.innerHTML +=
-'<img src="images/steam.png" class="ingredient">';
+alert("不正解");
 
 }
 
 }
+
 </script>
 
 </body>

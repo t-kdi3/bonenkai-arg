@@ -2,48 +2,31 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/common.js"></script>
 <title>家庭科クリア</title>
 </head>
+
 <body class="home">
 
-<h1>家庭科クリア！</h1>
+<div class="container">
+<div class="page-card">
 
-<p>
-料理・消費生活・食事マナーを乗り越えた！
-</p>
+<h2>🎉 家庭科クリア！ 🎉</h2>
 
-<h2>獲得キーワード</h2>
+<p>キーワードを手に入れた！</p>
 
-<div style="
-font-size:72px;
-font-weight:bold;
-color:red;
-">
-ネ
-</div>
+<div class="keyword-box">ネ</div>
 
-<button onclick="finish()">
-挑戦一覧へ
+<p>この文字を忘れずにメモしておこう！</p>
+
+<button onclick="saveClear('home');goStart();">
+課題選択へ戻る
 </button>
 
-<script>
-
-function finish(){
-
-localStorage.setItem(
-"completed_home",
-"true"
-);
-
-localStorage.setItem(
-"keyword_home",
-"ネ"
-);
-
-window.location.href="start.html";
-
-}
-</script>
+</div>
+</div>
 
 </body>
 </html>
