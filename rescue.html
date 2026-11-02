@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>救済ステージ</title>
+</head>
+<body>
+
+<h1>翌日</h1>
+
+<div id="game"></div>
+
+<script>
+
+let step=1;
+
+show();
+
+function show(){
+
+if(step===1){
+
+game.innerHTML=`
+<h2>昨日の契約を解除したい！</h2>
+
+<p>最初にどうする？</p>
+
+<button onclick="answer(false)">放置する</button>
+<button onclick="answer(true)">消費生活センターへ相談する</button>
+<button onclick="answer(false)">SNSへ投稿する</button>
+`;
+
+}
+
+if(step===2){
+
+game.innerHTML=`
+<h2>相談できた！</h2>
+
+<p>次にどうする？</p>
+
+<button onclick="answer(true)">
+解除したい意思を伝える
+</button>
+
+<button onclick="answer(false)">
+あきらめる
+</button>
+`;
+
+}
+
+if(step===3){
+
+game.innerHTML=`
+<h2>事業者から断られた</h2>
+
+<p>どうする？</p>
+
+<button onclick="answer(false)">
+諦める
+</button>
+
+<button onclick="answer(true)">
+制度を確認する
+</button>
+`;
+
+}
+
+if(step===4){
+
+window.location.href="manner.html";
+
+}
+
+}
+
+function answer(ok){
+
+if(!ok){
+alert("もう一度考えよう！");
+return;
+}
+
+step++;
+show();
+
+}
+</script>
+
+</body>
+</html>
