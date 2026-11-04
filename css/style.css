@@ -310,6 +310,128 @@ body.home{
     background:#8a6d46;
 }
 
+.home-game{
+    max-width:760px;
+}
+
+.home-intro{
+    text-align:center;
+}
+
+.home-progress{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:20px 0;
+    color:#6b5638;
+    font-weight:bold;
+}
+
+.home-progress progress{
+    flex:1;
+    height:14px;
+    accent-color:#8a6d46;
+}
+
+.home-scene{
+    padding:14px 16px;
+    border-left:4px solid #b68b53;
+    border-radius:4px;
+    background:#fbf4e9;
+}
+
+.home-question{
+    margin:22px 0 12px;
+    color:#4e3b24;
+    font-size:1.15rem;
+}
+
+.home-answers fieldset{
+    min-width:0;
+    margin:0;
+    padding:0;
+    border:0;
+}
+
+.home-answers legend{
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+.home-answer{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:8px 0;
+    padding:12px;
+    border:1px solid #ded5c8;
+    border-radius:8px;
+    background:#fffefa;
+    cursor:pointer;
+}
+
+.home-answer:hover{
+    background:#fbf4e9;
+}
+
+.home-answer input{
+    flex:0 0 auto;
+    width:20px;
+    height:20px;
+    margin:0;
+    accent-color:#8a6d46;
+}
+
+.drying-symbol{
+    flex:0 0 42px;
+    width:42px;
+    height:42px;
+    color:#4e3b24;
+}
+
+.home-statements{
+    padding-left:28px;
+}
+
+.home-statements li{
+    margin:6px 0;
+}
+
+.property-listing{
+    margin:18px 0;
+    padding:16px;
+    border:2px solid #8a6d46;
+    border-radius:8px;
+    background:#fffefa;
+}
+
+.property-listing p:last-child{
+    margin-bottom:0;
+    font-weight:bold;
+}
+
+.home-feedback{
+    min-height:1.8em;
+    margin-top:14px;
+    font-weight:bold;
+}
+
+.home-feedback.is-incorrect{
+    color:#a4262c;
+}
+
+.home-feedback.is-correct{
+    padding:12px;
+    border-radius:8px;
+    background:#eef6e9;
+    color:#365c2b;
+}
+
+.home-game button:disabled{
+    background:#888888;
+    cursor:not-allowed;
+}
+
 /* 情報 */
 
 body.it{

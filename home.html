@@ -10,49 +10,347 @@
 <body class="home">
 
 <div class="container">
-<div class="page-card">
+<main class="page-card home-game">
 
 <h2>🍳 家庭の挑戦 🍳</h2>
 
-<p>
-【問題文】
+<p class="home-intro">
+朝6時に起きて、朝ごはんの準備からスタート。
+家事やパーティーのトラブルを乗り越えて、一日を過ごそう！
 </p>
 
-<input id="ans">
-
-<button onclick="check()">
-回答
-</button>
-
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
-</button>
-
+<div class="home-progress" aria-live="polite">
+    <span id="questionCount"></span>
+    <progress id="questionProgress" max="10" value="0"></progress>
 </div>
+
+<section id="questionArea" aria-live="polite"></section>
+
+<div id="feedback" class="home-feedback" aria-live="polite"></div>
+<div id="nextArea"></div>
+
+<button class="back-btn" onclick="location.href='start.html'">
+    課題選択へ戻る
+</button>
+
+</main>
 </div>
 
 <script>
+const questions = [
+    {
+        scene: "起床6時。まずは朝ごはんの味噌汁を作ろう。",
+        prompt: "だしの取り方について、間違っている説明はどれ？",
+        choices: [
+            { id: "a", text: "昆布を水につけておき、火にかけて沸騰する直前に取り出す。" },
+            { id: "b", text: "かつお節は沸騰した湯に入れ、短く煮てから火を止め、しばらくおいてこす。" },
+            { id: "c", text: "煮干しは水につけてから火にかけ、沸騰したらあくを取り、こす。" },
+            { id: "d", text: "昆布とかつお節を合わせると、うま味の相乗効果が得られる。" },
+            { id: "e", text: "昆布とかつお節の混合だしは、味の対比効果でうま味が2倍以上になる。" }
+        ],
+        answer: "e",
+        explanation: "昆布とかつお節を合わせたときに働くのは「うま味の相乗効果」です。「味の対比効果」ではありません。"
+    },
+    {
+        scene: "おかずを作るため、冷蔵庫の食品を確認しよう。",
+        prompt: "食品表示の例として、「消費期限」が表示されているものはどれ？",
+        choices: [
+            { id: "a", text: "豆腐" },
+            { id: "b", text: "卵" },
+            { id: "c", text: "納豆" },
+            { id: "d", text: "ベーコン" },
+            { id: "e", text: "生の鮭" }
+        ],
+        answer: "e",
+        explanation: "この問題では生の鮭を想定しています。消費期限・賞味期限のどちらが付くかは食品ごとに異なるので、実際には商品に書かれた表示を確認しましょう。"
+    },
+    {
+        scene: "洗濯もしないと。洗濯表示を見て干し方を選ぼう。",
+        prompt: "「日陰でつり干し」を表している表示はどれ？",
+        choices: [
+            { id: "a", text: "", symbol: "line" },
+            { id: "b", text: "", symbol: "shade-line" },
+            { id: "c", text: "", symbol: "flat" },
+            { id: "d", text: "", symbol: "shade-flat" }
+        ],
+        answer: "b",
+        explanation: "四角の中の縦線はつり干し、横線は平干しを表します。日陰干しには、上部に日陰を示す線が加わります。"
+    },
+    {
+        scene: "今日はお菓子も作ろう。ゼリーを固める準備をしよう。",
+        prompt: "ゼラチンを固まりにくくするため、生のまま入れないほうがよい果物はどれ？",
+        choices: [
+            { id: "a", text: "生のキウイフルーツ" },
+            { id: "b", text: "缶詰のみかん" },
+            { id: "c", text: "缶詰のパイナップル" },
+            { id: "d", text: "いちご" },
+            { id: "e", text: "缶詰のもも" }
+        ],
+        answer: "a",
+        explanation: "生のキウイフルーツに含まれる酵素はゼラチンを分解します。缶詰の果物は加熱処理で酵素の働きが失われているものが多いです。"
+    },
+    {
+        scene: "お昼はお好み焼きにしよう。小麦粉を選んでね。",
+        prompt: "お好み焼きに一般的に使う小麦粉はどれ？",
+        choices: [
+            { id: "a", text: "薄力粉" },
+            { id: "b", text: "中力粉" },
+            { id: "c", text: "強力粉" },
+            { id: "d", text: "デュラム粉" },
+            { id: "e", text: "片栗粉" }
+        ],
+        answer: "a",
+        explanation: "薄力粉は、ふんわりした生地のお好み焼きや菓子作りによく使われます。"
+    },
+    {
+        scene: "仮装パーティーには、どこかの国の民族衣装を着て行こう。",
+        prompt: "民族衣装についての説明で、正しいものはどれ？",
+        choices: [
+            { id: "a", text: "日本では、既婚女性が正式な祝い事で振袖を着ることが多い。" },
+            { id: "b", text: "インドのサリーは、長い布を縫い合わせたワンピースとスカートである。" },
+            { id: "c", text: "ベトナムのアオザイは、ワンピースの下に長いスカートをはく。" },
+            { id: "d", text: "サウジアラビアなどの男性が着るカンドゥーラは、日差しから身を守る役割もある。" },
+            { id: "e", text: "韓国の女性はチョゴリの上着に、クワンという巻きスカートを合わせる。" }
+        ],
+        answer: "d",
+        explanation: "カンドゥーラ（地域によって呼び名は異なります）はゆったりした長衣で、強い日差しから身を守る役割もあります。"
+    },
+    {
+        scene: "出かけようとしたところ、街中で「モデルにならないか」と声をかけられ、事務所に連れて行かれた。登録料を払う契約を取り消せる可能性があるのはどれ？",
+        prompt: "次のうち、勧誘方法が「キャッチセールス」にあたるものはどれ？",
+        choices: [
+            { id: "a", text: "18歳の人が、親の同意なくバイクを購入した。" },
+            { id: "b", text: "ネットオークションで落札した靴のサイズが合わなかった。" },
+            { id: "c", text: "小学生が保護者に知らせず、小遣いで漫画を買った。" },
+            { id: "d", text: "通信販売で買った服のデザインが思っていたものと違った。" },
+            { id: "e", text: "街中でモデルに誘われ、事務所に連れて行かれて登録料を払った。" }
+        ],
+        answer: "e",
+        explanation: "街頭で呼び止めて営業所などに連れて行き契約させる勧誘は、キャッチセールス（訪問販売に含まれる形態）です。一定の条件でクーリング・オフできる場合があります。"
+    },
+    {
+        scene: "仮装パーティーに到着！食事の前に、アレルギー表示も確認しよう。",
+        prompt: "表示が義務づけられている「特定原材料」に含まれないものはどれ？",
+        choices: [
+            { id: "a", text: "えび" },
+            { id: "b", text: "そば" },
+            { id: "c", text: "落花生（ピーナッツ）" },
+            { id: "d", text: "さば" },
+            { id: "e", text: "卵" }
+        ],
+        answer: "d",
+        explanation: "さばは表示が推奨されている品目ですが、表示義務のある特定原材料には含まれません。アレルギーがある場合は、必ず個々の食品表示を確認してください。"
+    },
+    {
+        scene: "パーティーで食事が始まった。洋食のマナーをチェックしよう。",
+        prompt: "次の行動のうち、マナー違反とされるものはいくつある？",
+        statements: [
+            "並んだカトラリーを好きな順序で使う。",
+            "汁がたれないよう、ナプキンを襟元にはさんで使う。",
+            "スープが残り少なくなったら、皿を傾けてすくう。",
+            "魚を片身食べたあと、裏返して反対側を食べる。",
+            "ステーキを最初に全部細かく切り分ける。",
+            "大きなレタスはナイフで一口大に切って食べる。",
+            "食事中に足を組んで座る。",
+            "デザートのプティフールを手でつまんで食べる。",
+            "食後、ナプキンをきれいにたたんで元のように置く。"
+        ],
+        choices: [
+            { id: "1", text: "1つ" },
+            { id: "2", text: "2つ" },
+            { id: "3", text: "3つ" },
+            { id: "4", text: "4つ" },
+            { id: "5", text: "5つ" },
+            { id: "6", text: "6つ" },
+            { id: "7", text: "7つ" }
+        ],
+        answer: "6",
+        explanation: "マナー違反は、カトラリーを好きな順に使う・ナプキンを襟にはさむ・魚を裏返す・ステーキを全部先に切る・足を組む・ナプキンをきれいにたたむ、の6つです。"
+    },
+    {
+        scene: "パーティーが終わり、タクシーで帰宅。今の住まいの退去日を知らせる手紙が届いていた。明日、不動産屋さんへ行く前に物件情報を読もう。",
+        prompt: "次の物件の「家賃」と「管理費」を合わせた、毎月の支払額はいくら？",
+        listing: {
+            name: "ひだまりハイツ 202号室",
+            rent: "家賃 58,000円／月",
+            fee: "管理費 4,000円／月",
+            details: "1K・駅から徒歩8分・敷金1か月・礼金なし"
+        },
+        choices: [
+            { id: "58000", text: "58,000円" },
+            { id: "60000", text: "60,000円" },
+            { id: "62000", text: "62,000円" },
+            { id: "66000", text: "66,000円" }
+        ],
+        answer: "62000",
+        explanation: "家賃58,000円に管理費4,000円を足すと、毎月の合計は62,000円です。契約時の初期費用や光熱費などは別に確認しましょう。"
+    }
+];
 
-function check(){
+let currentQuestion = 0;
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
+const questionArea = document.getElementById("questionArea");
+const questionCount = document.getElementById("questionCount");
+const questionProgress = document.getElementById("questionProgress");
+const feedback = document.getElementById("feedback");
+const nextArea = document.getElementById("nextArea");
 
-location.href=
-"home-clear.html";
+function makeDryingSymbol(type) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 48 48");
+    svg.setAttribute("class", "drying-symbol");
+    svg.setAttribute("aria-hidden", "true");
 
-}else{
+    const frame = document.createElementNS(svg.namespaceURI, "rect");
+    frame.setAttribute("x", "6");
+    frame.setAttribute("y", "8");
+    frame.setAttribute("width", "36");
+    frame.setAttribute("height", "36");
+    frame.setAttribute("fill", "none");
+    frame.setAttribute("stroke", "currentColor");
+    frame.setAttribute("stroke-width", "2");
+    svg.appendChild(frame);
 
-alert("不正解");
+    const dryingLine = document.createElementNS(svg.namespaceURI, "line");
+    dryingLine.setAttribute("x1", type.includes("line") ? "24" : "15");
+    dryingLine.setAttribute("y1", type.includes("line") ? "15" : "26");
+    dryingLine.setAttribute("x2", type.includes("line") ? "24" : "33");
+    dryingLine.setAttribute("y2", type.includes("line") ? "37" : "26");
+    dryingLine.setAttribute("stroke", "currentColor");
+    dryingLine.setAttribute("stroke-width", "2");
+    svg.appendChild(dryingLine);
 
+    if (type.startsWith("shade")) {
+        const shadeLine = document.createElementNS(svg.namespaceURI, "line");
+        shadeLine.setAttribute("x1", "12");
+        shadeLine.setAttribute("y1", "4");
+        shadeLine.setAttribute("x2", "36");
+        shadeLine.setAttribute("y2", "4");
+        shadeLine.setAttribute("stroke", "currentColor");
+        shadeLine.setAttribute("stroke-width", "2");
+        svg.appendChild(shadeLine);
+    }
+
+    return svg;
 }
 
+function renderQuestion() {
+    const question = questions[currentQuestion];
+    questionCount.textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
+    questionProgress.value = currentQuestion;
+    feedback.textContent = "";
+    feedback.className = "home-feedback";
+    nextArea.replaceChildren();
+
+    const scene = document.createElement("p");
+    scene.className = "home-scene";
+    scene.textContent = question.scene;
+    questionArea.replaceChildren(scene);
+
+    if (question.listing) {
+        const listing = document.createElement("div");
+        listing.className = "property-listing";
+        const name = document.createElement("strong");
+        name.textContent = question.listing.name;
+        const details = document.createElement("p");
+        details.textContent = question.listing.details;
+        const costs = document.createElement("p");
+        costs.textContent = `${question.listing.rent}　${question.listing.fee}`;
+        listing.append(name, details, costs);
+        questionArea.appendChild(listing);
+    }
+
+    const heading = document.createElement("h3");
+    heading.className = "home-question";
+    heading.textContent = question.prompt;
+    questionArea.appendChild(heading);
+
+    if (question.statements) {
+        const list = document.createElement("ol");
+        list.className = "home-statements";
+        question.statements.forEach((statement) => {
+            const item = document.createElement("li");
+            item.textContent = statement;
+            list.appendChild(item);
+        });
+        questionArea.appendChild(list);
+    }
+
+    const form = document.createElement("form");
+    form.className = "home-answers";
+    const fieldset = document.createElement("fieldset");
+    const legend = document.createElement("legend");
+    legend.textContent = "答えを選んでください";
+    fieldset.appendChild(legend);
+
+    question.choices.forEach((choice, index) => {
+        const label = document.createElement("label");
+        label.className = "home-answer";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = choice.id;
+        input.required = true;
+        input.id = `answer-${index}`;
+        label.htmlFor = input.id;
+        label.appendChild(input);
+
+        if (choice.symbol) {
+            label.appendChild(makeDryingSymbol(choice.symbol));
+        }
+
+        const text = document.createElement("span");
+        text.textContent = choice.text;
+        label.appendChild(text);
+        fieldset.appendChild(label);
+    });
+
+    const submit = document.createElement("button");
+    submit.type = "submit";
+    submit.textContent = "回答する";
+    form.append(fieldset, submit);
+    form.addEventListener("submit", checkAnswer);
+    questionArea.appendChild(form);
 }
 
+function checkAnswer(event) {
+    event.preventDefault();
+    const selected = questionArea.querySelector('input[name="answer"]:checked');
+
+    if (!selected) {
+        return;
+    }
+
+    const question = questions[currentQuestion];
+    if (selected.value !== question.answer) {
+        feedback.textContent = "不正解。もう一度考えてみよう。";
+        feedback.className = "home-feedback is-incorrect";
+        return;
+    }
+
+    feedback.textContent = `正解！ ${question.explanation}`;
+    feedback.className = "home-feedback is-correct";
+    questionArea.querySelectorAll('input[name="answer"]').forEach((input) => {
+        input.disabled = true;
+    });
+    questionArea.querySelector("button[type='submit']").disabled = true;
+
+    const nextButton = document.createElement("button");
+    nextButton.textContent = currentQuestion === questions.length - 1 ? "一日の挑戦を終える" : "次の場面へ";
+    nextButton.addEventListener("click", advance);
+    nextArea.appendChild(nextButton);
+}
+
+function advance() {
+    currentQuestion += 1;
+    if (currentQuestion === questions.length) {
+        location.href = "home-clear.html";
+        return;
+    }
+    renderQuestion();
+}
+
+renderQuestion();
 </script>
 
 </body>
