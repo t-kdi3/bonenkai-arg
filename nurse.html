@@ -14,45 +14,275 @@
 
 <h2>🩺 養護の挑戦 🩺</h2>
 
-<p>
-【問題文】
-</p>
+<section id="quiz">
+    <h3>救急車が到着するまで、何分？</h3>
+    <p>
+        119番通報をしてから救急車が現場に到着するまでの全国平均時間は、
+        約何分でしょうか？
+    </p>
+    <div class="nurse-options">
+        <button type="button" data-answer="8.1">約8.1分</button>
+        <button type="button" data-answer="9.8">約9.8分</button>
+        <button type="button" data-answer="12.4">約12.4分</button>
+    </div>
+    <p id="quizFeedback" class="nurse-feedback" aria-live="polite"></p>
+    <p class="nurse-note">
+        問題提供文にある総務省消防庁のデータをもとにしたクイズです。
+    </p>
+</section>
 
-<input id="ans">
+<section id="response" hidden>
+    <h3>救命の初期対応を選ぼう</h3>
+    <p>
+        正解は約9.8分（約10分）です。問題提供文では、令和元年と比べ
+        約1.1分延びたとされています。
+    </p>
+    <p id="stepTitle"></p>
+    <div id="stepOptions" class="nurse-options"></div>
+    <p id="stepFeedback" class="nurse-feedback" aria-live="polite"></p>
+</section>
 
-<button onclick="check()">
-回答
-</button>
+<section id="rhythm" hidden>
+    <h3>胸骨圧迫のリズムゲーム</h3>
+    <p>
+        ボタンを押して、1分間に100〜120回のテンポを目指そう。
+        59秒間のゲーム演出です。3回連続でリズムが外れると、
+        このゲームを最初からやり直します。
+    </p>
+    <p>
+        普段どおりの呼吸がない想定で、胸骨圧迫を続ける場面です。
+    </p>
+    <p class="nurse-note">
+        これは実時間の救命訓練ではなく、ゲーム上の体験です。
+        実際の場面では119番通報し、通信指令員の指示に従ってください。
+    </p>
+    <div class="nurse-game-status">
+        <p>ゲーム時間：<span id="rhythmTime">59</span>秒</p>
+        <p>圧迫回数：<span id="pressCount">0</span>回</p>
+        <progress id="rhythmProgress" max="59" value="0" aria-label="ゲームの進行状況"></progress>
+    </div>
+    <p id="rhythmFeedback" class="nurse-feedback" aria-live="polite">
+        「ゲーム開始」を押すとタイマーが始まります。
+    </p>
+    <button id="startRhythm" type="button">ゲーム開始</button>
+    <button id="pressButton" type="button" disabled>圧迫する</button>
+</section>
 
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
+<section id="success" hidden>
+    <h3>リズムゲームクリア！</h3>
+    <p>
+        59秒間、テンポを保てました。ゲーム上のクリアです。
+        実際の救命行為の代わりになるものではありません。
+    </p>
+    <button type="button" onclick="location.href='nurse-clear.html'">
+        養護の課題をクリアする
+    </button>
+</section>
+
+<button class="back-btn" type="button" onclick="location.href='start.html'">
+    課題選択へ戻る
 </button>
 
 </div>
 </div>
 
 <script>
+const quiz = document.getElementById("quiz");
+const response = document.getElementById("response");
+const rhythm = document.getElementById("rhythm");
+const success = document.getElementById("success");
+const quizFeedback = document.getElementById("quizFeedback");
+const stepTitle = document.getElementById("stepTitle");
+const stepOptions = document.getElementById("stepOptions");
+const stepFeedback = document.getElementById("stepFeedback");
+const rhythmTime = document.getElementById("rhythmTime");
+const pressCount = document.getElementById("pressCount");
+const rhythmProgress = document.getElementById("rhythmProgress");
+const rhythmFeedback = document.getElementById("rhythmFeedback");
+const startRhythm = document.getElementById("startRhythm");
+const pressButton = document.getElementById("pressButton");
 
-function check(){
+const responseSteps = [
+    {
+        title: "1. まず、何をしますか？",
+        correct: "周囲の安全を確認する",
+        options: [
+            "周囲の安全を確認する",
+            "すぐに傷病者を動かす",
+            "何も確認せず胸骨圧迫を始める"
+        ]
+    },
+    {
+        title: "2. 反応を確認するには？",
+        correct: "肩をたたきながら大声で呼びかける",
+        options: [
+            "肩をたたきながら大声で呼びかける",
+            "強く揺さぶって起こす",
+            "水を飲ませて反応を見る"
+        ]
+    },
+    {
+        title: "3. 反応がないとき、周囲に何を頼みますか？",
+        correct: "119番通報とAEDの手配を頼む",
+        options: [
+            "救急車を待つだけにする",
+            "119番通報とAEDの手配を頼む",
+            "その場を離れて様子を見る"
+        ]
+    },
+    {
+        title: "4. 次に何を確認しますか？",
+        correct: "普段どおりの呼吸があるか確認する",
+        options: [
+            "脈拍を長時間確認する",
+            "普段どおりの呼吸があるか確認する",
+            "返事があるまで待ち続ける"
+        ]
+    }
+];
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
+let currentStep = 0;
+let gameStartedAt = null;
+let lastPressAt = null;
+let gameTimer = null;
+let totalPresses = 0;
+let consecutiveOffBeats = 0;
+const gameDurationMs = 59000;
+const minimumIntervalMs = 450;
+const maximumIntervalMs = 650;
 
-location.href=
-"nurse-clear.html";
+document.querySelectorAll("#quiz [data-answer]").forEach((button) => {
+    button.addEventListener("click", () => {
+        if (button.dataset.answer !== "9.8") {
+            quizFeedback.textContent = "不正解です。選択肢をもう一度選んでください。";
+            return;
+        }
 
-}else{
+        quiz.hidden = true;
+        response.hidden = false;
+        showStep();
+    });
+});
 
-alert("不正解");
+function showStep() {
+    const step = responseSteps[currentStep];
+    stepTitle.textContent = step.title;
+    stepFeedback.textContent = "";
+    stepOptions.replaceChildren();
 
+    step.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = option;
+        button.addEventListener("click", () => chooseStepOption(option));
+        stepOptions.append(button);
+    });
 }
 
+function chooseStepOption(option) {
+    const step = responseSteps[currentStep];
+    if (option !== step.correct) {
+        stepFeedback.textContent = "その対応ではありません。もう一度選んでください。";
+        return;
+    }
+
+    currentStep++;
+    if (currentStep < responseSteps.length) {
+        showStep();
+        return;
+    }
+
+    response.hidden = true;
+    rhythm.hidden = false;
 }
 
+startRhythm.addEventListener("click", () => {
+    clearInterval(gameTimer);
+    gameStartedAt = performance.now();
+    lastPressAt = null;
+    totalPresses = 0;
+    consecutiveOffBeats = 0;
+    pressCount.textContent = "0";
+    rhythmTime.textContent = "59";
+    rhythmProgress.value = 0;
+    rhythmFeedback.textContent = "リズムよくボタンを押し続けよう。";
+    startRhythm.disabled = true;
+    pressButton.disabled = false;
+    pressButton.focus();
+    gameTimer = window.setInterval(updateRhythmTimer, 100);
+});
+
+pressButton.addEventListener("click", () => {
+    if (gameStartedAt === null) {
+        return;
+    }
+
+    const now = performance.now();
+    if (now - gameStartedAt >= gameDurationMs) {
+        finishRhythmGame();
+        return;
+    }
+
+    if (lastPressAt !== null) {
+        const interval = now - lastPressAt;
+        if (interval < minimumIntervalMs || interval > maximumIntervalMs) {
+            consecutiveOffBeats++;
+            rhythmFeedback.textContent = `テンポが外れています（${consecutiveOffBeats}/3）。`;
+            if (consecutiveOffBeats >= 3) {
+                resetRhythmGame();
+                return;
+            }
+        } else {
+            consecutiveOffBeats = 0;
+            rhythmFeedback.textContent = "いいテンポです。その調子！";
+        }
+    }
+
+    lastPressAt = now;
+    totalPresses++;
+    pressCount.textContent = String(totalPresses);
+});
+
+function updateRhythmTimer() {
+    const elapsed = performance.now() - gameStartedAt;
+    const remaining = Math.max(0, Math.ceil((gameDurationMs - elapsed) / 1000));
+    rhythmTime.textContent = String(remaining);
+    rhythmProgress.value = Math.min(59, elapsed / 1000);
+
+    if (elapsed >= gameDurationMs) {
+        finishRhythmGame();
+    }
+}
+
+function resetRhythmGame() {
+    clearInterval(gameTimer);
+    gameStartedAt = null;
+    lastPressAt = null;
+    totalPresses = 0;
+    consecutiveOffBeats = 0;
+    pressCount.textContent = "0";
+    rhythmTime.textContent = "59";
+    rhythmProgress.value = 0;
+    rhythmFeedback.textContent = "3回連続でテンポが外れたため、やり直しです。もう一度始めましょう。";
+    startRhythm.disabled = false;
+    pressButton.disabled = true;
+}
+
+function finishRhythmGame() {
+    clearInterval(gameTimer);
+    gameStartedAt = null;
+    if (totalPresses < 99 || totalPresses > 119) {
+        const finalPresses = totalPresses;
+        resetRhythmGame();
+        rhythmFeedback.textContent = finalPresses < 99
+            ? "テンポが遅すぎるか、押す回数が足りません。もう一度挑戦しましょう。"
+            : "テンポが速すぎます。1分間に100〜120回を目指してやり直しましょう。";
+        return;
+    }
+
+    rhythm.hidden = true;
+    success.hidden = false;
+}
 </script>
 
 </body>
