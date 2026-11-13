@@ -1164,6 +1164,10 @@ body.art{
     object-fit:cover;
 }
 
+.art-vermeer img{
+    object-position:center 35%;
+}
+
 .gallery-room:disabled .room-frame::after{
     position:absolute;
     inset:0;

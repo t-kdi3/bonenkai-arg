@@ -16,7 +16,7 @@
         <h1 id="roomTitle"></h1>
     </div>
     <div id="roomArtwork" class="room-artwork" aria-hidden="true"></div>
-    <p id="roomAttribution" class="room-attribution" hidden>画像参照元・著作権表記：WGSN「Luminous Blue」</p>
+    <p id="roomAttribution" class="room-attribution" hidden></p>
     <p id="roomPrompt" class="art-question"></p>
 
     <form id="answerForm" class="art-answers">
@@ -97,7 +97,18 @@ if (!Number.isInteger(room) || room < 0 || room >= questions.length || room > pr
         image.src = "images/luminous-blue.png";
         image.alt = "";
         roomArtwork.appendChild(image);
-        document.getElementById("roomAttribution").hidden = false;
+        const attribution = document.getElementById("roomAttribution");
+        attribution.textContent = "画像参照元・著作権表記：WGSN「Luminous Blue」";
+        attribution.hidden = false;
+    } else if (room === 1) {
+        roomArtwork.classList.add("has-image");
+        const image = document.createElement("img");
+        image.src = "images/vermeer-girl.jpg";
+        image.alt = "";
+        roomArtwork.appendChild(image);
+        const attribution = document.getElementById("roomAttribution");
+        attribution.textContent = "ヨハネス・フェルメール『真珠の耳飾りの少女』（1665年頃）";
+        attribution.hidden = false;
     } else {
         roomArtwork.classList.add(`art-scene-${room + 1}`);
     }
