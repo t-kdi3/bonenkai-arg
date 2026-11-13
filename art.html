@@ -4,56 +4,155 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
-<title>美術の挑戦</title>
+<title>青の美術館</title>
 </head>
 
 <body class="art">
-
 <div class="container">
-<div class="page-card">
+<main class="page-card gallery">
+    <header class="gallery-header">
+        <p class="gallery-kicker">THE MUSEUM OF BLUE</p>
+        <h1>青の美術館</h1>
+        <p>青の物語をたどる、5つの展示室へようこそ。</p>
+    </header>
 
-<h2>🎨 美術の挑戦 🎨</h2>
+    <section class="gallery-welcome" aria-labelledby="welcomeTitle">
+        <div class="museum-entrance" aria-hidden="true">
+            <span class="entrance-light"></span>
+            <span class="entrance-door"></span>
+            <span class="entrance-sign">MUSEUM</span>
+        </div>
+        <div>
+            <h2 id="welcomeTitle">美術館のご案内</h2>
+            <p>展示室の絵を選ぶと、その部屋のクイズに挑戦できます。正解したら、次の部屋の扉が開きます。すべての展示を巡って、キーワードを手に入れよう。</p>
+        </div>
+    </section>
 
-<p>
-【問題文】
-</p>
+    <section class="gallery-journey" aria-labelledby="journeyTitle">
+        <div class="gallery-progress">
+            <div>
+                <h2 id="journeyTitle">展示室をめぐる</h2>
+                <p id="galleryStatus" aria-live="polite"></p>
+            </div>
+            <progress id="galleryProgress" max="5" value="0" aria-label="展示室の進行状況"></progress>
+        </div>
 
-<input id="ans">
+        <div class="gallery-rooms">
+            <button class="gallery-room" type="button" data-room="0" aria-label="第1展示室、光の青へ入る">
+                <span class="room-frame art-luminous" aria-hidden="true">
+                    <svg viewBox="0 0 220 140">
+                        <defs><linearGradient id="luminousSky" x2="1" y2="1"><stop stop-color="#142d59"/><stop offset="1" stop-color="#087ec4"/></linearGradient><radialGradient id="luminousGlow"><stop stop-color="#edffff"/><stop offset=".25" stop-color="#b6f4ff"/><stop offset="1" stop-color="#48aaff" stop-opacity="0"/></radialGradient></defs>
+                        <rect width="220" height="140" fill="url(#luminousSky)"/>
+                        <circle cx="113" cy="68" r="63" fill="url(#luminousGlow)"/>
+                        <path d="M0 111Q48 81 90 112T220 96v44H0Z" fill="#13234c" opacity=".8"/>
+                        <path d="M0 121Q50 102 101 122t119-10" fill="none" stroke="#bceeff" stroke-width="2" opacity=".7"/>
+                        <circle cx="30" cy="28" r="2" fill="#fff"/><circle cx="182" cy="37" r="2" fill="#fff"/><circle cx="63" cy="63" r="1.5" fill="#fff"/>
+                    </svg>
+                </span>
+                <span class="room-caption"><span class="room-number">ROOM 01</span><strong>光の青</strong><span class="room-status"></span></span>
+            </button>
 
-<button onclick="check()">
-回答
-</button>
+            <button class="gallery-room" type="button" data-room="1" aria-label="第2展示室、フェルメールの青へ入る">
+                <span class="room-frame art-vermeer" aria-hidden="true">
+                    <svg viewBox="0 0 220 140">
+                        <rect width="220" height="140" fill="#172238"/>
+                        <path d="M22 0h176v140H22z" fill="#222e43"/>
+                        <path d="M32 0h156v140H32z" fill="#15243b" stroke="#bd9b5b" stroke-width="3"/>
+                        <path d="M58 120q5-42 38-47l13 6 22-4q31 12 35 45v20H58z" fill="#d2bb91"/>
+                        <path d="M67 83q-17-41 24-67 41-15 64 18l-9 44q-16-18-35-14-23-8-44 19" fill="#174b78"/>
+                        <path d="M87 66q8-30 37-24 19 6 20 26l-7 32q-14 16-33 2-17-9-17-36" fill="#e2c8a4"/>
+                        <path d="M98 71q5-4 9 0m18-1q5-4 9 0" fill="none" stroke="#392e2a" stroke-width="2"/>
+                        <path d="M109 73l-4 12 7 2" fill="none" stroke="#967a5c" stroke-width="2"/>
+                        <path d="M112 98q8 5 15 0" fill="none" stroke="#8f5446" stroke-width="2"/>
+                        <circle cx="133" cy="104" r="5" fill="#fff8d9" stroke="#c7ad70" stroke-width="2"/>
+                    </svg>
+                </span>
+                <span class="room-caption"><span class="room-number">ROOM 02</span><strong>フェルメールの青</strong><span class="room-status"></span></span>
+            </button>
 
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
-</button>
+            <button class="gallery-room" type="button" data-room="2" aria-label="第3展示室、ピカソの青へ入る">
+                <span class="room-frame art-picasso" aria-hidden="true">
+                    <svg viewBox="0 0 220 140">
+                        <rect width="220" height="140" fill="#164a76"/>
+                        <path d="M28 0h164v140H28z" fill="#27678f"/>
+                        <path d="M53 109q8-52 46-62l30 11q24 17 30 65v17H53z" fill="#153d68"/>
+                        <path d="M77 48q8-28 37-29 31 6 33 37l-15 39-35 3-24-24z" fill="#b9c9d0"/>
+                        <path d="M94 41l20-13 22 17-11 20-30-4z" fill="#d5d8d1"/>
+                        <path d="M101 57l11 1m16 0 9-4" stroke="#263b57" stroke-width="3"/>
+                        <path d="M114 64l-7 17 13 3" fill="none" stroke="#546d80" stroke-width="3"/>
+                        <path d="M101 92q14-11 29 1" fill="none" stroke="#4d6079" stroke-width="3"/>
+                        <path d="M42 135q46-14 77-1 35-17 63-4" fill="none" stroke="#9bb9c8" stroke-width="3" opacity=".6"/>
+                    </svg>
+                </span>
+                <span class="room-caption"><span class="room-number">ROOM 03</span><strong>ピカソの青</strong><span class="room-status"></span></span>
+            </button>
 
-</div>
+            <button class="gallery-room" type="button" data-room="3" aria-label="第4展示室、浮世絵とベロ藍へ入る">
+                <span class="room-frame art-wave" aria-hidden="true">
+                    <svg viewBox="0 0 220 140">
+                        <rect width="220" height="140" fill="#f3e5c4"/>
+                        <circle cx="177" cy="31" r="17" fill="#c85a43"/>
+                        <path d="M0 84Q39 52 73 79t69 11q33-10 78-38v88H0z" fill="#164b78"/>
+                        <path d="M0 84Q38 50 76 79q-22 8-35 29-8-16-41-24" fill="#f7f0dc"/>
+                        <path d="M65 94q25-13 50 0 22 11 43-1 26-15 62-38" fill="none" stroke="#e9f1e8" stroke-width="6"/>
+                        <path d="M0 120q38-19 78 0t78 0 64-9" fill="none" stroke="#83a9b5" stroke-width="4"/>
+                        <path d="M100 58q15-9 28-4m-22 13q17-8 29-2" stroke="#164b78" stroke-width="3" fill="none"/>
+                    </svg>
+                </span>
+                <span class="room-caption"><span class="room-number">ROOM 04</span><strong>浮世絵とベロ藍</strong><span class="room-status"></span></span>
+            </button>
+
+            <button class="gallery-room" type="button" data-room="4" aria-label="第5展示室、浮世絵に広がる青へ入る">
+                <span class="room-frame art-print" aria-hidden="true">
+                    <svg viewBox="0 0 220 140">
+                        <rect width="220" height="140" fill="#e8d8ae"/>
+                        <path d="M0 105h220v35H0z" fill="#c7b184"/>
+                        <path d="M18 115q22-37 47-12 17-48 38-6 28-40 43 2 25-32 56 13z" fill="#47718a"/>
+                        <path d="M39 98q25-19 42 0m27-10q18-20 38-3m20 7q16-14 31 0" fill="none" stroke="#ecdec0" stroke-width="5"/>
+                        <path d="M0 122q32-20 63-4t64 0 93-4" fill="none" stroke="#315979" stroke-width="4"/>
+                        <path d="M30 30q40-20 81-3" fill="none" stroke="#315979" stroke-width="4"/>
+                        <circle cx="176" cy="36" r="13" fill="#cf755c"/>
+                    </svg>
+                </span>
+                <span class="room-caption"><span class="room-number">ROOM 05</span><strong>浮世絵に広がる青</strong><span class="room-status"></span></span>
+            </button>
+        </div>
+    </section>
+
+    <p id="galleryComplete" class="gallery-complete" hidden>
+        すべての展示室を巡りました。最後の展示室までたどり着いた記念に、キーワードを受け取ろう。
+        <a href="art-clear.html">キーワードを受け取る</a>
+    </p>
+
+    <button class="back-btn gallery-back" type="button" onclick="location.href='start.html'">課題選択へ戻る</button>
+</main>
 </div>
 
 <script>
+const roomButtons = [...document.querySelectorAll(".gallery-room")];
+const progressValue = Number(localStorage.getItem("artProgress") || 0);
+const clearedRooms = Number.isInteger(progressValue) && progressValue >= 0 && progressValue <= roomButtons.length
+    ? progressValue
+    : 0;
 
-function check(){
+localStorage.setItem("artProgress", String(clearedRooms));
+document.getElementById("galleryProgress").value = clearedRooms;
+document.getElementById("galleryStatus").textContent = clearedRooms === roomButtons.length
+    ? "5つの展示室をすべて巡りました。"
+    : `次は第${clearedRooms + 1}展示室。絵を選んで扉を開こう。`;
+document.getElementById("galleryComplete").hidden = clearedRooms !== roomButtons.length;
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
-
-location.href=
-"art-clear.html";
-
-}else{
-
-alert("不正解");
-
-}
-
-}
-
+roomButtons.forEach((button, index) => {
+    const status = button.querySelector(".room-status");
+    const isUnlocked = index <= clearedRooms;
+    button.disabled = !isUnlocked;
+    status.textContent = index < clearedRooms ? "鑑賞済み" : index === clearedRooms ? "入室できます" : "未開放";
+    button.addEventListener("click", () => {
+        if (isUnlocked) {
+            location.href = `art-room.html?room=${index}`;
+        }
+    });
+});
 </script>
-
 </body>
 </html>

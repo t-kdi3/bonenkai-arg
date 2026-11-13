@@ -13,9 +13,9 @@
 <div class="container">
 <div class="page-card">
 
-<h2>🎉 美術クリア！ 🎉</h2>
+<h2>🎉 青の美術館を制覇！ 🎉</h2>
 
-<p>キーワードを手に入れた！</p>
+<p>5つの展示室をすべて巡りました。キーワードを手に入れた！</p>
 
 <div class="keyword-box">ボ</div>
 
@@ -27,6 +27,12 @@
 
 </div>
 </div>
+
+<script>
+if (Number(localStorage.getItem("artProgress")) !== 5) {
+    location.replace("art.html");
+}
+</script>
 
 </body>
 </html>

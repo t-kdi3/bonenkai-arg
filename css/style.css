@@ -963,3 +963,439 @@ body.nurse button:disabled{
 
     color:#888;
 }
+
+/* ===== 青の美術館 ===== */
+
+body.art{
+    min-height:100vh;
+    background:
+        radial-gradient(ellipse at 50% 0,rgba(244,220,165,.23),transparent 42%),
+        linear-gradient(180deg,#17263b 0,#26344a 45%,#111d2d 100%);
+    color:#f6f0e2;
+}
+
+[hidden]{
+    display:none !important;
+}
+
+.gallery{
+    max-width:900px;
+    padding:30px;
+    border:1px solid rgba(220,190,126,.38);
+    border-radius:4px;
+    background:#f7f1e4;
+    color:#293246;
+    box-shadow:0 16px 46px rgba(0,0,0,.32);
+}
+
+.gallery-header{
+    padding:24px 12px 18px;
+    border-bottom:1px solid #d5c7a6;
+    text-align:center;
+}
+
+.gallery-kicker{
+    margin:0;
+    color:#8b6a36;
+    font-size:.75rem;
+    font-weight:700;
+    letter-spacing:.24em;
+}
+
+.gallery-header h1,
+.art-room-heading h1{
+    margin:8px 0;
+    padding:0;
+    background:transparent;
+    color:#273b5d;
+    font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+    font-size:2.4rem;
+    letter-spacing:.12em;
+}
+
+.gallery-header>p:last-child{
+    margin-bottom:0;
+    color:#566071;
+}
+
+.gallery h2{
+    margin:0 0 8px;
+    padding:0;
+    background:transparent;
+    color:#293a58;
+    text-align:left;
+    font-size:1.15rem;
+}
+
+.gallery-welcome{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    align-items:center;
+    gap:22px;
+    margin:24px 0;
+    padding:18px;
+    border:1px solid #d5c7a6;
+    background:#efe5d0;
+}
+
+.gallery-welcome p{
+    margin:0;
+    color:#4d5561;
+    font-size:.95rem;
+}
+
+.museum-entrance{
+    position:relative;
+    display:flex;
+    height:114px;
+    align-items:flex-end;
+    justify-content:center;
+    overflow:hidden;
+    border:8px solid #9a7941;
+    border-bottom:0;
+    background:linear-gradient(180deg,#c6aa73,#e3d3ad 24%,#354965 25%,#172b48);
+}
+
+.entrance-light{
+    position:absolute;
+    top:-28px;
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    background:radial-gradient(circle,#fff7d9 0,rgba(255,244,204,.65) 24%,transparent 70%);
+}
+
+.entrance-door{
+    position:absolute;
+    bottom:0;
+    width:70px;
+    height:78px;
+    border:4px solid #b39257;
+    border-bottom:0;
+    border-radius:42px 42px 0 0;
+    background:linear-gradient(90deg,#172741,#273f5f 48%,#14243a);
+}
+
+.entrance-sign{
+    position:absolute;
+    top:11px;
+    padding:1px 9px;
+    border:1px solid #dfc58e;
+    background:#263750;
+    color:#f2dfb6;
+    font-size:.6rem;
+    letter-spacing:.18em;
+}
+
+.gallery-journey{
+    padding:22px 18px;
+    border:1px solid #d5c7a6;
+    background:#fbf8f0;
+}
+
+.gallery-progress{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:18px;
+}
+
+.gallery-progress p{
+    margin:0;
+    color:#626b78;
+}
+
+.gallery-progress progress{
+    width:min(240px,40%);
+    height:14px;
+    accent-color:#476b8d;
+}
+
+.gallery-rooms{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+}
+
+.gallery-room{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding:10px;
+    border:1px solid #b59c6c;
+    border-radius:3px;
+    background:#ede3d0;
+    color:#293246;
+    text-align:left;
+}
+
+.gallery-room:hover:not(:disabled){
+    transform:translateY(-2px);
+    background:#e5d7bb;
+    box-shadow:0 5px 13px rgba(40,47,59,.16);
+}
+
+.gallery-room:focus-visible{
+    outline:3px solid #247a9c;
+    outline-offset:3px;
+}
+
+.gallery-room:disabled{
+    cursor:not-allowed;
+    opacity:.62;
+}
+
+.room-frame{
+    position:relative;
+    display:block;
+    padding:7px;
+    border:5px ridge #ad8b4e;
+    background:#283950;
+    box-shadow:inset 0 0 0 2px #e0c58a,0 3px 7px rgba(0,0,0,.2);
+}
+
+.room-frame svg{
+    display:block;
+    width:100%;
+    height:auto;
+    aspect-ratio:11/7;
+    object-fit:cover;
+}
+
+.gallery-room:disabled .room-frame::after{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    background:rgba(15,24,39,.63);
+    color:#fff1cf;
+    content:"未開放";
+    font-size:1.1rem;
+    font-weight:700;
+    letter-spacing:.12em;
+}
+
+.room-caption{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:3px 8px;
+    padding:9px 3px 2px;
+}
+
+.room-number{
+    color:#8b6a36;
+    font-size:.7rem;
+    font-weight:700;
+    letter-spacing:.12em;
+}
+
+.room-caption strong{
+    grid-column:1;
+    color:#293a58;
+    font-size:1rem;
+}
+
+.room-status{
+    grid-column:2;
+    grid-row:1 / span 2;
+    align-self:center;
+    color:#53657c;
+    font-size:.74rem;
+}
+
+.gallery-complete{
+    margin:18px 0 0;
+    padding:14px;
+    border-left:4px solid #a87b34;
+    background:#f2e7cb;
+    color:#453c2c;
+}
+
+.gallery-complete a{
+    display:block;
+    margin-top:8px;
+    color:#254d71;
+    font-weight:700;
+}
+
+.gallery-back{
+    margin-top:22px;
+}
+
+.art-question-page{
+    max-width:760px;
+}
+
+.art-question-page>.gallery-kicker{
+    text-align:center;
+}
+
+.art-room-heading{
+    margin:10px 0 16px;
+    text-align:center;
+}
+
+.art-room-heading .room-number{
+    margin:0;
+}
+
+.art-room-heading h1{
+    font-size:1.8rem;
+}
+
+.room-artwork{
+    height:175px;
+    overflow:hidden;
+    border:9px ridge #ad8b4e;
+    box-shadow:inset 0 0 0 2px #e0c58a,0 4px 9px rgba(0,0,0,.2);
+}
+
+.art-scene-1{
+    background:radial-gradient(ellipse at 50% 42%,#c9fbff 0,#4ea8ce 14%,#153a6a 46%,#101d37 75%);
+}
+
+.art-scene-2{
+    background:
+        radial-gradient(ellipse at 52% 52%,#dbc6a0 0 13%,transparent 14%),
+        linear-gradient(135deg,transparent 0 28%,#245478 29% 56%,transparent 57%),
+        linear-gradient(110deg,#17243a,#111a2b 58%,#293249);
+}
+
+.art-scene-3{
+    background:
+        radial-gradient(ellipse at 52% 48%,#b5c3cb 0 15%,transparent 16%),
+        linear-gradient(150deg,transparent 0 40%,#174b76 41% 72%,transparent 73%),
+        linear-gradient(120deg,#39799b,#173c67);
+}
+
+.art-scene-4{
+    background:
+        radial-gradient(circle at 78% 24%,#c66650 0 20px,transparent 21px),
+        linear-gradient(160deg,transparent 0 45%,#f2e9d5 46% 52%,#1d557e 53% 74%,#89aeb2 75%);
+}
+
+.art-scene-5{
+    background:
+        radial-gradient(circle at 75% 26%,#c66d58 0 16px,transparent 17px),
+        linear-gradient(180deg,#e7d8b8 0 59%,#63899c 60% 75%,#234d70 76%);
+}
+
+.art-question{
+    margin:22px 0 14px;
+    color:#293246;
+    font-size:1.08rem;
+    font-weight:700;
+}
+
+.art-answers fieldset{
+    min-width:0;
+    margin:0;
+    padding:0;
+    border:0;
+}
+
+.art-answers legend{
+    margin-bottom:8px;
+    color:#555e6a;
+    font-weight:700;
+}
+
+.art-answer{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin:8px 0;
+    padding:12px;
+    border:1px solid #d5c7a6;
+    border-radius:4px;
+    background:#fbf8f0;
+    color:#343b49;
+    cursor:pointer;
+}
+
+.art-answer:hover{
+    background:#f1e8d5;
+}
+
+.art-answer input{
+    flex:0 0 18px;
+    width:18px;
+    height:18px;
+    margin:4px 0 0;
+    accent-color:#315c7c;
+}
+
+.art-answer input:disabled{
+    cursor:default;
+}
+
+.art-feedback{
+    min-height:1.8em;
+    margin:12px 0;
+    color:#343b49;
+    font-weight:700;
+}
+
+.art-feedback.is-incorrect{
+    color:#9d3934;
+}
+
+.art-feedback.is-correct{
+    padding:12px;
+    border-left:4px solid #638154;
+    background:#eaf0e2;
+    color:#344c31;
+}
+
+.art-continue{
+    background:#496d54;
+}
+
+.art-continue:hover{
+    background:#38563f;
+}
+
+.art-question-page button:disabled{
+    background:#888;
+    cursor:not-allowed;
+}
+
+@media screen and (max-width:600px){
+    .gallery{
+        padding:18px;
+    }
+
+    .gallery-header h1{
+        font-size:1.9rem;
+    }
+
+    .gallery-welcome{
+        grid-template-columns:1fr;
+        gap:14px;
+    }
+
+    .museum-entrance{
+        max-width:240px;
+        width:100%;
+        margin:0 auto;
+    }
+
+    .gallery-progress{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .gallery-progress progress{
+        width:100%;
+    }
+
+    .gallery-rooms{
+        grid-template-columns:1fr;
+    }
+
+    .room-artwork{
+        height:140px;
+    }
+}

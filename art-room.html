@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<title>展示室 | 青の美術館</title>
+</head>
+
+<body class="art">
+<div class="container">
+<main class="page-card gallery art-question-page">
+    <p class="gallery-kicker">THE MUSEUM OF BLUE</p>
+    <div class="art-room-heading">
+        <p id="roomNumber" class="room-number"></p>
+        <h1 id="roomTitle"></h1>
+    </div>
+    <div id="roomArtwork" class="room-artwork" aria-hidden="true"></div>
+    <p id="roomPrompt" class="art-question"></p>
+
+    <form id="answerForm" class="art-answers">
+        <fieldset>
+            <legend>作品を見ながら、正しい答えを選ぼう</legend>
+            <div id="answerChoices"></div>
+        </fieldset>
+        <button id="submitAnswer" type="submit">この答えに決める</button>
+    </form>
+
+    <p id="answerFeedback" class="art-feedback" aria-live="polite"></p>
+    <button id="continueButton" class="art-continue" type="button" hidden>展示室に戻る</button>
+    <button class="back-btn gallery-back" type="button" onclick="location.href='art.html'">美術館の入口へ戻る</button>
+</main>
+</div>
+
+<script>
+const questions = [
+    {
+        title: "光の青",
+        prompt: "イギリスのトレンド予測会社WGSNが選定した2027年のトレンドカラー「ルミナス・ブルー（Luminous Blue）」。「Luminous」が持つ最も適切な意味はどれ？",
+        choices: ["光り輝く、発光するような", "深海のように沈んだ暗い", "色褪せたヴィンテージ調の", "冷徹で無機質なメタリック"],
+        answer: 0,
+        explanation: "「Luminous」は「発光する」「光り輝く」という意味。未来感やエネルギーを感じさせるブルーです。"
+    },
+    {
+        title: "フェルメールの青",
+        prompt: "『真珠の耳飾りの少女』などで知られるフェルメールが多用した、高価な青の顔料の原料となった天然鉱物はどれ？",
+        choices: ["マラカイト（孔雀石）", "シンシャ（辰砂）", "ラピスラズリ（青金石）", "アズライト（藍銅鉱）"],
+        answer: 2,
+        explanation: "ラピスラズリをすりつぶして作ったウルトラマリン（群青）は、当時「金よりも高価」とされました。"
+    },
+    {
+        title: "ピカソの青",
+        prompt: "親友の死や社会の底辺に生きる人々を見つめ、画面全体を寒色で描いた、ピカソ20代前半の時期を何と呼ぶ？",
+        choices: ["薔薇色の時代", "キュビスムの時代", "アフリカ彫刻の時代", "青の時代"],
+        answer: 3,
+        explanation: "1901年から1904年頃、憂愁や孤独を感じさせる青を主調色に使った時期は「青の時代」と呼ばれます。"
+    },
+    {
+        title: "浮世絵とベロ藍",
+        prompt: "葛飾北斎や歌川広重の風景画に鮮やかな青をもたらした合成顔料「ベロ藍」の正式な西洋名はどれ？",
+        choices: ["コバルト・ブルー", "プルシアン・ブルー（ベルリン藍）", "フタロシアニン・ブルー", "インディゴ（天然藍）"],
+        answer: 1,
+        explanation: "ベロ藍は、ベルリンで発見されたプルシアン・ブルー（紺青）がオランダ経由で日本に伝わったものです。"
+    },
+    {
+        title: "浮世絵に広がる青",
+        prompt: "プルシアン・ブルー（ベロ藍）が19世紀の浮世絵に与えた最大の革新はどれ？",
+        choices: [
+            "金箔の代わりに輪郭線に使われ、豪華絢爛さが増した。",
+            "水に溶けにくいため、着物用の染料として独占的に使われた。",
+            "退色しにくく鮮やかで、空や水の遠近感やグラデーション表現が向上した。",
+            "非常に重い顔料のため、サイン部分にしか使えなかった。"
+        ],
+        answer: 2,
+        explanation: "光に強く鮮明な青によって、空や水の遠近感やグラデーションが表現しやすくなりました。浮世絵はゴッホをはじめヨーロッパの画家たちにも影響を与えました。"
+    }
+];
+
+const room = Number(new URLSearchParams(location.search).get("room"));
+const storedProgress = Number(localStorage.getItem("artProgress") || 0);
+const progress = Number.isInteger(storedProgress) && storedProgress >= 0 && storedProgress <= questions.length
+    ? storedProgress
+    : 0;
+
+if (!Number.isInteger(room) || room < 0 || room >= questions.length || room > progress) {
+    location.replace("art.html");
+} else {
+    const question = questions[room];
+    document.title = `第${room + 1}展示室 | 青の美術館`;
+    document.getElementById("roomNumber").textContent = `ROOM 0${room + 1}`;
+    document.getElementById("roomTitle").textContent = question.title;
+    document.getElementById("roomArtwork").classList.add(`art-scene-${room + 1}`);
+    document.getElementById("roomPrompt").textContent = question.prompt;
+
+    const choices = document.getElementById("answerChoices");
+    question.choices.forEach((choice, index) => {
+        const label = document.createElement("label");
+        label.className = "art-answer";
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = String(index);
+        input.required = true;
+
+        const text = document.createElement("span");
+        text.textContent = `${index + 1}. ${choice}`;
+        label.append(input, text);
+        choices.appendChild(label);
+    });
+
+    document.getElementById("answerForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const selected = choices.querySelector('input[name="answer"]:checked');
+        const feedback = document.getElementById("answerFeedback");
+
+        if (!selected) {
+            feedback.textContent = "答えを選んでください。";
+            feedback.className = "art-feedback is-incorrect";
+            return;
+        }
+
+        if (Number(selected.value) !== question.answer) {
+            feedback.textContent = "もう一度、展示をよく見て考えてみよう。";
+            feedback.className = "art-feedback is-incorrect";
+            return;
+        }
+
+        feedback.textContent = `正解！ ${question.explanation}`;
+        feedback.className = "art-feedback is-correct";
+        choices.querySelectorAll("input").forEach((input) => {
+            input.disabled = true;
+        });
+        document.getElementById("submitAnswer").disabled = true;
+
+        if (room === progress) {
+            localStorage.setItem("artProgress", String(progress + 1));
+        }
+
+        const continueButton = document.getElementById("continueButton");
+        continueButton.textContent = room === questions.length - 1
+            ? "キーワードを受け取る"
+            : "美術館に戻って次の部屋へ";
+        continueButton.hidden = false;
+        continueButton.addEventListener("click", () => {
+            location.href = room === questions.length - 1 ? "art-clear.html" : "art.html";
+        }, { once: true });
+    });
+}
+</script>
+</body>
+</html>
