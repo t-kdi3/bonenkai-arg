@@ -115,6 +115,12 @@ if (!Number.isInteger(room) || room < 0 || room >= questions.length || room > pr
         image.src = "images/picasso-blue.png";
         image.alt = "";
         roomArtwork.appendChild(image);
+    } else if (room === 3) {
+        roomArtwork.classList.add("has-image");
+        const image = document.createElement("img");
+        image.src = "images/hiroshige-ferry.jpg";
+        image.alt = "";
+        roomArtwork.appendChild(image);
     } else {
         roomArtwork.classList.add(`art-scene-${room + 1}`);
     }
