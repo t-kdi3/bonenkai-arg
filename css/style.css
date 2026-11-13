@@ -1168,6 +1168,11 @@ body.art{
     object-position:center 35%;
 }
 
+.art-picasso img{
+    object-fit:contain;
+    background:#398fa2;
+}
+
 .gallery-room:disabled .room-frame::after{
     position:absolute;
     inset:0;

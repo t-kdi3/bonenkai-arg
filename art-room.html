@@ -109,6 +109,12 @@ if (!Number.isInteger(room) || room < 0 || room >= questions.length || room > pr
         const attribution = document.getElementById("roomAttribution");
         attribution.textContent = "ヨハネス・フェルメール『真珠の耳飾りの少女』（1665年頃）";
         attribution.hidden = false;
+    } else if (room === 2) {
+        roomArtwork.classList.add("has-image");
+        const image = document.createElement("img");
+        image.src = "images/picasso-blue.png";
+        image.alt = "";
+        roomArtwork.appendChild(image);
     } else {
         roomArtwork.classList.add(`art-scene-${room + 1}`);
     }
