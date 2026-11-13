@@ -16,6 +16,7 @@
         <h1 id="roomTitle"></h1>
     </div>
     <div id="roomArtwork" class="room-artwork" aria-hidden="true"></div>
+    <p id="roomAttribution" class="room-attribution" hidden>画像参照元・著作権表記：WGSN「Luminous Blue」</p>
     <p id="roomPrompt" class="art-question"></p>
 
     <form id="answerForm" class="art-answers">
@@ -89,7 +90,17 @@ if (!Number.isInteger(room) || room < 0 || room >= questions.length || room > pr
     document.title = `第${room + 1}展示室 | 青の美術館`;
     document.getElementById("roomNumber").textContent = `ROOM 0${room + 1}`;
     document.getElementById("roomTitle").textContent = question.title;
-    document.getElementById("roomArtwork").classList.add(`art-scene-${room + 1}`);
+    const roomArtwork = document.getElementById("roomArtwork");
+    if (room === 0) {
+        roomArtwork.classList.add("has-image");
+        const image = document.createElement("img");
+        image.src = "images/luminous-blue.png";
+        image.alt = "";
+        roomArtwork.appendChild(image);
+        document.getElementById("roomAttribution").hidden = false;
+    } else {
+        roomArtwork.classList.add(`art-scene-${room + 1}`);
+    }
     document.getElementById("roomPrompt").textContent = question.prompt;
 
     const choices = document.getElementById("answerChoices");

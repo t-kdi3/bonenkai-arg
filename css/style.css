@@ -1155,6 +1155,7 @@ body.art{
     box-shadow:inset 0 0 0 2px #e0c58a,0 3px 7px rgba(0,0,0,.2);
 }
 
+.room-frame img,
 .room-frame svg{
     display:block;
     width:100%;
@@ -1194,6 +1195,14 @@ body.art{
     grid-column:1;
     color:#293a58;
     font-size:1rem;
+}
+
+.room-attribution{
+    grid-column:1 / -1;
+    margin:0;
+    color:#625b4b;
+    font-size:.68rem;
+    line-height:1.5;
 }
 
 .room-status{
@@ -1249,6 +1258,19 @@ body.art{
     overflow:hidden;
     border:9px ridge #ad8b4e;
     box-shadow:inset 0 0 0 2px #e0c58a,0 4px 9px rgba(0,0,0,.2);
+}
+
+.room-artwork.has-image{
+    height:auto;
+    aspect-ratio:4 / 3;
+    background:#101c49;
+}
+
+.room-artwork img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
 }
 
 .art-scene-1{
