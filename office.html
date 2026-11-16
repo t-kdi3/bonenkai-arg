@@ -15,44 +15,223 @@
 <h2>🗂️ 事務の挑戦 🗂️</h2>
 
 <p>
-【問題文】
+事務室からのミッションに挑戦！予算科目を正しく組み合わせ、
+宿泊費基準額を高い順に並べよう。
 </p>
 
-<input id="ans">
+<section id="budgetMission" class="office-mission">
+    <h3>ミッション1：予算科目を仕分けよう</h3>
+    <p>品目ごとに、正しい予算科目を選んでください。</p>
 
-<button onclick="check()">
-回答
-</button>
+    <div class="office-match-grid">
+        <label for="tvAccount">テレビ</label>
+        <select id="tvAccount">
+            <option value="">予算科目を選択</option>
+            <option value="備品購入費">備品購入費</option>
+            <option value="需用費">需用費</option>
+            <option value="役務費">役務費</option>
+        </select>
 
-<button class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
+        <label for="paperAccount">A4用紙</label>
+        <select id="paperAccount">
+            <option value="">予算科目を選択</option>
+            <option value="備品購入費">備品購入費</option>
+            <option value="需用費">需用費</option>
+            <option value="役務費">役務費</option>
+        </select>
+
+        <label for="utilityAccount">光熱水費</label>
+        <select id="utilityAccount">
+            <option value="">予算科目を選択</option>
+            <option value="備品購入費">備品購入費</option>
+            <option value="需用費">需用費</option>
+            <option value="役務費">役務費</option>
+        </select>
+
+        <label for="stampAccount">切手代</label>
+        <select id="stampAccount">
+            <option value="">予算科目を選択</option>
+            <option value="備品購入費">備品購入費</option>
+            <option value="需用費">需用費</option>
+            <option value="役務費">役務費</option>
+        </select>
+    </div>
+
+    <p id="budgetFeedback" class="office-feedback" aria-live="polite"></p>
+    <button id="checkBudget" type="button">仕分けを確認</button>
+</section>
+
+<section id="rankingMission" class="office-mission" hidden>
+    <h3>ミッション2：宿泊費基準額を並べ替えよう</h3>
+    <p>
+        各カードの額を見て、高い順になるように並べ替えてください。
+        同じ額の都道府県は同じカードにまとめています。
+        「上へ」「下へ」でカードを移動できます。
+    </p>
+    <p class="office-note">
+        出典：<a href="https://laws.e-gov.go.jp/law/325M50000040045" target="_blank" rel="noopener noreferrer">国家公務員等の旅費支給規程・別表第二</a>。
+        ここでは「職務の級が十級以下の者」の「宿泊費基準額」を扱います。
+        都道府県ごとに異なる額が定められているのは宿泊費基準額で、
+        宿泊手当は別の費目です。
+    </p>
+
+    <ol id="rateCards" class="office-rank-list" aria-label="宿泊費基準額の並べ替え"></ol>
+    <p id="rankingFeedback" class="office-feedback" aria-live="polite"></p>
+    <button id="checkRanking" type="button">並び順を確認</button>
+</section>
+
+<section id="missionComplete" class="office-mission" hidden>
+    <h3>ミッション達成！</h3>
+    <p>予算科目の仕分けと、都道府県別の宿泊費基準額の並べ替えができました。</p>
+    <div class="office-pending">
+        <strong>追加問題：国府台高校の1か月の電気代</strong>
+        <p>答えを事務に確認中のため、今回はクリア条件に含めていません。</p>
+    </div>
+    <button type="button" onclick="location.href='office-clear.html'">
+        事務の課題をクリアする
+    </button>
+</section>
+
+<button class="back-btn" type="button" onclick="location.href='start.html'">
+    課題選択へ戻る
 </button>
 
 </div>
 </div>
 
 <script>
+const budgetAnswers = {
+    tvAccount: "備品購入費",
+    paperAccount: "需用費",
+    utilityAccount: "需用費",
+    stampAccount: "役務費"
+};
 
-function check(){
+const rateGroups = [
+    { amount: 21000, prefectures: ["東京都"] },
+    { amount: 20000, prefectures: ["京都府"] },
+    { amount: 17000, prefectures: ["千葉県", "兵庫県", "福岡県"] },
+    { amount: 16000, prefectures: ["埼玉県", "大阪府", "新潟県", "神奈川県"] },
+    { amount: 15000, prefectures: ["北海道", "香川県"] },
+    { amount: 14000, prefectures: ["岡山県", "広島県", "熊本県"] },
+    { amount: 13000, prefectures: ["山梨県", "岐阜県", "長野県", "長崎県"] },
+    { amount: 12000, prefectures: ["青森県", "宮城県", "群馬県", "愛知県", "三重県", "奈良県", "島根県", "愛媛県", "高知県", "静岡県", "沖縄県"] },
+    { amount: 11000, prefectures: ["茨城県", "栃木県", "富山県", "滋賀県", "和歌山県", "佐賀県", "大分県", "宮崎県", "鹿児島県", "秋田県"] },
+    { amount: 10000, prefectures: ["岩手県", "山形県", "石川県", "福井県", "徳島県"] },
+    { amount: 9000, prefectures: ["福島県", "鳥取県", "山口県"] }
+];
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
+const budgetMission = document.getElementById("budgetMission");
+const rankingMission = document.getElementById("rankingMission");
+const missionComplete = document.getElementById("missionComplete");
+const budgetFeedback = document.getElementById("budgetFeedback");
+const rankingFeedback = document.getElementById("rankingFeedback");
+const rateCards = document.getElementById("rateCards");
+let displayedRates = rateGroups.flatMap((group, index) => {
+    return index % 2 === 0
+        ? [rateGroups[index + 1], group].filter(Boolean)
+        : [];
+});
 
-location.href=
-"office-clear.html";
+document.getElementById("checkBudget").addEventListener("click", () => {
+    const allCorrect = Object.entries(budgetAnswers).every(([id, answer]) => {
+        return document.getElementById(id).value === answer;
+    });
 
-}else{
+    if (!allCorrect) {
+        budgetFeedback.textContent = "まだ違う組み合わせがあります。4品目を確認してください。";
+        budgetFeedback.classList.add("is-incorrect");
+        return;
+    }
 
-alert("不正解");
+    budgetFeedback.textContent = "全問正解！次は宿泊費基準額の並べ替えです。";
+    budgetFeedback.classList.remove("is-incorrect");
+    budgetMission.hidden = true;
+    rankingMission.hidden = false;
+    renderRateCards();
+    document.getElementById("checkRanking").focus();
+});
 
+document.getElementById("checkRanking").addEventListener("click", () => {
+    const correctlySorted = displayedRates.every((group, index) => {
+        return group.amount === rateGroups[index].amount;
+    });
+
+    if (!correctlySorted) {
+        rankingFeedback.textContent = "まだ高い順になっていません。金額を比べて並べ替えてください。";
+        rankingFeedback.classList.add("is-incorrect");
+        return;
+    }
+
+    rankingFeedback.textContent = "正解！47都道府県の基準額を高い順に並べられました。";
+    rankingFeedback.classList.remove("is-incorrect");
+    rankingMission.hidden = true;
+    missionComplete.hidden = false;
+    document.querySelector("#missionComplete button").focus();
+});
+
+function renderRateCards(focusButtonId) {
+    rateCards.replaceChildren();
+
+    displayedRates.forEach((group, index) => {
+        const item = document.createElement("li");
+        item.className = "office-rank-card";
+
+        const details = document.createElement("div");
+        details.className = "office-rank-details";
+
+        const amount = document.createElement("strong");
+        amount.textContent = `${group.amount.toLocaleString("ja-JP")}円`;
+
+        const prefectures = document.createElement("span");
+        prefectures.textContent = group.prefectures.join("、");
+
+        details.append(amount, prefectures);
+
+        const controls = document.createElement("div");
+        controls.className = "office-rank-controls";
+
+        const moveUp = document.createElement("button");
+        moveUp.type = "button";
+        moveUp.id = `move-${group.amount}-up`;
+        moveUp.className = "office-move";
+        moveUp.textContent = "上へ";
+        moveUp.setAttribute("aria-label", `${group.amount.toLocaleString("ja-JP")}円のカードを上へ移動`);
+        moveUp.disabled = index === 0;
+        moveUp.addEventListener("click", () => moveRateCard(index, -1));
+
+        const moveDown = document.createElement("button");
+        moveDown.type = "button";
+        moveDown.id = `move-${group.amount}-down`;
+        moveDown.className = "office-move";
+        moveDown.textContent = "下へ";
+        moveDown.setAttribute("aria-label", `${group.amount.toLocaleString("ja-JP")}円のカードを下へ移動`);
+        moveDown.disabled = index === displayedRates.length - 1;
+        moveDown.addEventListener("click", () => moveRateCard(index, 1));
+
+        controls.append(moveUp, moveDown);
+        item.append(details, controls);
+        rateCards.append(item);
+    });
+
+    if (focusButtonId) {
+        document.getElementById(focusButtonId).focus();
+    }
 }
 
-}
+function moveRateCard(index, direction) {
+    const nextIndex = index + direction;
+    if (nextIndex < 0 || nextIndex >= displayedRates.length) {
+        return;
+    }
 
+    [displayedRates[index], displayedRates[nextIndex]] =
+        [displayedRates[nextIndex], displayedRates[index]];
+    const movedGroup = displayedRates[nextIndex];
+    rankingFeedback.textContent = `${movedGroup.amount.toLocaleString("ja-JP")}円のカードを${nextIndex + 1}番目に移動しました。`;
+    rankingFeedback.classList.remove("is-incorrect");
+    renderRateCards(`move-${movedGroup.amount}-${direction < 0 ? "up" : "down"}`);
+}
 </script>
 
 </body>

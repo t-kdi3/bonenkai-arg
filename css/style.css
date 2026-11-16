@@ -472,6 +472,125 @@ body.office{
     background:#666666;
 }
 
+.office-mission{
+    margin-top:24px;
+}
+
+.office-mission h3{
+    padding-bottom:8px;
+    border-bottom:2px solid #dddddd;
+}
+
+.office-match-grid{
+    display:grid;
+    grid-template-columns:minmax(110px, 1fr) minmax(180px, 2fr);
+    align-items:center;
+    gap:10px 14px;
+    margin:20px 0;
+}
+
+.office-match-grid label{
+    font-weight:700;
+}
+
+.office-match-grid select{
+    width:100%;
+    min-height:44px;
+    padding:8px 10px;
+    border:1px solid #b5b5b5;
+    border-radius:6px;
+    background:#ffffff;
+    color:#333333;
+    font:inherit;
+}
+
+.office-note,
+.office-pending{
+    padding:12px;
+    border-left:4px solid #777777;
+    background:#f6f6f6;
+    font-size:0.9rem;
+}
+
+.office-feedback{
+    min-height:1.8em;
+    margin:14px 0;
+    font-weight:700;
+}
+
+.office-feedback.is-incorrect{
+    color:#a4262c;
+}
+
+.office-rank-list{
+    display:grid;
+    gap:8px;
+    margin:20px 0;
+    padding:0;
+    list-style:none;
+    counter-reset:office-rank;
+}
+
+.office-rank-card{
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) auto;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border:1px solid #d5d5d5;
+    border-radius:8px;
+    background:#fafafa;
+    counter-increment:office-rank;
+}
+
+.office-rank-details{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:4px 12px;
+}
+
+.office-rank-details::before{
+    content:counter(office-rank) ".";
+    min-width:1.4em;
+    color:#666666;
+    font-weight:700;
+}
+
+.office-rank-details strong{
+    min-width:5.5em;
+    white-space:nowrap;
+}
+
+.office-rank-controls{
+    display:flex;
+    gap:6px;
+}
+
+.office-rank-controls .office-move{
+    width:auto;
+    max-width:none;
+    min-width:58px;
+    margin:0;
+    padding:8px 10px;
+    font-size:0.9rem;
+}
+
+.office-rank-controls .office-move:disabled{
+    background:#888888;
+    cursor:not-allowed;
+}
+
+.office-pending{
+    margin:20px 0;
+    border-left-color:#b78a2f;
+    background:#fff9e8;
+}
+
+.office-pending p{
+    margin-bottom:0;
+}
+
 /* =====================================
    最終課題ページ
 ===================================== */
@@ -559,6 +678,23 @@ body.office{
 
         font-size:1.1rem;
 
+    }
+
+    .office-match-grid{
+        grid-template-columns:1fr;
+        gap:5px;
+    }
+
+    .office-match-grid select{
+        margin-bottom:8px;
+    }
+
+    .office-rank-card{
+        grid-template-columns:1fr;
+    }
+
+    .office-rank-controls .office-move{
+        flex:1;
     }
 
     input{
