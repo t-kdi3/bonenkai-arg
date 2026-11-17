@@ -481,6 +481,30 @@ body.office{
     border-bottom:2px solid #dddddd;
 }
 
+.office-account-guide{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:12px;
+    margin:20px 0;
+}
+
+.office-account-guide > div{
+    padding:14px;
+    border:1px solid #dddddd;
+    border-radius:8px;
+    background:#fafafa;
+}
+
+.office-account-guide dt{
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.office-account-guide dd{
+    margin:0;
+    font-size:0.92rem;
+}
+
 .office-match-grid{
     display:grid;
     grid-template-columns:minmax(110px, 1fr) minmax(180px, 2fr);
@@ -522,6 +546,25 @@ body.office{
     color:#a4262c;
 }
 
+.office-ranking-hints{
+    display:grid;
+    gap:6px;
+    margin:0 0 16px;
+    padding-left:1.5em;
+}
+
+.office-ranking-hints:empty{
+    display:none;
+}
+
+.office-ranking-hints .is-incorrect{
+    color:#a4262c;
+}
+
+.office-ranking-hints .is-correct{
+    color:#315f3c;
+}
+
 .office-choices{
     margin:20px 0;
 }
@@ -531,52 +574,72 @@ body.office{
     text-align:left;
 }
 
-.office-rank-list{
+.office-rate-list{
     display:grid;
-    gap:8px;
+    gap:12px;
     margin:20px 0;
     padding:0;
     list-style:none;
-    counter-reset:office-rank;
 }
 
-.office-rank-card{
-    display:grid;
-    grid-template-columns:minmax(0, 1fr) auto;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
+.office-rate-bucket{
+    padding:12px;
     border:1px solid #d5d5d5;
     border-radius:8px;
     background:#fafafa;
-    counter-increment:office-rank;
 }
 
-.office-rank-details{
+.office-rate-bucket > strong{
+    display:block;
+    margin-bottom:8px;
+    color:#333333;
+    font-weight:700;
+    font-size:1.1rem;
+}
+
+.office-prefecture-list{
+    display:grid;
+    gap:6px;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+.office-prefecture-item{
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) auto;
+    align-items:center;
+    gap:8px;
+    padding:6px 8px;
+    border-radius:6px;
+    background:#ffffff;
+}
+
+.office-prefecture-item.is-fixed{
+    background:#f0f0f0;
+}
+
+.office-prefecture-name{
     display:flex;
     flex-wrap:wrap;
-    align-items:baseline;
-    gap:4px 12px;
+    align-items:center;
+    gap:6px;
 }
 
-.office-rank-details::before{
-    content:counter(office-rank) ".";
-    min-width:1.4em;
-    color:#666666;
-    font-weight:700;
+.office-prefecture-fixed{
+    padding:1px 6px;
+    border-radius:4px;
+    background:#e0e0e0;
+    color:#555555;
+    font-size:0.75rem;
 }
 
-.office-rank-details strong{
-    min-width:5.5em;
-    white-space:nowrap;
-}
-
-.office-rank-controls{
+.office-prefecture-controls{
     display:flex;
     gap:6px;
 }
 
-.office-rank-controls .office-move{
+.office-prefecture-controls .office-move{
     width:auto;
     max-width:none;
     min-width:58px;
@@ -585,7 +648,7 @@ body.office{
     font-size:0.9rem;
 }
 
-.office-rank-controls .office-move:disabled{
+.office-prefecture-controls .office-move:disabled{
     background:#888888;
     cursor:not-allowed;
 }
@@ -694,16 +757,17 @@ body.office{
         gap:5px;
     }
 
+    .office-account-guide{
+        grid-template-columns:1fr;
+    }
+
     .office-match-grid select{
         margin-bottom:8px;
     }
 
-    .office-rank-card{
-        grid-template-columns:1fr;
-    }
-
-    .office-rank-controls .office-move{
-        flex:1;
+    .office-prefecture-controls .office-move{
+        min-width:52px;
+        padding:8px 6px;
     }
 
     input{
