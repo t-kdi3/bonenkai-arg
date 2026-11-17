@@ -522,6 +522,15 @@ body.office{
     color:#a4262c;
 }
 
+.office-choices{
+    margin:20px 0;
+}
+
+.office-choices button{
+    max-width:100%;
+    text-align:left;
+}
+
 .office-rank-list{
     display:grid;
     gap:8px;

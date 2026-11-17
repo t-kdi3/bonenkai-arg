@@ -80,13 +80,26 @@
     <button id="checkRanking" type="button">並び順を確認</button>
 </section>
 
+<section id="electricityMission" class="office-mission" hidden>
+    <h3>ミッション3：電気代を当てよう</h3>
+    <p>
+        R7年度の本校の電気料は、1か月平均でいくらだったでしょう？
+    </p>
+    <div class="office-choices" role="group" aria-label="1か月の電気料を選択">
+        <button type="button" data-amount="490284">490,284円</button>
+        <button type="button" data-amount="490824">490,824円</button>
+        <button type="button" data-amount="498024">498,024円</button>
+    </div>
+    <p id="electricityFeedback" class="office-feedback" aria-live="polite"></p>
+    <button id="continueAfterElectricity" type="button" hidden>結果を見る</button>
+</section>
+
 <section id="missionComplete" class="office-mission" hidden>
     <h3>ミッション達成！</h3>
-    <p>予算科目の仕分けと、都道府県別の宿泊費基準額の並べ替えができました。</p>
-    <div class="office-pending">
-        <strong>追加問題：国府台高校の1か月の電気代</strong>
-        <p>答えを事務に確認中のため、今回はクリア条件に含めていません。</p>
-    </div>
+    <p>予算科目、宿泊費基準額、電気料の3つのミッションを達成しました！</p>
+    <p class="office-pending">
+        R7年度の本校の電気料は、1か月平均 <strong>490,824円</strong> でした。
+    </p>
     <button type="button" onclick="location.href='office-clear.html'">
         事務の課題をクリアする
     </button>
@@ -123,9 +136,11 @@ const rateGroups = [
 
 const budgetMission = document.getElementById("budgetMission");
 const rankingMission = document.getElementById("rankingMission");
+const electricityMission = document.getElementById("electricityMission");
 const missionComplete = document.getElementById("missionComplete");
 const budgetFeedback = document.getElementById("budgetFeedback");
 const rankingFeedback = document.getElementById("rankingFeedback");
+const electricityFeedback = document.getElementById("electricityFeedback");
 const rateCards = document.getElementById("rateCards");
 let displayedRates = rateGroups.flatMap((group, index) => {
     return index % 2 === 0
@@ -166,6 +181,27 @@ document.getElementById("checkRanking").addEventListener("click", () => {
     rankingFeedback.textContent = "正解！47都道府県の基準額を高い順に並べられました。";
     rankingFeedback.classList.remove("is-incorrect");
     rankingMission.hidden = true;
+    electricityMission.hidden = false;
+    document.querySelector("#electricityMission [data-amount]").focus();
+});
+
+document.querySelectorAll("#electricityMission [data-amount]").forEach((button) => {
+    button.addEventListener("click", () => {
+        if (button.dataset.amount !== "490824") {
+            electricityFeedback.textContent = "不正解です。もう一度選んでください。";
+            electricityFeedback.classList.add("is-incorrect");
+            return;
+        }
+
+        electricityFeedback.textContent = "正解！R7年度の月平均は490,824円でした。";
+        electricityFeedback.classList.remove("is-incorrect");
+        document.getElementById("continueAfterElectricity").hidden = false;
+        document.getElementById("continueAfterElectricity").focus();
+    });
+});
+
+document.getElementById("continueAfterElectricity").addEventListener("click", () => {
+    electricityMission.hidden = true;
     missionComplete.hidden = false;
     document.querySelector("#missionComplete button").focus();
 });
