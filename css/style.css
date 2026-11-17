@@ -826,9 +826,11 @@ body.office{
     border-radius: 12px;
 }
 
-.it-box ul {
+.it-box label {
+    display: block;
+    margin-top: 12px;
     text-align: left;
-    display: inline-block;
+    font-weight: bold;
 }
 
 .it-box input {

