@@ -99,14 +99,15 @@
 </section>
 
 <section id="electricityMission" class="office-mission" hidden>
-    <h3>ミッション3：電気代を当てよう</h3>
+    <h3>ミッション3：一般家庭の何か月分？</h3>
     <p>
-        R7年度の本校の電気料は、1か月平均でいくらだったでしょう？
+        比較の目安として、一般家庭の電気料を月12,000円とします。
+        R7年度の本校の電気料は、一般家庭の何か月分くらいでしょう？
     </p>
-    <div class="office-choices" role="group" aria-label="1か月の電気料を選択">
-        <button type="button" data-amount="490284">490,284円</button>
-        <button type="button" data-amount="490824">490,824円</button>
-        <button type="button" data-amount="498024">498,024円</button>
+    <div class="office-choices" role="group" aria-label="一般家庭の電気料何か月分か選択">
+        <button type="button" data-months="24">約24か月分（約2年分）</button>
+        <button type="button" data-months="41">約41か月分（約3年5か月分）</button>
+        <button type="button" data-months="60">約60か月分（約5年分）</button>
     </div>
     <p id="electricityFeedback" class="office-feedback" aria-live="polite"></p>
     <button id="continueAfterElectricity" type="button" hidden>結果を見る</button>
@@ -116,7 +117,8 @@
     <h3>ミッション達成！</h3>
     <p>予算科目、宿泊費基準額、電気料の3つのミッションを達成しました！</p>
     <p class="office-pending">
-        R7年度の本校の電気料は、1か月平均 <strong>490,824円</strong> でした。
+        R7年度の本校の電気料は月平均 <strong>490,824円</strong>。
+        一般家庭を月12,000円とすると、約 <strong>41か月分（約3年5か月分）</strong> です。
     </p>
     <button type="button" onclick="location.href='office-clear.html'">
         事務の課題をクリアする
@@ -236,18 +238,18 @@ document.getElementById("checkRanking").addEventListener("click", () => {
     rankingFeedback.classList.remove("is-incorrect");
     rankingMission.hidden = true;
     electricityMission.hidden = false;
-    document.querySelector("#electricityMission [data-amount]").focus();
+    document.querySelector("#electricityMission [data-months]").focus();
 });
 
-document.querySelectorAll("#electricityMission [data-amount]").forEach((button) => {
+document.querySelectorAll("#electricityMission [data-months]").forEach((button) => {
     button.addEventListener("click", () => {
-        if (button.dataset.amount !== "490824") {
+        if (button.dataset.months !== "41") {
             electricityFeedback.textContent = "不正解です。もう一度選んでください。";
             electricityFeedback.classList.add("is-incorrect");
             return;
         }
 
-        electricityFeedback.textContent = "正解！R7年度の月平均は490,824円でした。";
+        electricityFeedback.textContent = "正解！490,824円 ÷ 12,000円 ≒ 40.9なので、約41か月分です。";
         electricityFeedback.classList.remove("is-incorrect");
         document.getElementById("continueAfterElectricity").hidden = false;
         document.getElementById("continueAfterElectricity").focus();
