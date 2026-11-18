@@ -14,45 +14,216 @@
 
 <h2>🎵 音楽の挑戦 🎵</h2>
 
-<p>
-【問題文】
+<div class="music-progress">
+  <span id="questionNumber">問題 1 / 3</span>
+  <span id="questionType">単音</span>
+</div>
+
+<p class="music-question" id="questionText">
+サンプルの音はどれですか？
 </p>
 
-<input id="ans">
-
-<button onclick="check()">
-回答
+<button id="sampleButton" class="sample-button" type="button">
+  ▶ サンプルを再生
 </button>
 
-<button class="back-btn"
+<div class="selected-answer" id="selectedAnswer" aria-live="polite">
+鍵盤から音を選んでください
+</div>
+
+<div class="piano" id="piano" aria-label="ピアノ鍵盤"></div>
+
+<p class="music-feedback" id="feedback" aria-live="polite"></p>
+
+<button id="answerButton" type="button">
+決定
+</button>
+
+<button class="back-btn" type="button"
 onclick="location.href='start.html'">
-前のページへ戻る
+課題選択へ戻る
 </button>
 
 </div>
 </div>
 
 <script>
+const questions = [
+  { notes: ["A4"], answerLabel: "A" },
+  { notes: ["Gb4"], answerLabel: "Ges" },
+  { notes: ["F4", "A4", "C5"], answerLabel: "F / A / C" }
+];
 
-function check(){
+const notes = [
+  { id: "C4",  freq: 261.63, type: "white", label: "ド" },
+  { id: "Db4", freq: 277.18, type: "black", label: "嬰ハ／変ニ", left: "8.75%" },
+  { id: "D4",  freq: 293.66, type: "white", label: "レ" },
+  { id: "Eb4", freq: 311.13, type: "black", label: "嬰ニ／変ホ", left: "21.25%" },
+  { id: "E4",  freq: 329.63, type: "white", label: "ミ" },
+  { id: "F4",  freq: 349.23, type: "white", label: "ファ" },
+  { id: "Gb4", freq: 369.99, type: "black", label: "Ges", left: "46.25%" },
+  { id: "G4",  freq: 392.00, type: "white", label: "ソ" },
+  { id: "Ab4", freq: 415.30, type: "black", label: "変ラ", left: "58.75%" },
+  { id: "A4",  freq: 440.00, type: "white", label: "ラ" },
+  { id: "Bb4", freq: 466.16, type: "black", label: "変ロ", left: "71.25%" },
+  { id: "B4",  freq: 493.88, type: "white", label: "シ" },
+  { id: "C5",  freq: 523.25, type: "white", label: "ド" }
+];
 
-if(
-document.getElementById("ans")
-.value.trim()
-==="【答え】"
-){
+let currentQuestion = 0;
+let selected = [];
+let audioContext = null;
 
-location.href=
-"music-clear.html";
+const piano = document.getElementById("piano");
+const questionNumber = document.getElementById("questionNumber");
+const questionType = document.getElementById("questionType");
+const questionText = document.getElementById("questionText");
+const selectedAnswer = document.getElementById("selectedAnswer");
+const feedback = document.getElementById("feedback");
 
-}else{
-
-alert("不正解");
-
+function getAudioContext() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+  return audioContext;
 }
 
+function playNotes(noteIds, duration = 1.1) {
+  const context = getAudioContext();
+  const start = context.currentTime + 0.02;
+
+  noteIds.forEach(noteId => {
+    const note = notes.find(item => item.id === noteId);
+    if (!note) return;
+
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(note.freq, start);
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.22, start + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(start);
+    oscillator.stop(start + duration + 0.05);
+  });
 }
 
+function buildPiano() {
+  notes.filter(note => note.type === "white").forEach(note => {
+    const key = document.createElement("button");
+    key.type = "button";
+    key.className = "piano-key white-key";
+    key.dataset.note = note.id;
+    key.innerHTML =
+      `<span class="key-name">${note.label}</span>` +
+      `<span class="key-code">${note.id.replace("4", "").replace("5", "")}</span>`;
+    piano.appendChild(key);
+  });
+
+  notes.filter(note => note.type === "black").forEach(note => {
+    const key = document.createElement("button");
+    key.type = "button";
+    key.className = "piano-key black-key";
+    key.dataset.note = note.id;
+    key.style.left = note.left;
+    key.innerHTML = `<span class="key-name">${note.label}</span>`;
+    piano.appendChild(key);
+  });
+
+  piano.querySelectorAll(".piano-key").forEach(key => {
+    key.addEventListener("click", () => {
+      const noteId = key.dataset.note;
+      playNotes([noteId], 0.8);
+
+      if (currentQuestion !== 2) {
+        selected = [noteId];
+      } else if (selected.includes(noteId)) {
+        selected = selected.filter(id => id !== noteId);
+      } else {
+        selected.push(noteId);
+      }
+
+      updateSelection();
+    });
+  });
+}
+
+function updateSelection() {
+  piano.querySelectorAll(".piano-key").forEach(key => {
+    key.classList.toggle("selected", selected.includes(key.dataset.note));
+  });
+
+  if (selected.length === 0) {
+    selectedAnswer.textContent = "鍵盤から音を選んでください";
+    return;
+  }
+
+  const labels = selected.map(id => {
+    const note = notes.find(item => item.id === id);
+    if (id === "Gb4") return "Ges";
+    return note.label + (id === "C5" ? "（高）" : "");
+  });
+  selectedAnswer.textContent = "選択中：" + labels.join("・");
+}
+
+function updateQuestion() {
+  questionNumber.textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
+  questionType.textContent = currentQuestion === 2 ? "和音" : "単音";
+  questionText.textContent = currentQuestion === 2
+    ? "サンプルの和音はどの音の組み合わせですか？"
+    : "サンプルの音はどれですか？";
+  feedback.textContent = "";
+  selected = [];
+  updateSelection();
+}
+
+document.getElementById("sampleButton").addEventListener("click", () => {
+  playNotes(questions[currentQuestion].notes, currentQuestion === 2 ? 1.4 : 1.1);
+});
+
+document.getElementById("answerButton").addEventListener("click", () => {
+  if (selected.length === 0) {
+    feedback.className = "music-feedback feedback-warning";
+    feedback.textContent = "鍵盤を選んでください";
+    return;
+  }
+
+  const expected = questions[currentQuestion].notes;
+  const isCorrect =
+    selected.length === expected.length &&
+    expected.every(noteId => selected.includes(noteId));
+
+  if (!isCorrect) {
+    feedback.className = "music-feedback feedback-wrong";
+    feedback.textContent = "不正解です。もう一度考えてみましょう。";
+    return;
+  }
+
+  feedback.className = "music-feedback feedback-correct";
+  feedback.textContent = "正解！";
+
+  if (currentQuestion === questions.length - 1) {
+    document.getElementById("answerButton").disabled = true;
+    setTimeout(() => {
+      location.href = "music-clear.html";
+    }, 900);
+  } else {
+    setTimeout(() => {
+      currentQuestion++;
+      updateQuestion();
+    }, 900);
+  }
+});
+
+buildPiano();
+updateQuestion();
 </script>
 
 </body>

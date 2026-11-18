@@ -280,6 +280,171 @@ body.music{
     background:#6b496b;
 }
 
+.music-progress{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+    color:#5c4560;
+    font-weight:bold;
+}
+
+.music-question{
+    text-align:center;
+    min-height:29px;
+}
+
+.sample-button{
+    background:#6b496b;
+}
+
+.sample-button:hover{
+    background:#563956;
+}
+
+.selected-answer{
+    margin:18px 0 12px;
+    padding:10px;
+    min-height:44px;
+    text-align:center;
+    border:1px solid #d8cddd;
+    border-radius:8px;
+    background:#faf7fb;
+    color:#4e3d50;
+}
+
+.piano{
+    position:relative;
+    width:100%;
+    max-width:720px;
+    height:220px;
+    margin:0 auto 14px;
+    border:8px solid #3d3540;
+    border-top:12px solid #3d3540;
+    border-radius:8px;
+    background:#3d3540;
+    overflow:hidden;
+}
+
+.piano-key{
+    border-radius:0 0 5px 5px;
+    cursor:pointer;
+    transition:background 0.08s, transform 0.08s;
+}
+
+.white-key{
+    position:relative;
+    width:12.5%;
+    height:100%;
+    max-width:none;
+    float:left;
+    margin:0;
+    padding:150px 2px 8px;
+    border:1px solid #aaa;
+    background:#fff;
+    color:#333;
+    text-align:center;
+}
+
+.white-key:hover{
+    background:#f2edf4;
+}
+
+.white-key.selected{
+    background:#d9c5df;
+    box-shadow:inset 0 0 0 3px #7d5784;
+}
+
+.black-key{
+    position:absolute;
+    z-index:2;
+    top:0;
+    width:7.5%;
+    height:62%;
+    max-width:none;
+    margin:0;
+    padding:0 2px;
+    border:2px solid #111;
+    background:#222;
+    color:#fff;
+    box-shadow:0 4px 4px rgba(0,0,0,0.35);
+}
+
+.black-key:hover{
+    background:#3a3a3a;
+}
+
+.black-key.selected{
+    background:#806487;
+    box-shadow:inset 0 0 0 3px #d9c5df, 0 4px 4px rgba(0,0,0,0.35);
+}
+
+.key-name,
+.key-code{
+    display:block;
+    width:100%;
+}
+
+.key-name{
+    font-size:15px;
+    font-weight:bold;
+    line-height:1.2;
+}
+
+.key-code{
+    margin-top:4px;
+    font-size:11px;
+    color:#777;
+}
+
+.black-key .key-name{
+    position:absolute;
+    bottom:10px;
+    left:0;
+    font-size:12px;
+}
+
+.music-feedback{
+    min-height:29px;
+    margin:8px 0;
+    text-align:center;
+    font-weight:bold;
+}
+
+.feedback-correct{
+    color:#23804a;
+}
+
+.feedback-wrong{
+    color:#b42b2b;
+}
+
+.feedback-warning{
+    color:#8a6413;
+}
+
+@media (max-width:560px){
+    .piano{
+        height:180px;
+    }
+
+    .white-key{
+        padding-top:118px;
+    }
+
+    .key-name{
+        font-size:11px;
+    }
+
+    .key-code{
+        font-size:9px;
+    }
+
+    .black-key .key-name{
+        font-size:9px;
+    }
+}
+
 /* 美術 */
 
 body.art{
