@@ -14,6 +14,11 @@
 
 <h2>🎵 音楽の挑戦 🎵</h2>
 
+<div class="volume-notice" role="alert">
+  <strong>ご注意</strong><br>
+  誤った音量設定を防ぐため、課題を始める前に端末の音量を上げてください。
+</div>
+
 <div class="music-progress">
   <span id="questionNumber">問題 1 / 3</span>
   <span id="questionType">単音</span>
@@ -56,16 +61,16 @@ const questions = [
 
 const notes = [
   { id: "C4",  freq: 261.63, type: "white", label: "ド" },
-  { id: "Db4", freq: 277.18, type: "black", label: "嬰ハ／変ニ", left: "8.75%" },
+  { id: "Db4", freq: 277.18, type: "black", label: "ド♯/レ♭", left: "8.75%" },
   { id: "D4",  freq: 293.66, type: "white", label: "レ" },
-  { id: "Eb4", freq: 311.13, type: "black", label: "嬰ニ／変ホ", left: "21.25%" },
+  { id: "Eb4", freq: 311.13, type: "black", label: "レ♯/ミ♭", left: "21.25%" },
   { id: "E4",  freq: 329.63, type: "white", label: "ミ" },
   { id: "F4",  freq: 349.23, type: "white", label: "ファ" },
-  { id: "Gb4", freq: 369.99, type: "black", label: "Ges", left: "46.25%" },
+  { id: "Gb4", freq: 369.99, type: "black", label: "ファ♯/ソ♭", left: "46.25%" },
   { id: "G4",  freq: 392.00, type: "white", label: "ソ" },
-  { id: "Ab4", freq: 415.30, type: "black", label: "変ラ", left: "58.75%" },
+  { id: "Ab4", freq: 415.30, type: "black", label: "ソ♯/ラ♭", left: "58.75%" },
   { id: "A4",  freq: 440.00, type: "white", label: "ラ" },
-  { id: "Bb4", freq: 466.16, type: "black", label: "変ロ", left: "71.25%" },
+  { id: "Bb4", freq: 466.16, type: "black", label: "ラ♯/シ♭", left: "71.25%" },
   { id: "B4",  freq: 493.88, type: "white", label: "シ" },
   { id: "C5",  freq: 523.25, type: "white", label: "ド" }
 ];
@@ -133,21 +138,22 @@ function buildPiano() {
     key.className = "piano-key black-key";
     key.dataset.note = note.id;
     key.style.left = note.left;
-    key.innerHTML = `<span class="key-name">${note.label}</span>`;
     piano.appendChild(key);
   });
 
   piano.querySelectorAll(".piano-key").forEach(key => {
     key.addEventListener("click", () => {
       const noteId = key.dataset.note;
-      playNotes([noteId], 0.8);
 
       if (currentQuestion !== 2) {
         selected = [noteId];
+        playNotes([noteId], 0.8);
       } else if (selected.includes(noteId)) {
         selected = selected.filter(id => id !== noteId);
+        if (selected.length > 0) playNotes(selected, 1.0);
       } else {
         selected.push(noteId);
+        playNotes(selected, 1.0);
       }
 
       updateSelection();
@@ -167,7 +173,7 @@ function updateSelection() {
 
   const labels = selected.map(id => {
     const note = notes.find(item => item.id === id);
-    if (id === "Gb4") return "Ges";
+    if (note.type === "black") return note.label;
     return note.label + (id === "C5" ? "（高）" : "");
   });
   selectedAnswer.textContent = "選択中：" + labels.join("・");

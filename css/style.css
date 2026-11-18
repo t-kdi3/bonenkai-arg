@@ -280,6 +280,17 @@ body.music{
     background:#6b496b;
 }
 
+.volume-notice{
+    margin:12px 0 16px;
+    padding:12px 14px;
+    border:2px solid #c59a24;
+    border-radius:8px;
+    background:#fff8dc;
+    color:#664d00;
+    text-align:center;
+    line-height:1.6;
+}
+
 .music-progress{
     display:flex;
     justify-content:space-between;
