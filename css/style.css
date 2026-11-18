@@ -305,6 +305,18 @@ body.music{
     min-height:29px;
 }
 
+.music-hint{
+    margin:8px auto 12px;
+    padding:9px 12px;
+    max-width:520px;
+    border:1px solid #d4c8b2;
+    border-radius:8px;
+    background:#fffaf0;
+    color:#6b5530;
+    text-align:center;
+    line-height:1.5;
+}
+
 .sample-button{
     background:#6b496b;
 }

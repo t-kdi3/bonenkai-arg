@@ -16,7 +16,7 @@
 
 <div class="volume-notice" role="alert">
   <strong>ご注意</strong><br>
-  誤った音量設定を防ぐため、課題を始める前に端末の音量を上げてください。
+  この課題は端末のスピーカーを利用します。端末の音量を上げてください。
 </div>
 
 <div class="music-progress">
@@ -27,6 +27,8 @@
 <p class="music-question" id="questionText">
 サンプルの音はどれですか？
 </p>
+
+<p class="music-hint" id="questionHint" aria-live="polite"></p>
 
 <button id="sampleButton" class="sample-button" type="button">
   ▶ サンプルを再生
@@ -54,9 +56,9 @@ onclick="location.href='start.html'">
 
 <script>
 const questions = [
-  { notes: ["A4"], answerLabel: "A" },
-  { notes: ["Gb4"], answerLabel: "Ges" },
-  { notes: ["F4", "A4", "C5"], answerLabel: "F / A / C" }
+  { notes: ["A4"], answerLabel: "A", hint: "ヒント：時報の音に使われています。" },
+  { notes: ["Gb4"], answerLabel: "Ges", hint: "" },
+  { notes: ["F4", "A4", "C5"], answerLabel: "F / A / C", hint: "ヒント：校歌の最初の和音です。" }
 ];
 
 const notes = [
@@ -83,6 +85,7 @@ const piano = document.getElementById("piano");
 const questionNumber = document.getElementById("questionNumber");
 const questionType = document.getElementById("questionType");
 const questionText = document.getElementById("questionText");
+const questionHint = document.getElementById("questionHint");
 const selectedAnswer = document.getElementById("selectedAnswer");
 const feedback = document.getElementById("feedback");
 
@@ -185,6 +188,8 @@ function updateQuestion() {
   questionText.textContent = currentQuestion === 2
     ? "サンプルの和音はどの音の組み合わせですか？"
     : "サンプルの音はどれですか？";
+  questionHint.textContent = questions[currentQuestion].hint;
+  questionHint.style.display = questions[currentQuestion].hint ? "block" : "none";
   feedback.textContent = "";
   selected = [];
   updateSelection();
