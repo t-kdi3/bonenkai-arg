@@ -42,6 +42,8 @@
         <p class="calligraphy-hint">
             正解の札を選んでください。取り札は正解17枚とダミー8枚です。
             誤答・スキップした札は後でもう一度出題されます。
+            この読み札で前回までに誤答した札はグレーになり、選べません。
+            3周目からはダミー札がなくなります。
         </p>
         <div id="choiceCards" class="calligraphy-choices"></div>
         <p id="gameFeedback" class="calligraphy-feedback" aria-live="polite"></p>
@@ -50,7 +52,7 @@
 
     <section id="completePanel" class="calligraphy-panel" hidden>
         <h2>全問正解！</h2>
-        <p>すべての読み札を取ることができました。</p>
+        <p id="completionMessage">すべての読み札を取ることができました。</p>
         <button type="button" onclick="location.href='calligraphy-clear.html'">
             課題クリアへ
         </button>
@@ -96,7 +98,10 @@ const choiceCards = document.getElementById("choiceCards");
 const gameFeedback = document.getElementById("gameFeedback");
 let deck = [];
 let currentCard = null;
-const retryCards = new Set();
+let weekNumber = 1;
+const incorrectChoicesByReading = new Map();
+const attemptsByReading = new Map();
+let dummyChoices = new Set();
 let penaltyTimer = null;
 
 function shuffled(items) {
@@ -141,34 +146,64 @@ renderChoices(
 
 function startGame() {
     const extraCards = shuffled(distractors).slice(0, 8);
+    dummyChoices = new Set(extraCards);
     renderChoices(
         choiceCards,
         [...readingCards.map((card) => card.answer), ...extraCards],
         chooseCard
     );
     deck = shuffled(readingCards);
-    retryCards.clear();
+    weekNumber = 1;
+    incorrectChoicesByReading.clear();
+    attemptsByReading.clear();
     examplePanel.hidden = true;
     gamePanel.hidden = false;
     showNextCard();
 }
 
-function showNextCard() {
+function showNextCard(feedbackMessage = "") {
     if (deck.length === 0) {
         gamePanel.hidden = true;
         completePanel.hidden = false;
         return;
     }
 
+    const nextWeek = Math.min(
+        ...deck.map((card) => (attemptsByReading.get(card.answer) || 0) + 1)
+    );
+    weekNumber = Math.max(weekNumber, nextWeek);
+    if (weekNumber >= 3 && dummyChoices.size > 0) {
+        choiceCards.querySelectorAll("button").forEach((button) => {
+            if (dummyChoices.has(button.textContent)) {
+                button.remove();
+            }
+        });
+        dummyChoices.clear();
+    }
+
     currentCard = deck[0];
+    attemptsByReading.set(
+        currentCard.answer,
+        (attemptsByReading.get(currentCard.answer) || 0) + 1
+    );
     document.getElementById("remainingCount").textContent = deck.length;
     document.getElementById("roundCount").textContent =
-        retryCards.size === 0 ? "初回" : "再挑戦札あり";
+        `第${weekNumber}周目`;
     const image = document.getElementById("readingCard");
     image.src = `${cardImagePath}${encodeURIComponent(currentCard.file)}`;
     image.alt = `${currentCard.answer}の篆書`;
-    gameFeedback.textContent = "";
-    setChoicesDisabled(false);
+    gameFeedback.textContent = feedbackMessage;
+    gameFeedback.classList.toggle(
+        "calligraphy-feedback--correct",
+        Boolean(feedbackMessage)
+    );
+    const incorrectChoices =
+        incorrectChoicesByReading.get(currentCard.answer) || new Set();
+    choiceCards.querySelectorAll("button").forEach((button) => {
+        const isKnownIncorrect = incorrectChoices.has(button.textContent);
+        button.disabled = isKnownIncorrect;
+        button.classList.toggle("calligraphy-choice--eliminated", isKnownIncorrect);
+    });
 }
 
 function chooseCard(answer, selectedCard) {
@@ -176,7 +211,13 @@ function chooseCard(answer, selectedCard) {
         return;
     }
     if (answer !== currentCard.answer) {
-        retryCards.add(currentCard.answer);
+        let incorrectChoices =
+            incorrectChoicesByReading.get(currentCard.answer);
+        if (!incorrectChoices) {
+            incorrectChoices = new Set();
+            incorrectChoicesByReading.set(currentCard.answer, incorrectChoices);
+        }
+        incorrectChoices.add(answer);
         deck.push(deck.shift());
         waitAndAdvance("お手付きです。");
         return;
@@ -184,20 +225,21 @@ function chooseCard(answer, selectedCard) {
 
     deck.shift();
     selectedCard.remove();
-    retryCards.delete(currentCard.answer);
     if (deck.length === 0) {
         document.getElementById("remainingCount").textContent = "0";
-        showNextCard();
+        gamePanel.hidden = true;
+        completePanel.hidden = false;
+        document.getElementById("completionMessage").textContent =
+            `正解！「${answer}」を取り、すべての読み札を取ることができました。`;
         return;
     }
-    showNextCard();
+    showNextCard(`正解！「${answer}」の札を取りました。`);
 }
 
 function skipCard() {
     if (!currentCard || penaltyTimer) {
         return;
     }
-    retryCards.add(currentCard.answer);
     deck.push(deck.shift());
     waitAndAdvance("スキップしました。");
 }
@@ -206,6 +248,7 @@ function waitAndAdvance(message) {
     setChoicesDisabled(true);
     document.getElementById("skipButton").disabled = true;
     let seconds = 5;
+    gameFeedback.classList.remove("calligraphy-feedback--correct");
     gameFeedback.textContent = `${message} ${seconds}秒後に次の札へ進みます。`;
     penaltyTimer = window.setInterval(() => {
         seconds -= 1;
