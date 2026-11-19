@@ -1,0 +1,117 @@
+.calligraphy-game h1 {
+    background: #444444;
+}
+
+.calligraphy-intro,
+.calligraphy-question,
+.calligraphy-hint {
+    text-align: center;
+}
+
+.calligraphy-panel {
+    margin-top: 24px;
+}
+
+.calligraphy-panel h2 {
+    background: #444444;
+}
+
+.calligraphy-reading {
+    display: block;
+    width: min(100%, 360px);
+    max-height: 380px;
+    margin: 16px auto;
+    object-fit: contain;
+    background: #f7f5ef;
+    border: 1px solid #e5e0d4;
+    border-radius: 8px;
+}
+
+.calligraphy-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #f3f0e8;
+    border-radius: 8px;
+}
+
+.calligraphy-status strong {
+    font-size: 1.35rem;
+}
+
+.calligraphy-choices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.calligraphy-choice {
+    width: 100%;
+    min-height: 76px;
+    max-width: none;
+    margin: 0;
+    padding: 8px 4px;
+    background: #fffdf8;
+    border: 2px solid #ded8ca;
+    color: #292929;
+    font-family: inherit;
+    font-size: 1.65rem;
+    font-weight: 600;
+}
+
+.calligraphy-choice--paired {
+    font-size: 1.15rem;
+    white-space: nowrap;
+}
+
+.calligraphy-choice:hover:not(:disabled) {
+    background: #f1e7d2;
+    border-color: #9c8053;
+}
+
+.calligraphy-choice:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+.calligraphy-feedback {
+    min-height: 1.8em;
+    text-align: center;
+    font-weight: 600;
+}
+
+.calligraphy-skip {
+    background: #756c60;
+}
+
+.calligraphy-skip:hover {
+    background: #5e564c;
+}
+
+.calligraphy-skip:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 600px) {
+    .calligraphy-choices {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    .calligraphy-choice {
+        min-height: 64px;
+        font-size: 1.4rem;
+    }
+
+    .calligraphy-choice--paired {
+        font-size: 1.05rem;
+    }
+
+    .calligraphy-reading {
+        max-height: 320px;
+    }
+}
