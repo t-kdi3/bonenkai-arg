@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="css/style.css">
+<script src="js/common.js"></script>
 
 <title>教科横断チャレンジ</title>
 
@@ -72,6 +73,17 @@ placeholder="こちらに入力">
         進行状況をリセット
     </button>
     <p id="debugStatus" role="status" aria-live="polite"></p>
+    <hr>
+    <h2>全体ランキングのリセット</h2>
+    <p>
+        全利用者のランキング記録を削除します。実行にはApps Scriptに設定した認証キーが必要です。
+    </p>
+    <label for="rankingResetToken">リセット用認証キー</label>
+    <input id="rankingResetToken" type="password" autocomplete="off">
+    <button id="resetRankingButton" type="button">
+        全体ランキングをリセット
+    </button>
+    <p id="rankingResetStatus" role="status" aria-live="polite"></p>
 </section>
 
 </div>
@@ -157,6 +169,38 @@ if(new URLSearchParams(location.search).get("debug") === "1"){
 
         document.getElementById("debugStatus").textContent =
             "進行状況をリセットしました。通常の開始手順から再テストできます。";
+    });
+
+    document
+    .getElementById("resetRankingButton")
+    .addEventListener("click", async function(){
+        const status = document.getElementById("rankingResetStatus");
+        const token = document.getElementById("rankingResetToken").value.trim();
+
+        if(!token){
+            status.textContent = "認証キーを入力してください。";
+            return;
+        }
+
+        if(!confirm("全利用者のランキング記録を削除します。この操作は取り消せません。")){
+            return;
+        }
+
+        const button = document.getElementById("resetRankingButton");
+        button.disabled = true;
+        status.textContent = "ランキングをリセットしています…";
+
+        try{
+            const result = await resetGlobalRanking(token);
+            status.textContent =
+                `全体ランキングをリセットしました（${result.deletedRows}件）。`;
+            document.getElementById("rankingResetToken").value = "";
+        }catch(error){
+            console.error(error);
+            status.textContent = error.message;
+        }finally{
+            button.disabled = false;
+        }
     });
 }
 

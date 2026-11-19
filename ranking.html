@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="css/style.css">
+<script src="js/common.js"></script>
 
 <title>個人ランキング</title>
 
@@ -72,9 +73,6 @@ tr:nth-child(even){
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwOvRHsxmXHXbZ3yZ9HY8dQ3c6ZalGXN-h9rWqXcXgDM9MP-5UX6WU0lBfmiQEE20hK/exec";
-
 function secToText(sec){
 
     const min =
@@ -91,7 +89,7 @@ async function loadRanking(){
     try{
 
         const response =
-            await fetch(API_URL);
+            await fetch(RANKING_API_URL);
 
         const data =
             await response.json();

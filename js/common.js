@@ -1,3 +1,6 @@
+const RANKING_API_URL =
+    "https://script.google.com/macros/s/AKfycbwOvRHsxmXHXbZ3yZ9HY8dQ3c6ZalGXN-h9rWqXcXgDM9MP-5UX6WU0lBfmiQEE20hK/exec";
+
 function saveClear(subject){
 
     const clears = JSON.parse(
@@ -45,6 +48,36 @@ function saveClear(subject){
 
 function goStart(){
     location.href = "start.html";
+}
+
+async function resetGlobalRanking(token){
+    const response = await fetch(
+        RANKING_API_URL,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: new URLSearchParams({
+                action: "reset",
+                token: token
+            })
+        }
+    );
+
+    if(!response.ok){
+        throw new Error(`ランキングAPIでエラーが発生しました（${response.status}）。`);
+    }
+
+    const result = await response.json();
+
+    if(!result.success){
+        throw new Error(
+            result.message || "ランキングのリセットに失敗しました。"
+        );
+    }
+
+    return result;
 }
 
 function startWrongAnswerCooldown(options){
