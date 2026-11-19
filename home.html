@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <title>家庭の挑戦</title>
+<script src="js/common.js"></script>
 </head>
 
 <body class="home">
@@ -253,8 +254,16 @@ function checkAnswer(event) {
 
     const question = questions[currentQuestion];
     if (selected.value !== question.answer) {
-        feedback.textContent = "不正解。もう一度考えてみよう。";
         feedback.className = "home-feedback is-incorrect";
+        startWrongAnswerCooldown({
+            controls: [
+                questionArea.querySelector("button[type='submit']"),
+                ...questionArea.querySelectorAll('input[name="answer"]')
+            ],
+            feedback,
+            message: "不正解です。",
+            seconds: 5
+        });
         return;
     }
 

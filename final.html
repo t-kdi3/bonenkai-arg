@@ -7,6 +7,7 @@
 <title>最後の課題</title>
 
 <link rel="stylesheet" href="css/style.css">
+<script src="js/common.js"></script>
 
 </head>
 <body>
@@ -57,6 +58,8 @@ placeholder="カタカナで入力">
 <button onclick="checkAnswer()">
 回答する
 </button>
+
+<p id="answerFeedback" aria-live="polite"></p>
 
 <br><br>
 
@@ -125,11 +128,15 @@ function checkAnswer(){
         "ending.html";
 
     }else{
-
-        alert(
-            "違うようです。もう一度考えてみましょう。"
-        );
-
+        startWrongAnswerCooldown({
+            controls: [
+                document.getElementById("answer"),
+                document.querySelector('button[onclick="checkAnswer()"]')
+            ],
+            feedback: document.getElementById("answerFeedback"),
+            message: "違うようです。",
+            seconds: 5
+        });
     }
 
 }

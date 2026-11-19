@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <title>事務の挑戦</title>
+<script src="js/common.js"></script>
 </head>
 
 <body class="office">
@@ -193,8 +194,16 @@ document.getElementById("checkBudget").addEventListener("click", () => {
     });
 
     if (!allCorrect) {
-        budgetFeedback.textContent = "まだ違う組み合わせがあります。4品目を確認してください。";
         budgetFeedback.classList.add("is-incorrect");
+        startWrongAnswerCooldown({
+            controls: [
+                document.getElementById("checkBudget"),
+                ...document.querySelectorAll("#budgetMission input")
+            ],
+            feedback: budgetFeedback,
+            message: "まだ違う組み合わせがあります。",
+            seconds: 5
+        });
         return;
     }
 
@@ -229,8 +238,16 @@ document.getElementById("checkRanking").addEventListener("click", () => {
     });
 
     if (hints.some((hint) => !hint.correct)) {
-        rankingFeedback.textContent = "まだ正しくない都府県があります。下のヒントを参考にしてください。";
         rankingFeedback.classList.add("is-incorrect");
+        startWrongAnswerCooldown({
+            controls: [
+                document.getElementById("checkRanking"),
+                ...document.querySelectorAll("#rankingMission button")
+            ],
+            feedback: rankingFeedback,
+            message: "まだ正しくない都府県があります。",
+            seconds: 5
+        });
         return;
     }
 
@@ -244,8 +261,13 @@ document.getElementById("checkRanking").addEventListener("click", () => {
 document.querySelectorAll("#electricityMission [data-months]").forEach((button) => {
     button.addEventListener("click", () => {
         if (button.dataset.months !== "41") {
-            electricityFeedback.textContent = "不正解です。もう一度選んでください。";
             electricityFeedback.classList.add("is-incorrect");
+            startWrongAnswerCooldown({
+                controls: [...document.querySelectorAll("#electricityMission [data-months]")],
+                feedback: electricityFeedback,
+                message: "不正解です。",
+                seconds: 5
+            });
             return;
         }
 

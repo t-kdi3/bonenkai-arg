@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <title>音楽の挑戦</title>
+<script src="js/common.js"></script>
 </head>
 
 <body class="music">
@@ -213,7 +214,15 @@ document.getElementById("answerButton").addEventListener("click", () => {
 
   if (!isCorrect) {
     feedback.className = "music-feedback feedback-wrong";
-    feedback.textContent = "不正解です。もう一度考えてみましょう。";
+    startWrongAnswerCooldown({
+      controls: [
+        document.getElementById("answerButton"),
+        ...piano.querySelectorAll(".piano-key")
+      ],
+      feedback,
+      message: "不正解です。",
+      seconds: 5
+    });
     return;
   }
 

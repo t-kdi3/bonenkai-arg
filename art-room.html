@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <title>展示室 | 青の美術館</title>
+<script src="js/common.js"></script>
 </head>
 
 <body class="art">
@@ -161,8 +162,16 @@ if (!Number.isInteger(room) || room < 0 || room >= questions.length || room > pr
         }
 
         if (Number(selected.value) !== question.answer) {
-            feedback.textContent = "もう一度、展示をよく見て考えてみよう。";
             feedback.className = "art-feedback is-incorrect";
+            startWrongAnswerCooldown({
+                controls: [
+                    document.getElementById("submitAnswer"),
+                    ...choices.querySelectorAll("input")
+                ],
+                feedback,
+                message: "もう一度、展示をよく見て考えましょう。",
+                seconds: 5
+            });
             return;
         }
 

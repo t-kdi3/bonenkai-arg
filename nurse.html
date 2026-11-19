@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <title>養護の挑戦</title>
+<script src="js/common.js"></script>
 </head>
 
 <body class="nurse">
@@ -154,7 +155,12 @@ const maximumIntervalMs = 650;
 document.querySelectorAll("#quiz [data-answer]").forEach((button) => {
     button.addEventListener("click", () => {
         if (button.dataset.answer !== "9.8") {
-            quizFeedback.textContent = "不正解です。選択肢をもう一度選んでください。";
+            startWrongAnswerCooldown({
+                controls: [...document.querySelectorAll("#quiz [data-answer]")],
+                feedback: quizFeedback,
+                message: "不正解です。",
+                seconds: 5
+            });
             return;
         }
 
@@ -182,7 +188,12 @@ function showStep() {
 function chooseStepOption(option) {
     const step = responseSteps[currentStep];
     if (option !== step.correct) {
-        stepFeedback.textContent = "その対応ではありません。もう一度選んでください。";
+        startWrongAnswerCooldown({
+            controls: [...stepOptions.querySelectorAll("button")],
+            feedback: stepFeedback,
+            message: "その対応ではありません。",
+            seconds: 5
+        });
         return;
     }
 
