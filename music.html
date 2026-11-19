@@ -57,9 +57,33 @@ onclick="location.href='start.html'">
 
 <script>
 const questions = [
-  { notes: ["A4"], answerLabel: "A", hint: "ヒント：時報の音に使われています。" },
-  { notes: ["Gb4"], answerLabel: "Ges", hint: "" },
-  { notes: ["F4", "A4", "C5"], answerLabel: "F / A / C", hint: "ヒント：校歌の最初の和音です。" }
+  {
+    type: "single",
+    notes: ["A4"],
+    hint: "ヒント：時報の音に使われています。"
+  },
+  {
+    type: "single",
+    notes: ["G4"],
+    hint: "ヒント：マクドナルドのポテトが上がったときの最初の音です。",
+    samplePattern: [
+      ["G4"], ["F4"], ["G4"], [],
+      ["G4"], ["F4"], ["G4"], [],
+      ["G4"], ["F4"], ["G4"], [],
+      ["G4"], ["F4"], ["G4"], []
+    ]
+  },
+  {
+    type: "chord",
+    notes: ["F4", "Gb4"],
+    hint: "ヒント：踏切で使われている和音です。",
+    repeatCount: 8
+  },
+  {
+    type: "chord",
+    notes: ["F4", "A4", "C5"],
+    hint: "ヒント：校歌の最初の和音です。"
+  }
 ];
 
 const notes = [
@@ -80,6 +104,7 @@ const notes = [
 
 let currentQuestion = 0;
 let selected = [];
+let excludedNotes = new Set();
 let audioContext = null;
 
 const piano = document.getElementById("piano");
@@ -100,9 +125,10 @@ function getAudioContext() {
   return audioContext;
 }
 
-function playNotes(noteIds, duration = 1.1) {
+function playNotes(noteIds, duration = 1.1, startTime) {
   const context = getAudioContext();
-  const start = context.currentTime + 0.02;
+  const start = startTime ?? context.currentTime + 0.02;
+  const volume = 0.42 / Math.sqrt(noteIds.length || 1);
 
   noteIds.forEach(noteId => {
     const note = notes.find(item => item.id === noteId);
@@ -114,13 +140,26 @@ function playNotes(noteIds, duration = 1.1) {
     oscillator.type = "sine";
     oscillator.frequency.setValueAtTime(note.freq, start);
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(0.22, start + 0.04);
+    gain.gain.exponentialRampToValueAtTime(volume, start + 0.04);
     gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
 
     oscillator.connect(gain);
     gain.connect(context.destination);
     oscillator.start(start);
     oscillator.stop(start + duration + 0.05);
+  });
+}
+
+function playPattern(pattern, noteDuration = 0.22, noteGap = 0.08, restDuration = 0.3) {
+  let start = getAudioContext().currentTime + 0.02;
+
+  pattern.forEach(noteIds => {
+    if (noteIds.length > 0) {
+      playNotes(noteIds, noteDuration, start);
+      start += noteDuration + noteGap;
+    } else {
+      start += restDuration;
+    }
   });
 }
 
@@ -148,19 +187,21 @@ function buildPiano() {
   piano.querySelectorAll(".piano-key").forEach(key => {
     key.addEventListener("click", () => {
       const noteId = key.dataset.note;
+      if (excludedNotes.has(noteId)) return;
 
-      if (currentQuestion !== 2) {
+      if (questions[currentQuestion].type !== "chord") {
         selected = [noteId];
         playNotes([noteId], 0.8);
       } else if (selected.includes(noteId)) {
         selected = selected.filter(id => id !== noteId);
-        if (selected.length > 0) playNotes(selected, 1.0);
       } else {
         selected.push(noteId);
-        playNotes(selected, 1.0);
       }
 
       updateSelection();
+      if (questions[currentQuestion].type === "chord" && selected.length > 0) {
+        playNotes(selected, 1.0);
+      }
     });
   });
 }
@@ -168,6 +209,8 @@ function buildPiano() {
 function updateSelection() {
   piano.querySelectorAll(".piano-key").forEach(key => {
     key.classList.toggle("selected", selected.includes(key.dataset.note));
+    key.disabled = excludedNotes.has(key.dataset.note);
+    key.classList.toggle("eliminated", key.disabled);
   });
 
   if (selected.length === 0) {
@@ -185,19 +228,32 @@ function updateSelection() {
 
 function updateQuestion() {
   questionNumber.textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
-  questionType.textContent = currentQuestion === 2 ? "和音" : "単音";
-  questionText.textContent = currentQuestion === 2
+  const question = questions[currentQuestion];
+  questionType.textContent = question.type === "chord" ? "和音" : "単音";
+  questionText.textContent = question.type === "chord"
     ? "サンプルの和音はどの音の組み合わせですか？"
     : "サンプルの音はどれですか？";
-  questionHint.textContent = questions[currentQuestion].hint;
-  questionHint.style.display = questions[currentQuestion].hint ? "block" : "none";
+  questionHint.textContent = question.hint;
+  questionHint.style.display = question.hint ? "block" : "none";
   feedback.textContent = "";
   selected = [];
+  excludedNotes = new Set();
   updateSelection();
 }
 
 document.getElementById("sampleButton").addEventListener("click", () => {
-  playNotes(questions[currentQuestion].notes, currentQuestion === 2 ? 1.4 : 1.1);
+  const question = questions[currentQuestion];
+  if (question.samplePattern) {
+    playPattern(question.samplePattern);
+  } else if (question.repeatCount) {
+    playPattern(
+      Array.from({ length: question.repeatCount }, () => question.notes),
+      0.22,
+      0.2
+    );
+  } else {
+    playNotes(question.notes, question.type === "chord" ? 1.4 : 1.1);
+  }
 });
 
 document.getElementById("answerButton").addEventListener("click", () => {
@@ -207,22 +263,21 @@ document.getElementById("answerButton").addEventListener("click", () => {
     return;
   }
 
-  const expected = questions[currentQuestion].notes;
+  const question = questions[currentQuestion];
+  const expected = question.notes;
   const isCorrect =
     selected.length === expected.length &&
     expected.every(noteId => selected.includes(noteId));
 
   if (!isCorrect) {
     feedback.className = "music-feedback feedback-wrong";
-    startWrongAnswerCooldown({
-      controls: [
-        document.getElementById("answerButton"),
-        ...piano.querySelectorAll(".piano-key")
-      ],
-      feedback,
-      message: "不正解です。",
-      seconds: 5
-    });
+    const incorrectNotes = selected.filter(noteId => !expected.includes(noteId));
+    incorrectNotes.forEach(noteId => excludedNotes.add(noteId));
+    selected = selected.filter(noteId => expected.includes(noteId));
+    updateSelection();
+    feedback.textContent = incorrectNotes.length > 0
+      ? "不正解です。選んだ音をグレーアウトしました。"
+      : "不正解です。選択を見直してください。";
     return;
   }
 
