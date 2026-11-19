@@ -63,6 +63,17 @@ placeholder="こちらに入力">
 
 </button>
 
+<section id="debugPanel" class="debug-panel" hidden>
+    <h2>企画者用デバッグ</h2>
+    <p>
+        この端末に保存された課題の回答・クリア状況とキーワード収集状況をリセットします。
+    </p>
+    <button id="resetProgressButton" type="button">
+        進行状況をリセット
+    </button>
+    <p id="debugStatus" role="status" aria-live="polite"></p>
+</section>
+
 </div>
 
 </div>
@@ -106,24 +117,6 @@ function startGame(){
         return;
     }
 
-    if(word === "デバッグ"){
-
-        localStorage.clear();
-
-        localStorage.setItem(
-            "personalName",
-            personalName
-        );
-
-        localStorage.setItem(
-            "startTime",
-            Date.now()
-        );
-
-        location.href = "start.html";
-        return;
-    }
-
     alert(
         "「スタート」と入力してください。"
     );
@@ -142,6 +135,30 @@ function(e){
     }
 
 });
+
+if(new URLSearchParams(location.search).get("debug") === "1"){
+    const debugPanel = document.getElementById("debugPanel");
+    debugPanel.hidden = false;
+
+    document
+    .getElementById("resetProgressButton")
+    .addEventListener("click", function(){
+        if(!confirm("この端末の課題進行状況とキーワードをリセットしますか？")){
+            return;
+        }
+
+        [
+            "clears",
+            "keywordHistory",
+            "artProgress",
+            "itAttempts",
+            "startTime"
+        ].forEach(key => localStorage.removeItem(key));
+
+        document.getElementById("debugStatus").textContent =
+            "進行状況をリセットしました。通常の開始手順から再テストできます。";
+    });
+}
 
 </script>
 

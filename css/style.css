@@ -45,6 +45,22 @@ body{
 
 }
 
+.debug-panel{
+    margin-top:24px;
+    padding:16px;
+    border:1px dashed #8a6c8e;
+    border-radius:8px;
+    background:#faf7fb;
+}
+
+.debug-panel h2{
+    margin-top:0;
+    padding:0;
+    background:none;
+    color:#6b496b;
+    text-align:left;
+}
+
 /* =====================================
    タイトル
 ===================================== */
