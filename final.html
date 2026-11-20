@@ -39,19 +39,24 @@ class="keyword-progress">
 
 <strong>
 あなたの今の気持ちになるように
-2文字追加して
+不足している文字を補って
 </strong>
 
-カタカナで入力してください。
+10文字のカタカナで入力してください。
+
+入力欄の外にある「ナ」は、最後に加わります。
 
 </p>
 
 
 <br>
 
+<div class="final-answer-entry">
 <input
 id="answer"
 placeholder="カタカナで入力">
+<span class="keyword owned" aria-label="最後に加わる文字">ナ</span>
+</div>
 
 <br><br>
 
@@ -120,8 +125,8 @@ function checkAnswer(){
     .replace(/\s/g,"");
 
     if(
-        ans ===
-        "ボウネンカイタノシイ"
+        ans + "ナ" ===
+        "ボウネンカイタノシイナ"
     ){
 
         location.href =

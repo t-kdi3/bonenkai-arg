@@ -899,6 +899,18 @@ body.office{
 
 }
 
+.final-answer-entry{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.final-answer-entry input{
+    flex:1;
+    min-width:0;
+    width:auto;
+}
+
 /* =====================================
    エンディング
 ===================================== */
