@@ -32,7 +32,7 @@
 
     <section id="gamePanel" class="calligraphy-panel" hidden>
         <div class="calligraphy-status">
-            <span>読み札の残り <strong id="remainingCount">17</strong> 枚</span>
+            <span>読み札の残り <strong id="remainingCount">10</strong> 枚</span>
             <span id="roundCount"></span>
         </div>
         <p class="calligraphy-question">
@@ -40,7 +40,7 @@
         </p>
         <img id="readingCard" class="calligraphy-reading" alt="篆書の読み札">
         <p class="calligraphy-hint">
-            正解の札を選んでください。取り札は正解17枚とダミー8枚です。
+            正解の札を選んでください。ダミー札は10枚です。
             誤答・スキップした札は後でもう一度出題されます。
             この読み札で前回までに誤答した札はグレーになり、選べません。
             3周目からはダミー札がなくなります。
@@ -66,29 +66,20 @@
 
 <script>
 const readingCards = [
-    { answer: "上", file: "上.jpg" },
-    { answer: "車", file: "車.jpg" },
     { answer: "雲", file: "雲.jpg" },
     { answer: "雨", file: "雨.jpg" },
     { answer: "鬼", file: "鬼.jpg" },
     { answer: "黒", file: "黒.jpg" },
-    { answer: "鳥", file: "鳥.jpg" },
     { answer: "馬", file: "馬.jpg" },
-    { answer: "魚", file: "魚.jpg" },
     { answer: "龍", file: "龍.jpg" },
-    { answer: "亀", file: "亀.jpg" },
-    { answer: "鹿", file: "鹿.jpg" },
-    { answer: "鼠", file: "鼠.jpg" },
-    { answer: "風/鳳", file: "風・鳳.jpg" },
+    { answer: "風/鳳", choices: ["風", "鳳"], file: "風・鳳.jpg" },
+    { answer: "車", file: "車.jpg" },
     { answer: "歩", file: "歩.jpg" },
-    { answer: "面", file: "面.jpg" },
-    { answer: "下", file: "下.jpg" }
+    { answer: "面", file: "面.jpg" }
 ];
 
 const distractors = [
-    "草", "森", "林", "畠", "川", "山", "飴", "古",
-    "蛇", "人", "男", "女", "子", "座", "火", "炎",
-    "目", "虫", "虎", "花", "柿", "蔦", "足", "顔"
+    "人", "男", "女", "虫", "蛇", "草", "森", "目", "火", "山"
 ];
 const cardImagePath = "images/ancient-characters/";
 const examplePanel = document.getElementById("examplePanel");
@@ -119,9 +110,6 @@ function renderChoices(container, labels, onChoose) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "calligraphy-choice";
-        if (label === "風/鳳") {
-            button.classList.add("calligraphy-choice--paired");
-        }
         button.textContent = label;
         button.addEventListener("click", () => onChoose(label, button));
         container.append(button);
@@ -145,11 +133,13 @@ renderChoices(
 );
 
 function startGame() {
-    const extraCards = shuffled(distractors).slice(0, 8);
-    dummyChoices = new Set(extraCards);
+    dummyChoices = new Set(distractors);
     renderChoices(
         choiceCards,
-        [...readingCards.map((card) => card.answer), ...extraCards],
+        [
+            ...readingCards.flatMap((card) => card.choices || [card.answer]),
+            ...distractors
+        ],
         chooseCard
     );
     deck = shuffled(readingCards);
@@ -206,11 +196,12 @@ function showNextCard(feedbackMessage = "") {
     });
 }
 
-function chooseCard(answer, selectedCard) {
+function chooseCard(answer) {
     if (!currentCard || penaltyTimer) {
         return;
     }
-    if (answer !== currentCard.answer) {
+    const correctChoices = currentCard.choices || [currentCard.answer];
+    if (!correctChoices.includes(answer)) {
         let incorrectChoices =
             incorrectChoicesByReading.get(currentCard.answer);
         if (!incorrectChoices) {
@@ -224,16 +215,25 @@ function chooseCard(answer, selectedCard) {
     }
 
     deck.shift();
-    selectedCard.remove();
+    correctChoices.forEach((choice) => {
+        choiceCards.querySelectorAll("button").forEach((button) => {
+            if (button.textContent === choice) {
+                button.remove();
+            }
+        });
+    });
+    const resultMessage = currentCard.choices
+        ? `正解！「${answer}」が正解です。「${correctChoices.find((choice) => choice !== answer)}」も正解のため、両方の取り札を除去しました。`
+        : `正解！「${answer}」の札を取りました。`;
     if (deck.length === 0) {
         document.getElementById("remainingCount").textContent = "0";
         gamePanel.hidden = true;
         completePanel.hidden = false;
         document.getElementById("completionMessage").textContent =
-            `正解！「${answer}」を取り、すべての読み札を取ることができました。`;
+            `${resultMessage} すべての読み札を取ることができました。`;
         return;
     }
-    showNextCard(`正解！「${answer}」の札を取りました。`);
+    showNextCard(resultMessage);
 }
 
 function skipCard() {

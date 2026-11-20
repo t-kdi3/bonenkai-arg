@@ -62,11 +62,6 @@
     font-weight: 600;
 }
 
-.calligraphy-choice--paired {
-    font-size: 1.15rem;
-    white-space: nowrap;
-}
-
 .calligraphy-choice:hover:not(:disabled) {
     background: #f1e7d2;
     border-color: #9c8053;
@@ -120,10 +115,6 @@
     .calligraphy-choice {
         min-height: 64px;
         font-size: 1.4rem;
-    }
-
-    .calligraphy-choice--paired {
-        font-size: 1.05rem;
     }
 
     .calligraphy-reading {
