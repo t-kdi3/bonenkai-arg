@@ -277,8 +277,11 @@ function updateQuestion() {
   questionText.textContent = question.type === "chord"
     ? "サンプルの和音はどの音の組み合わせですか？"
     : "サンプルの音はどれですか？";
-  questionHint.textContent = question.hint;
-  questionHint.style.display = question.hint ? "block" : "none";
+  const hint = question.type === "chord"
+    ? `${question.hint} 正解は${question.notes.length}音です。`
+    : question.hint;
+  questionHint.textContent = hint;
+  questionHint.style.display = hint ? "block" : "none";
   feedback.textContent = "";
   selected = [];
   excludedNotes = new Set();
