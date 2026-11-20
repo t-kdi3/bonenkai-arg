@@ -1,210 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="css/style.css">
-<script src="js/common.js"></script>
-
-<title>教科横断チャレンジ</title>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="page-card">
-
-<h1>教科横断チャレンジ</h1>
-
-<p>
-
-各分野から出題される課題に挑戦し、
-最後のキーワードを導き出してください。
-
-</p>
-
-<p>
-
-課題を解決すると、
-最終課題につながる手がかりを得ることができます。
-
-</p>
-
-<hr>
-
-<p>
-まず、お名前を入力してください。<br>
-<input
-    type="text"
-    id="personalName"
-    placeholder="お名前を入力">
-</p>
-
-<p>
-
-司会からの指示があったら、
-
-<strong>スタート</strong>
-
-と入力してください。
-
-</p>
-
-<input
-id="startWord"
-placeholder="こちらに入力">
-
-<button onclick="startGame()">
-
-開始する
-
-</button>
-
-<section id="debugPanel" class="debug-panel" hidden>
-    <h2>企画者用デバッグ</h2>
-    <p>
-        この端末に保存された課題の回答・クリア状況とキーワード収集状況をリセットします。
-    </p>
-    <button id="resetProgressButton" type="button">
-        進行状況をリセット
-    </button>
-    <p id="debugStatus" role="status" aria-live="polite"></p>
-    <hr>
-    <h2>全体ランキングのリセット</h2>
-    <p>
-        全利用者のランキング記録を削除します。実行にはApps Scriptに設定した認証キーが必要です。
-    </p>
-    <label for="rankingResetToken">リセット用認証キー</label>
-    <input id="rankingResetToken" type="password" autocomplete="off">
-    <button id="resetRankingButton" type="button">
-        全体ランキングをリセット
-    </button>
-    <p id="rankingResetStatus" role="status" aria-live="polite"></p>
-</section>
-
-</div>
-
-</div>
-
-<script>
-
-function startGame(){
-
-    const personalName =
-        document.getElementById(
-            "personalName"
-        ).value.trim();
-
-    if(personalName === ""){
-        alert("お名前を入力してください。");
-        return;
-    }
-
-    const word =
-        document.getElementById(
-            "startWord"
-        ).value.trim();
-
-    localStorage.setItem(
-        "personalName",
-        personalName
-    );
-
-    if(word === "スタート"){
-
-        localStorage.setItem(
-            "startTime",
-            Date.now()
-        );
-
-        localStorage.removeItem(
-            "scoreSent"
-        );
-
-        location.href = "start.html";
-        return;
-    }
-
-    alert(
-        "「スタート」と入力してください。"
-    );
-}
-
-document
-.getElementById("startWord")
-.addEventListener(
-"keypress",
-function(e){
-
-    if(e.key === "Enter"){
-
-        startGame();
-
-    }
-
-});
-
-if(new URLSearchParams(location.search).get("debug") === "1"){
-    const debugPanel = document.getElementById("debugPanel");
-    debugPanel.hidden = false;
-
-    document
-    .getElementById("resetProgressButton")
-    .addEventListener("click", function(){
-        if(!confirm("この端末の課題進行状況とキーワードをリセットしますか？")){
-            return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/common.js"></script>
+    <title>教科横断チャレンジ</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-card">
+        <h1>教科横断チャレンジ</h1>
+        <p>
+          各分野から出題される課題に挑戦し、
+          最後のキーワードを導き出してください。
+        </p>
+        <p>
+          課題を解決すると、 最終課題につながる手がかりを得ることができます。
+        </p>
+        <hr />
+        <p>
+          まず、お名前を入力してください。<br />
+          <input type="text" id="personalName" placeholder="お名前を入力" />
+        </p>
+        <p>
+          司会からの指示があったら、
+          <strong>スタート</strong>
+          と入力してください。
+        </p>
+        <input id="startWord" placeholder="こちらに入力" />
+        <button onclick="startGame()">開始する</button>
+        <section id="debugPanel" class="debug-panel" hidden>
+          <h2>企画者用デバッグ</h2>
+          <p>
+            この端末に保存された課題の回答・クリア状況とキーワード収集状況をリセットします。
+          </p>
+          <button id="resetProgressButton" type="button">
+            進行状況をリセット
+          </button>
+          <p id="debugStatus" role="status" aria-live="polite"></p>
+          <hr />
+          <h2>全体ランキングのリセット</h2>
+          <p>
+            全利用者のランキング記録を削除します。実行にはApps
+            Scriptに設定した認証キーが必要です。
+          </p>
+          <label for="rankingResetToken">リセット用認証キー</label>
+          <input id="rankingResetToken" type="password" autocomplete="off" />
+          <button id="resetRankingButton" type="button">
+            全体ランキングをリセット
+          </button>
+          <p id="rankingResetStatus" role="status" aria-live="polite"></p>
+        </section>
+      </div>
+    </div>
+    <script>
+      function startGame() {
+        const personalName = document
+          .getElementById("personalName")
+          .value.trim();
+        if (personalName === "") {
+          alert("お名前を入力してください。");
+          return;
         }
-
-        [
-            "clears",
-            "keywordHistory",
-            "artProgress",
-            "itAttempts",
-            "startTime"
-        ].forEach(key => localStorage.removeItem(key));
-
-        document.getElementById("debugStatus").textContent =
-            "進行状況をリセットしました。通常の開始手順から再テストできます。";
-    });
-
-    document
-    .getElementById("resetRankingButton")
-    .addEventListener("click", async function(){
-        const status = document.getElementById("rankingResetStatus");
-        const token = document.getElementById("rankingResetToken").value.trim();
-
-        if(!token){
-            status.textContent = "認証キーを入力してください。";
-            return;
+        const word = document.getElementById("startWord").value.trim();
+        localStorage.setItem("personalName", personalName);
+        if (word === "スタート") {
+          localStorage.setItem("startTime", Date.now());
+          localStorage.removeItem("scoreSent");
+          location.href = "start.html";
+          return;
         }
-
-        if(!confirm("全利用者のランキング記録を削除します。この操作は取り消せません。")){
-            return;
-        }
-
-        const button = document.getElementById("resetRankingButton");
-        button.disabled = true;
-        status.textContent = "ランキングをリセットしています…";
-
-        try{
-            const result = await resetGlobalRanking(token);
-            status.textContent =
-                `全体ランキングをリセットしました（${result.deletedRows}件）。`;
-            document.getElementById("rankingResetToken").value = "";
-        }catch(error){
-            console.error(error);
-            status.textContent = error.message;
-        }finally{
-            button.disabled = false;
-        }
-    });
-}
-
-</script>
-
-</body>
+        alert("「スタート」と入力してください。");
+      }
+      document
+        .getElementById("startWord")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            startGame();
+          }
+        });
+      if (new URLSearchParams(location.search).get("debug") === "1") {
+        const debugPanel = document.getElementById("debugPanel");
+        debugPanel.hidden = false;
+        document
+          .getElementById("resetProgressButton")
+          .addEventListener("click", function () {
+            if (
+              !confirm("この端末の課題進行状況とキーワードをリセットしますか？")
+            ) {
+              return;
+            }
+            [
+              "clears",
+              "keywordHistory",
+              "artProgress",
+              "itAttempts",
+              "startTime",
+            ].forEach((key) => localStorage.removeItem(key));
+            document.getElementById("debugStatus").textContent =
+              "進行状況をリセットしました。通常の開始手順から再テストできます。";
+          });
+        document
+          .getElementById("resetRankingButton")
+          .addEventListener("click", async function () {
+            const status = document.getElementById("rankingResetStatus");
+            const token = document
+              .getElementById("rankingResetToken")
+              .value.trim();
+            if (!token) {
+              status.textContent = "認証キーを入力してください。";
+              return;
+            }
+            if (
+              !confirm(
+                "全利用者のランキング記録を削除します。この操作は取り消せません。",
+              )
+            ) {
+              return;
+            }
+            const button = document.getElementById("resetRankingButton");
+            button.disabled = true;
+            status.textContent = "ランキングをリセットしています…";
+            try {
+              const result = await resetGlobalRanking(token);
+              status.textContent = `全体ランキングをリセットしました（${result.deletedRows}件）。`;
+              document.getElementById("rankingResetToken").value = "";
+            } catch (error) {
+              console.error(error);
+              status.textContent = error.message;
+            } finally {
+              button.disabled = false;
+            }
+          });
+      }
+    </script>
+  </body>
 </html>
