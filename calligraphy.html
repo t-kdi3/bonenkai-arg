@@ -42,8 +42,6 @@
         <p class="calligraphy-hint">
             正解の札を選んでください。ダミー札は10枚です。
             誤答・スキップした札は後でもう一度出題されます。
-            この読み札で前回までに誤答した札はグレーになり、選べません。
-            3周目からはダミー札がなくなります。
         </p>
         <div id="choiceCards" class="calligraphy-choices"></div>
         <p id="gameFeedback" class="calligraphy-feedback" aria-live="polite"></p>
@@ -226,6 +224,7 @@ function chooseCard(answer) {
         ? `正解！「${answer}」が正解です。「${correctChoices.find((choice) => choice !== answer)}」も正解のため、両方の取り札を除去しました。`
         : `正解！「${answer}」の札を取りました。`;
     if (deck.length === 0) {
+        saveClear("calligraphy");
         document.getElementById("remainingCount").textContent = "0";
         gamePanel.hidden = true;
         completePanel.hidden = false;
