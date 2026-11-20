@@ -128,13 +128,19 @@ function checkAnswer(){
         "ending.html";
 
     }else{
+        const isCorrectCharacters =
+            Array.from(ans).sort().join("") ===
+            Array.from("ボウネンカイタノシイ").sort().join("");
+
         startWrongAnswerCooldown({
             controls: [
                 document.getElementById("answer"),
                 document.querySelector('button[onclick="checkAnswer()"]')
             ],
             feedback: document.getElementById("answerFeedback"),
-            message: "違うようです。",
+            message: isCorrectCharacters
+                ? "使用する文字は合っています！順番を入れ替えて『気持ち』にしてくださいね！"
+                : "違うようです。",
             seconds: 5
         });
     }
