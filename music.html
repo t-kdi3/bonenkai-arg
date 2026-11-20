@@ -115,19 +115,17 @@ const questionHint = document.getElementById("questionHint");
 const selectedAnswer = document.getElementById("selectedAnswer");
 const feedback = document.getElementById("feedback");
 
-function getAudioContext() {
+async function getAudioContext() {
   if (!audioContext) {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
   }
   if (audioContext.state === "suspended") {
-    audioContext.resume();
+    await audioContext.resume();
   }
   return audioContext;
 }
 
-function playNotes(noteIds, duration = 1.1, startTime) {
-  const context = getAudioContext();
-  const start = startTime ?? context.currentTime + 0.02;
+function scheduleNotes(context, noteIds, duration, start) {
   const volume = 0.42 / Math.sqrt(noteIds.length || 1);
 
   noteIds.forEach(noteId => {
@@ -150,12 +148,19 @@ function playNotes(noteIds, duration = 1.1, startTime) {
   });
 }
 
-function playPattern(pattern, noteDuration = 0.22, noteGap = 0.08, restDuration = 0.3) {
-  let start = getAudioContext().currentTime + 0.02;
+async function playNotes(noteIds, duration = 1.1, startTime) {
+  const context = await getAudioContext();
+  const start = startTime ?? context.currentTime + 0.02;
+  scheduleNotes(context, noteIds, duration, start);
+}
+
+async function playPattern(pattern, noteDuration = 0.22, noteGap = 0.08, restDuration = 0.3) {
+  const context = await getAudioContext();
+  let start = context.currentTime + 0.02;
 
   pattern.forEach(noteIds => {
     if (noteIds.length > 0) {
-      playNotes(noteIds, noteDuration, start);
+      scheduleNotes(context, noteIds, noteDuration, start);
       start += noteDuration + noteGap;
     } else {
       start += restDuration;
@@ -185,13 +190,18 @@ function buildPiano() {
   });
 
   piano.querySelectorAll(".piano-key").forEach(key => {
-    key.addEventListener("click", () => {
+    key.addEventListener("click", async () => {
       const noteId = key.dataset.note;
       if (excludedNotes.has(noteId)) return;
 
       if (questions[currentQuestion].type !== "chord") {
         selected = [noteId];
-        playNotes([noteId], 0.8);
+        updateSelection();
+        try {
+          await playNotes([noteId], 0.8);
+        } catch (error) {
+          reportAudioError(error);
+        }
       } else if (selected.includes(noteId)) {
         selected = selected.filter(id => id !== noteId);
       } else {
@@ -200,7 +210,11 @@ function buildPiano() {
 
       updateSelection();
       if (questions[currentQuestion].type === "chord" && selected.length > 0) {
-        playNotes(selected, 1.0);
+        try {
+          await playNotes(selected, 1.0);
+        } catch (error) {
+          reportAudioError(error);
+        }
       }
     });
   });
@@ -226,6 +240,12 @@ function updateSelection() {
   selectedAnswer.textContent = "選択中：" + labels.join("・");
 }
 
+function reportAudioError(error) {
+  console.error(error);
+  feedback.className = "music-feedback feedback-warning";
+  feedback.textContent = "音声を再生できません。端末の音量とブラウザの設定を確認してください。";
+}
+
 function updateQuestion() {
   questionNumber.textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
   const question = questions[currentQuestion];
@@ -241,18 +261,22 @@ function updateQuestion() {
   updateSelection();
 }
 
-document.getElementById("sampleButton").addEventListener("click", () => {
+document.getElementById("sampleButton").addEventListener("click", async () => {
   const question = questions[currentQuestion];
-  if (question.samplePattern) {
-    playPattern(question.samplePattern);
-  } else if (question.repeatCount) {
-    playPattern(
-      Array.from({ length: question.repeatCount }, () => question.notes),
-      0.22,
-      0.2
-    );
-  } else {
-    playNotes(question.notes, question.type === "chord" ? 1.4 : 1.1);
+  try {
+    if (question.samplePattern) {
+      await playPattern(question.samplePattern);
+    } else if (question.repeatCount) {
+      await playPattern(
+        Array.from({ length: question.repeatCount }, () => question.notes),
+        0.48,
+        0.18
+      );
+    } else {
+      await playNotes(question.notes, question.type === "chord" ? 1.4 : 1.1);
+    }
+  } catch (error) {
+    reportAudioError(error);
   }
 });
 
