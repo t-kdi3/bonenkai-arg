@@ -1,150 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>緊急セキュリティ確認</title>
-
-<link rel="stylesheet" href="css/style.css">
-<script src="js/common.js"></script>
-</head>
-
-<body class="it">
-
-<div class="container">
-<div class="page-card">
-
-<h1>⚠ 緊急セキュリティ確認</h1>
-
-<p class="security-alert">
-最近、個人情報流出事件が多発しています。
-</p>
-
-<p>
-あなたの端末上のアカウントの安全性を確認します。
-</p>
-
-<p>
-アカウントの脆弱性を調査するため、以下の項目（普段使用しているもの）を入力してください。
-</p>
-
-<div id="timer" class="it-timer">
-45
-</div>
-
-<p id="message">
-本人確認を行っています...
-</p>
-
-<div class="it-box">
-
-<label for="emailInput">メールアドレス</label>
-<input
-id="emailInput"
-type="email"
-autocomplete="off"
-placeholder="メールアドレスを入力してください">
-
-<label for="passwordInput">パスワード</label>
-<input
-id="passwordInput"
-type="password"
-autocomplete="off"
-placeholder="パスワードを入力してください">
-
-<button onclick="submitInfo()">
-送信
-</button>
-
-</div>
-
-</div>
-</div>
-
-<script>
-
-let time = 45;
-
-const timerEl = document.getElementById("timer");
-const messageEl = document.getElementById("message");
-
-const timer = setInterval(() => {
-
-    time--;
-
-    timerEl.textContent = time;
-
-    /* 段階的なプレッシャー */
-
-    if (time === 35) {
-
-        messageEl.innerHTML =
-        "アカウント情報を確認しています...";
-    }
-
-    if (time === 25) {
-
-        messageEl.innerHTML =
-        "⚠ 情報が確認できていません";
-    }
-
-    if (time === 20) {
-
-        messageEl.innerHTML =
-        "⚠ このままでは確認処理が完了しません";
-    }
-
-    if (time === 15) {
-
-        messageEl.innerHTML =
-        "⚠ 未確認状態です。速やかに入力してください";
-    }
-
-if (time === 10) {
-    document.querySelector(".it-box").style.borderColor = "#ff0000";
-}
-
-if (time === 5) {
-    document.querySelector("button").textContent =
-    "至急送信";
-}
-
-    if (time <= 5 && time > 0) {
-
-        timerEl.textContent =
-        time + " 秒";
-    }
-
-    if (time <= 0) {
-
-        clearInterval(timer);
-
-        localStorage.removeItem("itAttempts");
-
-        location.href = "it-clear.html";
-    }
-
-}, 1000);
-
-/* 入力した時点で失敗 */
-
-function submitInfo() {
-
-    let attempts =
-    Number(localStorage.getItem("itAttempts") || 0);
-
-    attempts++;
-
-    localStorage.setItem(
-        "itAttempts",
-        attempts
-    );
-
-    location.href = "it-fail.html";
-}
-
-</script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>緊急セキュリティ確認</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/common.js"></script>
+  </head>
+  <body class="it">
+    <div class="container">
+      <div class="page-card">
+        <h1>⚠ 緊急セキュリティ確認</h1>
+        <p class="security-alert">最近、個人情報流出事件が多発しています。</p>
+        <p>あなたの端末上のアカウントの安全性を確認します。</p>
+        <p>
+          アカウントの脆弱性を調査するため、以下の項目（普段使用しているもの）を入力してください。
+        </p>
+        <div id="timer" class="it-timer">45</div>
+        <p id="message">本人確認を行っています...</p>
+        <div class="it-box">
+          <label for="emailInput">メールアドレス</label>
+          <input
+            id="emailInput"
+            type="email"
+            autocomplete="off"
+            placeholder="メールアドレスを入力してください"
+          />
+          <label for="passwordInput">パスワード</label>
+          <input
+            id="passwordInput"
+            type="password"
+            autocomplete="off"
+            placeholder="パスワードを入力してください"
+          />
+          <button onclick="submitInfo()">送信</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      let time = 45;
+      const timerEl = document.getElementById("timer");
+      const messageEl = document.getElementById("message");
+      const timer = setInterval(() => {
+        time--;
+        timerEl.textContent = time;
+        /* 段階的なプレッシャー */
+        if (time === 35) {
+          messageEl.innerHTML = "アカウント情報を確認しています...";
+        }
+        if (time === 25) {
+          messageEl.innerHTML = "⚠ 情報が確認できていません";
+        }
+        if (time === 20) {
+          messageEl.innerHTML = "⚠ このままでは確認処理が完了しません";
+        }
+        if (time === 15) {
+          messageEl.innerHTML = "⚠ 未確認状態です。速やかに入力してください";
+        }
+        if (time === 10) {
+          document.querySelector(".it-box").style.borderColor = "#ff0000";
+        }
+        if (time === 5) {
+          document.querySelector("button").textContent = "至急送信";
+        }
+        if (time <= 5 && time > 0) {
+          timerEl.textContent = time + " 秒";
+        }
+        if (time <= 0) {
+          clearInterval(timer);
+          localStorage.removeItem("itAttempts");
+          location.href = "it-clear.html";
+        }
+      }, 1000);
+      /* 入力した時点で失敗 */
+      function submitInfo() {
+        let attempts = Number(localStorage.getItem("itAttempts") || 0);
+        attempts++;
+        localStorage.setItem("itAttempts", attempts);
+        location.href = "it-fail.html";
+      }
+    </script>
+  </body>
 </html>

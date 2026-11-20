@@ -1,329 +1,391 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<title>事務の挑戦</title>
-<script src="js/common.js"></script>
-</head>
-
-<body class="office">
-
-<div class="container">
-<div class="page-card">
-
-<h2>🗂️ 事務の挑戦 🗂️</h2>
-
-<p>
-事務室からのミッションに挑戦！予算科目を正しく組み合わせ、
-都道府県を宿泊費基準額に割り当てよう。
-</p>
-
-<section id="budgetMission" class="office-mission">
-    <h3>ミッション1：予算科目を仕分けよう</h3>
-    <p>まずは科目の意味を読んで、品目がどれに当てはまるか考えてみましょう。</p>
-
-    <dl class="office-account-guide">
-        <div>
-            <dt>備品購入費</dt>
-            <dd>長期間にわたって繰り返し使う、比較的耐久性のある物品を購入するための費用です。</dd>
-        </div>
-        <div>
-            <dt>需用費</dt>
-            <dd>消耗品や燃料、印刷製本、修繕、光熱水など、使うことで消費したり、施設を維持したりするための費用です。</dd>
-        </div>
-        <div>
-            <dt>役務費</dt>
-            <dd>郵便、運搬、手数料など、サービス（役務）を受けるための費用です。</dd>
-        </div>
-    </dl>
-
-    <p>定義を参考に、品目ごとの予算科目を選んでください。</p>
-
-    <div class="office-match-grid">
-        <label for="tvAccount">テレビ</label>
-        <select id="tvAccount">
-            <option value="">予算科目を選択</option>
-            <option value="備品購入費">備品購入費</option>
-            <option value="需用費">需用費</option>
-            <option value="役務費">役務費</option>
-        </select>
-
-        <label for="paperAccount">A4用紙</label>
-        <select id="paperAccount">
-            <option value="">予算科目を選択</option>
-            <option value="備品購入費">備品購入費</option>
-            <option value="需用費">需用費</option>
-            <option value="役務費">役務費</option>
-        </select>
-
-        <label for="utilityAccount">光熱水費</label>
-        <select id="utilityAccount">
-            <option value="">予算科目を選択</option>
-            <option value="備品購入費">備品購入費</option>
-            <option value="需用費">需用費</option>
-            <option value="役務費">役務費</option>
-        </select>
-
-        <label for="stampAccount">切手代</label>
-        <select id="stampAccount">
-            <option value="">予算科目を選択</option>
-            <option value="備品購入費">備品購入費</option>
-            <option value="需用費">需用費</option>
-            <option value="役務費">役務費</option>
-        </select>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>事務の挑戦</title>
+    <script src="js/common.js"></script>
+  </head>
+  <body class="office">
+    <div class="container">
+      <div class="page-card">
+        <h2>🗂️ 事務の挑戦 🗂️</h2>
+        <p>
+          事務室からのミッションに挑戦！予算科目を正しく組み合わせ、
+          都道府県を宿泊費基準額に割り当てよう。
+        </p>
+        <section id="budgetMission" class="office-mission">
+          <h3>ミッション1：予算科目を仕分けよう</h3>
+          <p>
+            まずは科目の意味を読んで、品目がどれに当てはまるか考えてみましょう。
+          </p>
+          <dl class="office-account-guide">
+            <div>
+              <dt>備品購入費</dt>
+              <dd>
+                長期間にわたって繰り返し使う、比較的耐久性のある物品を購入するための費用です。
+              </dd>
+            </div>
+            <div>
+              <dt>需用費</dt>
+              <dd>
+                消耗品や燃料、印刷製本、修繕、光熱水など、使うことで消費したり、施設を維持したりするための費用です。
+              </dd>
+            </div>
+            <div>
+              <dt>役務費</dt>
+              <dd>
+                郵便、運搬、手数料など、サービス（役務）を受けるための費用です。
+              </dd>
+            </div>
+          </dl>
+          <p>定義を参考に、品目ごとの予算科目を選んでください。</p>
+          <div class="office-match-grid">
+            <label for="tvAccount">テレビ</label>
+            <select id="tvAccount">
+              <option value="">予算科目を選択</option>
+              <option value="備品購入費">備品購入費</option>
+              <option value="需用費">需用費</option>
+              <option value="役務費">役務費</option>
+            </select>
+            <label for="paperAccount">A4用紙</label>
+            <select id="paperAccount">
+              <option value="">予算科目を選択</option>
+              <option value="備品購入費">備品購入費</option>
+              <option value="需用費">需用費</option>
+              <option value="役務費">役務費</option>
+            </select>
+            <label for="utilityAccount">光熱水費</label>
+            <select id="utilityAccount">
+              <option value="">予算科目を選択</option>
+              <option value="備品購入費">備品購入費</option>
+              <option value="需用費">需用費</option>
+              <option value="役務費">役務費</option>
+            </select>
+            <label for="stampAccount">切手代</label>
+            <select id="stampAccount">
+              <option value="">予算科目を選択</option>
+              <option value="備品購入費">備品購入費</option>
+              <option value="需用費">需用費</option>
+              <option value="役務費">役務費</option>
+            </select>
+          </div>
+          <p id="budgetFeedback" class="office-feedback" aria-live="polite"></p>
+          <button id="checkBudget" type="button">仕分けを確認</button>
+        </section>
+        <section id="rankingMission" class="office-mission" hidden>
+          <h3>ミッション2：6都府県の金額を当てよう</h3>
+          <p>
+            金額は固定です。千葉県、広島県、長崎県、京都府、大阪府、東京都を
+            正しい金額の欄へ移動してください。「上へ」「下へ」で隣の金額へ動かせます。
+            それ以外の都道府県は正しい金額の欄に固定されています。
+          </p>
+          <p class="office-note">
+            出典：<a
+              href="https://laws.e-gov.go.jp/law/325M50000040045"
+              target="_blank"
+              rel="noopener noreferrer"
+              >国家公務員等の旅費支給規程・別表第二</a
+            >。 ここでは「職務の級が十級以下の者」の「宿泊費基準額」を扱います。
+            都道府県ごとに異なる額が定められているのは宿泊費基準額で、
+            宿泊手当は別の費目です。
+          </p>
+          <ol
+            id="rateCards"
+            class="office-rate-list"
+            aria-label="都道府県の宿泊費基準額の割り当て"
+          ></ol>
+          <p
+            id="rankingFeedback"
+            class="office-feedback"
+            aria-live="polite"
+          ></p>
+          <ul
+            id="rankingHints"
+            class="office-ranking-hints"
+            aria-live="polite"
+          ></ul>
+          <button id="checkRanking" type="button">割り当てを確認</button>
+        </section>
+        <section id="electricityMission" class="office-mission" hidden>
+          <h3>ミッション3：一般家庭の何か月分？</h3>
+          <p>
+            比較の目安として、一般家庭の電気料を月12,000円とします。
+            R7年度の本校の電気料は、一般家庭の何か月分くらいでしょう？
+          </p>
+          <div
+            class="office-choices"
+            role="group"
+            aria-label="一般家庭の電気料何か月分か選択"
+          >
+            <button type="button" data-months="24">
+              約24か月分（約2年分）
+            </button>
+            <button type="button" data-months="41">
+              約41か月分（約3年5か月分）
+            </button>
+            <button type="button" data-months="60">
+              約60か月分（約5年分）
+            </button>
+          </div>
+          <p
+            id="electricityFeedback"
+            class="office-feedback"
+            aria-live="polite"
+          ></p>
+          <button id="continueAfterElectricity" type="button" hidden>
+            結果を見る
+          </button>
+        </section>
+        <section id="missionComplete" class="office-mission" hidden>
+          <h3>ミッション達成！</h3>
+          <p>予算科目、宿泊費基準額、電気料の3つのミッションを達成しました！</p>
+          <p class="office-pending">
+            R7年度の本校の電気料は月平均 <strong>490,824円</strong>。
+            一般家庭を月12,000円とすると、約
+            <strong>41か月分（約3年5か月分）</strong> です。
+          </p>
+          <button type="button" onclick="location.href='office-clear.html'">
+            事務の課題をクリアする
+          </button>
+        </section>
+        <button
+          class="back-btn"
+          type="button"
+          onclick="location.href='start.html'"
+        >
+          課題選択へ戻る
+        </button>
+      </div>
     </div>
-
-    <p id="budgetFeedback" class="office-feedback" aria-live="polite"></p>
-    <button id="checkBudget" type="button">仕分けを確認</button>
-</section>
-
-<section id="rankingMission" class="office-mission" hidden>
-    <h3>ミッション2：6都府県の金額を当てよう</h3>
-    <p>
-        金額は固定です。千葉県、広島県、長崎県、京都府、大阪府、東京都を
-        正しい金額の欄へ移動してください。「上へ」「下へ」で隣の金額へ動かせます。
-        それ以外の都道府県は正しい金額の欄に固定されています。
-    </p>
-    <p class="office-note">
-        出典：<a href="https://laws.e-gov.go.jp/law/325M50000040045" target="_blank" rel="noopener noreferrer">国家公務員等の旅費支給規程・別表第二</a>。
-        ここでは「職務の級が十級以下の者」の「宿泊費基準額」を扱います。
-        都道府県ごとに異なる額が定められているのは宿泊費基準額で、
-        宿泊手当は別の費目です。
-    </p>
-
-    <ol id="rateCards" class="office-rate-list" aria-label="都道府県の宿泊費基準額の割り当て"></ol>
-    <p id="rankingFeedback" class="office-feedback" aria-live="polite"></p>
-    <ul id="rankingHints" class="office-ranking-hints" aria-live="polite"></ul>
-    <button id="checkRanking" type="button">割り当てを確認</button>
-</section>
-
-<section id="electricityMission" class="office-mission" hidden>
-    <h3>ミッション3：一般家庭の何か月分？</h3>
-    <p>
-        比較の目安として、一般家庭の電気料を月12,000円とします。
-        R7年度の本校の電気料は、一般家庭の何か月分くらいでしょう？
-    </p>
-    <div class="office-choices" role="group" aria-label="一般家庭の電気料何か月分か選択">
-        <button type="button" data-months="24">約24か月分（約2年分）</button>
-        <button type="button" data-months="41">約41か月分（約3年5か月分）</button>
-        <button type="button" data-months="60">約60か月分（約5年分）</button>
-    </div>
-    <p id="electricityFeedback" class="office-feedback" aria-live="polite"></p>
-    <button id="continueAfterElectricity" type="button" hidden>結果を見る</button>
-</section>
-
-<section id="missionComplete" class="office-mission" hidden>
-    <h3>ミッション達成！</h3>
-    <p>予算科目、宿泊費基準額、電気料の3つのミッションを達成しました！</p>
-    <p class="office-pending">
-        R7年度の本校の電気料は月平均 <strong>490,824円</strong>。
-        一般家庭を月12,000円とすると、約 <strong>41か月分（約3年5か月分）</strong> です。
-    </p>
-    <button type="button" onclick="location.href='office-clear.html'">
-        事務の課題をクリアする
-    </button>
-</section>
-
-<button class="back-btn" type="button" onclick="location.href='start.html'">
-    課題選択へ戻る
-</button>
-
-</div>
-</div>
-
-<script>
-const budgetAnswers = {
-    tvAccount: "備品購入費",
-    paperAccount: "需用費",
-    utilityAccount: "需用費",
-    stampAccount: "役務費"
-};
-
-const rateGroups = [
-    { amount: 21000, prefectures: ["東京都"] },
-    { amount: 20000, prefectures: ["京都府"] },
-    { amount: 17000, prefectures: ["千葉県", "兵庫県", "福岡県"] },
-    { amount: 16000, prefectures: ["埼玉県", "大阪府", "新潟県", "神奈川県"] },
-    { amount: 15000, prefectures: ["北海道", "香川県"] },
-    { amount: 14000, prefectures: ["岡山県", "広島県", "熊本県"] },
-    { amount: 13000, prefectures: ["山梨県", "岐阜県", "長野県", "長崎県"] },
-    { amount: 12000, prefectures: ["青森県", "宮城県", "群馬県", "愛知県", "三重県", "奈良県", "島根県", "愛媛県", "高知県", "静岡県", "沖縄県"] },
-    { amount: 11000, prefectures: ["茨城県", "栃木県", "富山県", "滋賀県", "和歌山県", "佐賀県", "大分県", "宮崎県", "鹿児島県", "秋田県"] },
-    { amount: 10000, prefectures: ["岩手県", "山形県", "石川県", "福井県", "徳島県"] },
-    { amount: 9000, prefectures: ["福島県", "鳥取県", "山口県"] }
-];
-
-const budgetMission = document.getElementById("budgetMission");
-const rankingMission = document.getElementById("rankingMission");
-const electricityMission = document.getElementById("electricityMission");
-const missionComplete = document.getElementById("missionComplete");
-const budgetFeedback = document.getElementById("budgetFeedback");
-const rankingFeedback = document.getElementById("rankingFeedback");
-const rankingHints = document.getElementById("rankingHints");
-const electricityFeedback = document.getElementById("electricityFeedback");
-const rateCards = document.getElementById("rateCards");
-const targetAmounts = new Map([
-    ["千葉県", 17000],
-    ["広島県", 14000],
-    ["長崎県", 13000],
-    ["京都府", 20000],
-    ["大阪府", 16000],
-    ["東京都", 21000]
-]);
-const initialTargetAmounts = new Map([
-    ["千葉県", 16000],
-    ["広島県", 15000],
-    ["長崎県", 12000],
-    ["京都府", 21000],
-    ["大阪府", 17000],
-    ["東京都", 20000]
-]);
-const prefectureRates = new Map();
-rateGroups.forEach((group) => {
-    group.prefectures.forEach((prefecture) => {
-        const amount = initialTargetAmounts.get(prefecture) ?? group.amount;
-        prefectureRates.set(prefecture, amount);
-    });
-});
-
-document.getElementById("checkBudget").addEventListener("click", () => {
-    const allCorrect = Object.entries(budgetAnswers).every(([id, answer]) => {
-        return document.getElementById(id).value === answer;
-    });
-
-    if (!allCorrect) {
-        budgetFeedback.classList.add("is-incorrect");
-        startWrongAnswerCooldown({
+    <script>
+      const budgetAnswers = {
+        tvAccount: "備品購入費",
+        paperAccount: "需用費",
+        utilityAccount: "需用費",
+        stampAccount: "役務費",
+      };
+      const rateGroups = [
+        { amount: 21000, prefectures: ["東京都"] },
+        { amount: 20000, prefectures: ["京都府"] },
+        { amount: 17000, prefectures: ["千葉県", "兵庫県", "福岡県"] },
+        {
+          amount: 16000,
+          prefectures: ["埼玉県", "大阪府", "新潟県", "神奈川県"],
+        },
+        { amount: 15000, prefectures: ["北海道", "香川県"] },
+        { amount: 14000, prefectures: ["岡山県", "広島県", "熊本県"] },
+        {
+          amount: 13000,
+          prefectures: ["山梨県", "岐阜県", "長野県", "長崎県"],
+        },
+        {
+          amount: 12000,
+          prefectures: [
+            "青森県",
+            "宮城県",
+            "群馬県",
+            "愛知県",
+            "三重県",
+            "奈良県",
+            "島根県",
+            "愛媛県",
+            "高知県",
+            "静岡県",
+            "沖縄県",
+          ],
+        },
+        {
+          amount: 11000,
+          prefectures: [
+            "茨城県",
+            "栃木県",
+            "富山県",
+            "滋賀県",
+            "和歌山県",
+            "佐賀県",
+            "大分県",
+            "宮崎県",
+            "鹿児島県",
+            "秋田県",
+          ],
+        },
+        {
+          amount: 10000,
+          prefectures: ["岩手県", "山形県", "石川県", "福井県", "徳島県"],
+        },
+        { amount: 9000, prefectures: ["福島県", "鳥取県", "山口県"] },
+      ];
+      const budgetMission = document.getElementById("budgetMission");
+      const rankingMission = document.getElementById("rankingMission");
+      const electricityMission = document.getElementById("electricityMission");
+      const missionComplete = document.getElementById("missionComplete");
+      const budgetFeedback = document.getElementById("budgetFeedback");
+      const rankingFeedback = document.getElementById("rankingFeedback");
+      const rankingHints = document.getElementById("rankingHints");
+      const electricityFeedback = document.getElementById(
+        "electricityFeedback",
+      );
+      const rateCards = document.getElementById("rateCards");
+      const targetAmounts = new Map([
+        ["千葉県", 17000],
+        ["広島県", 14000],
+        ["長崎県", 13000],
+        ["京都府", 20000],
+        ["大阪府", 16000],
+        ["東京都", 21000],
+      ]);
+      const initialTargetAmounts = new Map([
+        ["千葉県", 16000],
+        ["広島県", 15000],
+        ["長崎県", 12000],
+        ["京都府", 21000],
+        ["大阪府", 17000],
+        ["東京都", 20000],
+      ]);
+      const prefectureRates = new Map();
+      rateGroups.forEach((group) => {
+        group.prefectures.forEach((prefecture) => {
+          const amount = initialTargetAmounts.get(prefecture) ?? group.amount;
+          prefectureRates.set(prefecture, amount);
+        });
+      });
+      document.getElementById("checkBudget").addEventListener("click", () => {
+        const allCorrect = Object.entries(budgetAnswers).every(
+          ([id, answer]) => {
+            return document.getElementById(id).value === answer;
+          },
+        );
+        if (!allCorrect) {
+          budgetFeedback.classList.add("is-incorrect");
+          startWrongAnswerCooldown({
             controls: [
-                document.getElementById("checkBudget"),
-                ...document.querySelectorAll("#budgetMission input")
+              document.getElementById("checkBudget"),
+              ...document.querySelectorAll("#budgetMission input"),
             ],
             feedback: budgetFeedback,
             message: "まだ違う組み合わせがあります。",
-            seconds: 5
-        });
-        return;
-    }
-
-    budgetFeedback.textContent = "全問正解！次は都道府県を金額に割り当てます。";
-    budgetFeedback.classList.remove("is-incorrect");
-    budgetMission.hidden = true;
-    rankingMission.hidden = false;
-    renderRateCards();
-    document.getElementById("checkRanking").focus();
-});
-
-document.getElementById("checkRanking").addEventListener("click", () => {
-    const hints = [...targetAmounts].map(([prefecture, correctAmount]) => {
-        const assignedAmount = prefectureRates.get(prefecture);
-        if (assignedAmount === correctAmount) {
-            return { prefecture, text: `${prefecture}：正解です。`, correct: true };
+            seconds: 5,
+          });
+          return;
         }
-
-        const direction = assignedAmount > correctAmount ? "低い" : "高い";
-        return {
+        budgetFeedback.textContent =
+          "全問正解！次は都道府県を金額に割り当てます。";
+        budgetFeedback.classList.remove("is-incorrect");
+        budgetMission.hidden = true;
+        rankingMission.hidden = false;
+        renderRateCards();
+        document.getElementById("checkRanking").focus();
+      });
+      document.getElementById("checkRanking").addEventListener("click", () => {
+        const hints = [...targetAmounts].map(([prefecture, correctAmount]) => {
+          const assignedAmount = prefectureRates.get(prefecture);
+          if (assignedAmount === correctAmount) {
+            return {
+              prefecture,
+              text: `${prefecture}：正解です。`,
+              correct: true,
+            };
+          }
+          const direction = assignedAmount > correctAmount ? "低い" : "高い";
+          return {
             prefecture,
             text: `${prefecture}：設定した金額は正解より${assignedAmount > correctAmount ? "高い" : "低い"}です。もっと${direction}金額の欄へ移動してください。`,
-            correct: false
-        };
-    });
-    rankingHints.replaceChildren();
-    hints.forEach((hint) => {
-        const item = document.createElement("li");
-        item.textContent = hint.text;
-        item.className = hint.correct ? "is-correct" : "is-incorrect";
-        rankingHints.append(item);
-    });
-
-    if (hints.some((hint) => !hint.correct)) {
-        rankingFeedback.classList.add("is-incorrect");
-        startWrongAnswerCooldown({
+            correct: false,
+          };
+        });
+        rankingHints.replaceChildren();
+        hints.forEach((hint) => {
+          const item = document.createElement("li");
+          item.textContent = hint.text;
+          item.className = hint.correct ? "is-correct" : "is-incorrect";
+          rankingHints.append(item);
+        });
+        if (hints.some((hint) => !hint.correct)) {
+          rankingFeedback.classList.add("is-incorrect");
+          startWrongAnswerCooldown({
             controls: [
-                document.getElementById("checkRanking"),
-                ...document.querySelectorAll("#rankingMission button")
+              document.getElementById("checkRanking"),
+              ...document.querySelectorAll("#rankingMission button"),
             ],
             feedback: rankingFeedback,
             message: "まだ正しくない都府県があります。",
-            seconds: 5
-        });
-        return;
-    }
-
-    rankingFeedback.textContent = "正解！6都府県を金額に割り当てられました。";
-    rankingFeedback.classList.remove("is-incorrect");
-    rankingMission.hidden = true;
-    electricityMission.hidden = false;
-    document.querySelector("#electricityMission [data-months]").focus();
-});
-
-document.querySelectorAll("#electricityMission [data-months]").forEach((button) => {
-    button.addEventListener("click", () => {
-        if (button.dataset.months !== "41") {
-            electricityFeedback.classList.add("is-incorrect");
-            startWrongAnswerCooldown({
-                controls: [...document.querySelectorAll("#electricityMission [data-months]")],
+            seconds: 5,
+          });
+          return;
+        }
+        rankingFeedback.textContent =
+          "正解！6都府県を金額に割り当てられました。";
+        rankingFeedback.classList.remove("is-incorrect");
+        rankingMission.hidden = true;
+        electricityMission.hidden = false;
+        document.querySelector("#electricityMission [data-months]").focus();
+      });
+      document
+        .querySelectorAll("#electricityMission [data-months]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            if (button.dataset.months !== "41") {
+              electricityFeedback.classList.add("is-incorrect");
+              startWrongAnswerCooldown({
+                controls: [
+                  ...document.querySelectorAll(
+                    "#electricityMission [data-months]",
+                  ),
+                ],
                 feedback: electricityFeedback,
                 message: "不正解です。",
-                seconds: 5
-            });
-            return;
-        }
-
-        electricityFeedback.textContent = "正解！490,824円 ÷ 12,000円 ≒ 40.9なので、約41か月分です。";
-        electricityFeedback.classList.remove("is-incorrect");
-        document.getElementById("continueAfterElectricity").hidden = false;
-        document.getElementById("continueAfterElectricity").focus();
-    });
-});
-
-document.getElementById("continueAfterElectricity").addEventListener("click", () => {
-    electricityMission.hidden = true;
-    missionComplete.hidden = false;
-    document.querySelector("#missionComplete button").focus();
-});
-
-function renderRateCards(focusButtonId) {
-    rateCards.replaceChildren();
-
-    rateGroups.forEach((group, groupIndex) => {
-        const item = document.createElement("li");
-        item.className = "office-rate-bucket";
-
-        const amount = document.createElement("strong");
-        amount.textContent = `${group.amount.toLocaleString("ja-JP")}円`;
-        item.append(amount);
-
-        const prefectureList = document.createElement("ul");
-        prefectureList.className = "office-prefecture-list";
-
-        const assignedPrefectures = [...prefectureRates]
+                seconds: 5,
+              });
+              return;
+            }
+            electricityFeedback.textContent =
+              "正解！490,824円 ÷ 12,000円 ≒ 40.9なので、約41か月分です。";
+            electricityFeedback.classList.remove("is-incorrect");
+            document.getElementById("continueAfterElectricity").hidden = false;
+            document.getElementById("continueAfterElectricity").focus();
+          });
+        });
+      document
+        .getElementById("continueAfterElectricity")
+        .addEventListener("click", () => {
+          electricityMission.hidden = true;
+          missionComplete.hidden = false;
+          document.querySelector("#missionComplete button").focus();
+        });
+      function renderRateCards(focusButtonId) {
+        rateCards.replaceChildren();
+        rateGroups.forEach((group, groupIndex) => {
+          const item = document.createElement("li");
+          item.className = "office-rate-bucket";
+          const amount = document.createElement("strong");
+          amount.textContent = `${group.amount.toLocaleString("ja-JP")}円`;
+          item.append(amount);
+          const prefectureList = document.createElement("ul");
+          prefectureList.className = "office-prefecture-list";
+          const assignedPrefectures = [...prefectureRates]
             .filter(([, assignedAmount]) => assignedAmount === group.amount)
             .map(([prefecture]) => prefecture)
             .sort((first, second) => first.localeCompare(second, "ja"));
-
-        assignedPrefectures.forEach((prefecture) => {
+          assignedPrefectures.forEach((prefecture) => {
             const prefectureItem = document.createElement("li");
             prefectureItem.className = "office-prefecture-item";
-
             const nameContainer = document.createElement("div");
             nameContainer.className = "office-prefecture-name";
             const name = document.createElement("span");
             name.textContent = prefecture;
             nameContainer.append(name);
-
             if (!targetAmounts.has(prefecture)) {
-                prefectureItem.classList.add("is-fixed");
-                const fixedLabel = document.createElement("span");
-                fixedLabel.className = "office-prefecture-fixed";
-                fixedLabel.textContent = "固定";
-                nameContainer.append(fixedLabel);
-                prefectureItem.append(nameContainer);
-                prefectureList.append(prefectureItem);
-                return;
+              prefectureItem.classList.add("is-fixed");
+              const fixedLabel = document.createElement("span");
+              fixedLabel.className = "office-prefecture-fixed";
+              fixedLabel.textContent = "固定";
+              nameContainer.append(fixedLabel);
+              prefectureItem.append(nameContainer);
+              prefectureList.append(prefectureItem);
+              return;
             }
-
             const controls = document.createElement("div");
             controls.className = "office-prefecture-controls";
             const moveUp = document.createElement("button");
@@ -333,49 +395,50 @@ function renderRateCards(focusButtonId) {
             moveUp.textContent = "上へ";
             moveUp.setAttribute("aria-label", `${prefecture}を上の金額へ移動`);
             moveUp.disabled = groupIndex === 0;
-            moveUp.addEventListener("click", () => movePrefecture(prefecture, -1));
-
+            moveUp.addEventListener("click", () =>
+              movePrefecture(prefecture, -1),
+            );
             const moveDown = document.createElement("button");
             moveDown.type = "button";
             moveDown.id = `move-pref-${allPrefectures.indexOf(prefecture)}-down`;
             moveDown.className = "office-move";
             moveDown.textContent = "下へ";
-            moveDown.setAttribute("aria-label", `${prefecture}を下の金額へ移動`);
+            moveDown.setAttribute(
+              "aria-label",
+              `${prefecture}を下の金額へ移動`,
+            );
             moveDown.disabled = groupIndex === rateGroups.length - 1;
-            moveDown.addEventListener("click", () => movePrefecture(prefecture, 1));
-
+            moveDown.addEventListener("click", () =>
+              movePrefecture(prefecture, 1),
+            );
             controls.append(moveUp, moveDown);
             prefectureItem.append(nameContainer, controls);
             prefectureList.append(prefectureItem);
+          });
+          item.append(prefectureList);
+          rateCards.append(item);
         });
-
-        item.append(prefectureList);
-        rateCards.append(item);
-    });
-
-    if (focusButtonId) {
-        document.getElementById(focusButtonId).focus();
-    }
-}
-
-const allPrefectures = rateGroups.flatMap((group) => group.prefectures);
-
-function movePrefecture(prefecture, direction) {
-    const currentIndex = rateGroups.findIndex((group) => {
-        return group.amount === prefectureRates.get(prefecture);
-    });
-    const nextIndex = currentIndex + direction;
-    if (nextIndex < 0 || nextIndex >= rateGroups.length) {
-        return;
-    }
-
-    prefectureRates.set(prefecture, rateGroups[nextIndex].amount);
-    rankingFeedback.textContent = `${prefecture}を${rateGroups[nextIndex].amount.toLocaleString("ja-JP")}円の欄へ移動しました。`;
-    rankingFeedback.classList.remove("is-incorrect");
-    const returnDirection = direction < 0 ? "down" : "up";
-    renderRateCards(`move-pref-${allPrefectures.indexOf(prefecture)}-${returnDirection}`);
-}
-</script>
-
-</body>
+        if (focusButtonId) {
+          document.getElementById(focusButtonId).focus();
+        }
+      }
+      const allPrefectures = rateGroups.flatMap((group) => group.prefectures);
+      function movePrefecture(prefecture, direction) {
+        const currentIndex = rateGroups.findIndex((group) => {
+          return group.amount === prefectureRates.get(prefecture);
+        });
+        const nextIndex = currentIndex + direction;
+        if (nextIndex < 0 || nextIndex >= rateGroups.length) {
+          return;
+        }
+        prefectureRates.set(prefecture, rateGroups[nextIndex].amount);
+        rankingFeedback.textContent = `${prefecture}を${rateGroups[nextIndex].amount.toLocaleString("ja-JP")}円の欄へ移動しました。`;
+        rankingFeedback.classList.remove("is-incorrect");
+        const returnDirection = direction < 0 ? "down" : "up";
+        renderRateCards(
+          `move-pref-${allPrefectures.indexOf(prefecture)}-${returnDirection}`,
+        );
+      }
+    </script>
+  </body>
 </html>

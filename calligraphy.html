@@ -1,275 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/calligraphy-game.css">
-<script src="js/common.js"></script>
-<title>古代文字カルタ | 書道の挑戦</title>
-</head>
-
-<body class="calligraphy">
-<div class="container">
-<div class="page-card calligraphy-game">
-    <h1>古代文字カルタ</h1>
-    <p class="calligraphy-intro">
-        ユネスコの無形文化遺産に登録されることとなった書道からの出題です。
-        漢字の起源となる古代の文字「篆書」を見て、現在の漢字を取りましょう。
-    </p>
-
-    <section id="examplePanel" class="calligraphy-panel">
-        <h2>まずは例題</h2>
-        <p>この篆書は何という字でしょう？「魚」を選んでください。</p>
-        <img
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/calligraphy-game.css" />
+    <script src="js/common.js"></script>
+    <title>古代文字カルタ | 書道の挑戦</title>
+  </head>
+  <body class="calligraphy">
+    <div class="container">
+      <div class="page-card calligraphy-game">
+        <h1>古代文字カルタ</h1>
+        <p class="calligraphy-intro">
+          ユネスコの無形文化遺産に登録されることとなった書道からの出題です。
+          漢字の起源となる古代の文字「篆書」を見て、現在の漢字を取りましょう。
+        </p>
+        <section id="examplePanel" class="calligraphy-panel">
+          <h2>まずは例題</h2>
+          <p>この篆書は何という字でしょう？「魚」を選んでください。</p>
+          <img
             class="calligraphy-reading"
             src="images/ancient-characters/魚.jpg"
-            alt="魚の篆書">
-        <div id="exampleChoices" class="calligraphy-choices"></div>
-        <p id="exampleFeedback" class="calligraphy-feedback" aria-live="polite"></p>
-        <button id="beginGame" type="button" hidden>本編を始める</button>
-    </section>
-
-    <section id="gamePanel" class="calligraphy-panel" hidden>
-        <div class="calligraphy-status">
+            alt="魚の篆書"
+          />
+          <div id="exampleChoices" class="calligraphy-choices"></div>
+          <p
+            id="exampleFeedback"
+            class="calligraphy-feedback"
+            aria-live="polite"
+          ></p>
+          <button id="beginGame" type="button" hidden>本編を始める</button>
+        </section>
+        <section id="gamePanel" class="calligraphy-panel" hidden>
+          <div class="calligraphy-status">
             <span>読み札の残り <strong id="remainingCount">10</strong> 枚</span>
             <span id="roundCount"></span>
-        </div>
-        <p class="calligraphy-question">
-            この篆書は何という字でしょう？
-        </p>
-        <img id="readingCard" class="calligraphy-reading" alt="篆書の読み札">
-        <p class="calligraphy-hint">
+          </div>
+          <p class="calligraphy-question">この篆書は何という字でしょう？</p>
+          <img
+            id="readingCard"
+            class="calligraphy-reading"
+            alt="篆書の読み札"
+          />
+          <p class="calligraphy-hint">
             正解の札を選んでください。ダミー札は10枚です。
             誤答・スキップした札は後でもう一度出題されます。
-        </p>
-        <div id="choiceCards" class="calligraphy-choices"></div>
-        <p id="gameFeedback" class="calligraphy-feedback" aria-live="polite"></p>
-        <button id="skipButton" class="calligraphy-skip" type="button">わからない（スキップ）</button>
-    </section>
-
-    <section id="completePanel" class="calligraphy-panel" hidden>
-        <h2>全問正解！</h2>
-        <p id="completionMessage">すべての読み札を取ることができました。</p>
-        <button type="button" onclick="location.href='calligraphy-clear.html'">
+          </p>
+          <div id="choiceCards" class="calligraphy-choices"></div>
+          <p
+            id="gameFeedback"
+            class="calligraphy-feedback"
+            aria-live="polite"
+          ></p>
+          <button id="skipButton" class="calligraphy-skip" type="button">
+            わからない（スキップ）
+          </button>
+        </section>
+        <section id="completePanel" class="calligraphy-panel" hidden>
+          <h2>全問正解！</h2>
+          <p id="completionMessage">すべての読み札を取ることができました。</p>
+          <button
+            type="button"
+            onclick="location.href='calligraphy-clear.html'"
+          >
             課題クリアへ
+          </button>
+        </section>
+        <button
+          class="back-btn"
+          type="button"
+          onclick="location.href='start.html'"
+        >
+          課題選択へ戻る
         </button>
-    </section>
-
-    <button class="back-btn" type="button" onclick="location.href='start.html'">
-        課題選択へ戻る
-    </button>
-</div>
-</div>
-
-<script>
-const readingCards = [
-    { answer: "雲", file: "雲.jpg" },
-    { answer: "雨", file: "雨.jpg" },
-    { answer: "鬼", file: "鬼.jpg" },
-    { answer: "黒", file: "黒.jpg" },
-    { answer: "馬", file: "馬.jpg" },
-    { answer: "龍", file: "龍.jpg" },
-    { answer: "風/鳳", choices: ["風", "鳳"], file: "風・鳳.jpg" },
-    { answer: "車", file: "車.jpg" },
-    { answer: "歩", file: "歩.jpg" },
-    { answer: "面", file: "面.jpg" }
-];
-
-const distractors = [
-    "人", "男", "女", "虫", "蛇", "草", "森", "目", "火", "山"
-];
-const cardImagePath = "images/ancient-characters/";
-const examplePanel = document.getElementById("examplePanel");
-const gamePanel = document.getElementById("gamePanel");
-const completePanel = document.getElementById("completePanel");
-const choiceCards = document.getElementById("choiceCards");
-const gameFeedback = document.getElementById("gameFeedback");
-let deck = [];
-let currentCard = null;
-let weekNumber = 1;
-const incorrectChoicesByReading = new Map();
-const attemptsByReading = new Map();
-let dummyChoices = new Set();
-let penaltyTimer = null;
-
-function shuffled(items) {
-    const result = [...items];
-    for (let index = result.length - 1; index > 0; index -= 1) {
-        const swapIndex = Math.floor(Math.random() * (index + 1));
-        [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
-    }
-    return result;
-}
-
-function renderChoices(container, labels, onChoose) {
-    container.replaceChildren();
-    shuffled(labels).forEach((label) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "calligraphy-choice";
-        button.textContent = label;
-        button.addEventListener("click", () => onChoose(label, button));
-        container.append(button);
-    });
-}
-
-renderChoices(
-    document.getElementById("exampleChoices"),
-    ["魚", "草", "山", "鳥"],
-    (answer) => {
-        const feedback = document.getElementById("exampleFeedback");
-        if (answer !== "魚") {
-            feedback.textContent = "もう一度。篆書の形をよく見て「魚」を選びましょう。";
-            return;
+      </div>
+    </div>
+    <script>
+      const readingCards = [
+        { answer: "雲", file: "雲.jpg" },
+        { answer: "雨", file: "雨.jpg" },
+        { answer: "鬼", file: "鬼.jpg" },
+        { answer: "黒", file: "黒.jpg" },
+        { answer: "馬", file: "馬.jpg" },
+        { answer: "龍", file: "龍.jpg" },
+        { answer: "風/鳳", choices: ["風", "鳳"], file: "風・鳳.jpg" },
+        { answer: "車", file: "車.jpg" },
+        { answer: "歩", file: "歩.jpg" },
+        { answer: "面", file: "面.jpg" },
+      ];
+      const distractors = [
+        "人",
+        "男",
+        "女",
+        "虫",
+        "蛇",
+        "草",
+        "森",
+        "目",
+        "火",
+        "山",
+      ];
+      const cardImagePath = "images/ancient-characters/";
+      const examplePanel = document.getElementById("examplePanel");
+      const gamePanel = document.getElementById("gamePanel");
+      const completePanel = document.getElementById("completePanel");
+      const choiceCards = document.getElementById("choiceCards");
+      const gameFeedback = document.getElementById("gameFeedback");
+      let deck = [];
+      let currentCard = null;
+      let weekNumber = 1;
+      const incorrectChoicesByReading = new Map();
+      const attemptsByReading = new Map();
+      let dummyChoices = new Set();
+      let penaltyTimer = null;
+      function shuffled(items) {
+        const result = [...items];
+        for (let index = result.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [result[index], result[swapIndex]] = [
+            result[swapIndex],
+            result[index],
+          ];
         }
-        feedback.textContent = "正解！それでは本編に進みましょう。";
-        document.querySelectorAll("#exampleChoices .calligraphy-choice")
-            .forEach((button) => { button.disabled = true; });
-        document.getElementById("beginGame").hidden = false;
-    }
-);
-
-function startGame() {
-    dummyChoices = new Set(distractors);
-    renderChoices(
-        choiceCards,
-        [
-            ...readingCards.flatMap((card) => card.choices || [card.answer]),
-            ...distractors
-        ],
-        chooseCard
-    );
-    deck = shuffled(readingCards);
-    weekNumber = 1;
-    incorrectChoicesByReading.clear();
-    attemptsByReading.clear();
-    examplePanel.hidden = true;
-    gamePanel.hidden = false;
-    showNextCard();
-}
-
-function showNextCard(feedbackMessage = "") {
-    if (deck.length === 0) {
-        gamePanel.hidden = true;
-        completePanel.hidden = false;
-        return;
-    }
-
-    const nextWeek = Math.min(
-        ...deck.map((card) => (attemptsByReading.get(card.answer) || 0) + 1)
-    );
-    weekNumber = Math.max(weekNumber, nextWeek);
-    if (weekNumber >= 3 && dummyChoices.size > 0) {
-        choiceCards.querySelectorAll("button").forEach((button) => {
-            if (dummyChoices.has(button.textContent)) {
-                button.remove();
-            }
+        return result;
+      }
+      function renderChoices(container, labels, onChoose) {
+        container.replaceChildren();
+        shuffled(labels).forEach((label) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "calligraphy-choice";
+          button.textContent = label;
+          button.addEventListener("click", () => onChoose(label, button));
+          container.append(button);
         });
-        dummyChoices.clear();
-    }
-
-    currentCard = deck[0];
-    attemptsByReading.set(
-        currentCard.answer,
-        (attemptsByReading.get(currentCard.answer) || 0) + 1
-    );
-    document.getElementById("remainingCount").textContent = deck.length;
-    document.getElementById("roundCount").textContent =
-        `第${weekNumber}周目`;
-    const image = document.getElementById("readingCard");
-    image.src = `${cardImagePath}${encodeURIComponent(currentCard.file)}`;
-    image.alt = `${currentCard.answer}の篆書`;
-    gameFeedback.textContent = feedbackMessage;
-    gameFeedback.classList.toggle(
-        "calligraphy-feedback--correct",
-        Boolean(feedbackMessage)
-    );
-    const incorrectChoices =
-        incorrectChoicesByReading.get(currentCard.answer) || new Set();
-    choiceCards.querySelectorAll("button").forEach((button) => {
-        const isKnownIncorrect = incorrectChoices.has(button.textContent);
-        button.disabled = isKnownIncorrect;
-        button.classList.toggle("calligraphy-choice--eliminated", isKnownIncorrect);
-    });
-}
-
-function chooseCard(answer) {
-    if (!currentCard || penaltyTimer) {
-        return;
-    }
-    const correctChoices = currentCard.choices || [currentCard.answer];
-    if (!correctChoices.includes(answer)) {
-        let incorrectChoices =
-            incorrectChoicesByReading.get(currentCard.answer);
-        if (!incorrectChoices) {
+      }
+      renderChoices(
+        document.getElementById("exampleChoices"),
+        ["魚", "草", "山", "鳥"],
+        (answer) => {
+          const feedback = document.getElementById("exampleFeedback");
+          if (answer !== "魚") {
+            feedback.textContent =
+              "もう一度。篆書の形をよく見て「魚」を選びましょう。";
+            return;
+          }
+          feedback.textContent = "正解！それでは本編に進みましょう。";
+          document
+            .querySelectorAll("#exampleChoices .calligraphy-choice")
+            .forEach((button) => {
+              button.disabled = true;
+            });
+          document.getElementById("beginGame").hidden = false;
+        },
+      );
+      function startGame() {
+        dummyChoices = new Set(distractors);
+        renderChoices(
+          choiceCards,
+          [
+            ...readingCards.flatMap((card) => card.choices || [card.answer]),
+            ...distractors,
+          ],
+          chooseCard,
+        );
+        deck = shuffled(readingCards);
+        weekNumber = 1;
+        incorrectChoicesByReading.clear();
+        attemptsByReading.clear();
+        examplePanel.hidden = true;
+        gamePanel.hidden = false;
+        showNextCard();
+      }
+      function showNextCard(feedbackMessage = "") {
+        if (deck.length === 0) {
+          gamePanel.hidden = true;
+          completePanel.hidden = false;
+          return;
+        }
+        const nextWeek = Math.min(
+          ...deck.map((card) => (attemptsByReading.get(card.answer) || 0) + 1),
+        );
+        weekNumber = Math.max(weekNumber, nextWeek);
+        if (weekNumber >= 3 && dummyChoices.size > 0) {
+          choiceCards.querySelectorAll("button").forEach((button) => {
+            if (dummyChoices.has(button.textContent)) {
+              button.remove();
+            }
+          });
+          dummyChoices.clear();
+        }
+        currentCard = deck[0];
+        attemptsByReading.set(
+          currentCard.answer,
+          (attemptsByReading.get(currentCard.answer) || 0) + 1,
+        );
+        document.getElementById("remainingCount").textContent = deck.length;
+        document.getElementById("roundCount").textContent =
+          `第${weekNumber}周目`;
+        const image = document.getElementById("readingCard");
+        image.src = `${cardImagePath}${encodeURIComponent(currentCard.file)}`;
+        image.alt = `${currentCard.answer}の篆書`;
+        gameFeedback.textContent = feedbackMessage;
+        gameFeedback.classList.toggle(
+          "calligraphy-feedback--correct",
+          Boolean(feedbackMessage),
+        );
+        const incorrectChoices =
+          incorrectChoicesByReading.get(currentCard.answer) || new Set();
+        choiceCards.querySelectorAll("button").forEach((button) => {
+          const isKnownIncorrect = incorrectChoices.has(button.textContent);
+          button.disabled = isKnownIncorrect;
+          button.classList.toggle(
+            "calligraphy-choice--eliminated",
+            isKnownIncorrect,
+          );
+        });
+      }
+      function chooseCard(answer) {
+        if (!currentCard || penaltyTimer) {
+          return;
+        }
+        const correctChoices = currentCard.choices || [currentCard.answer];
+        if (!correctChoices.includes(answer)) {
+          let incorrectChoices = incorrectChoicesByReading.get(
+            currentCard.answer,
+          );
+          if (!incorrectChoices) {
             incorrectChoices = new Set();
             incorrectChoicesByReading.set(currentCard.answer, incorrectChoices);
+          }
+          incorrectChoices.add(answer);
+          deck.push(deck.shift());
+          waitAndAdvance("お手付きです。");
+          return;
         }
-        incorrectChoices.add(answer);
-        deck.push(deck.shift());
-        waitAndAdvance("お手付きです。");
-        return;
-    }
-
-    deck.shift();
-    correctChoices.forEach((choice) => {
-        choiceCards.querySelectorAll("button").forEach((button) => {
+        deck.shift();
+        correctChoices.forEach((choice) => {
+          choiceCards.querySelectorAll("button").forEach((button) => {
             if (button.textContent === choice) {
-                button.remove();
+              button.remove();
             }
+          });
         });
-    });
-    const resultMessage = currentCard.choices
-        ? `正解！「${answer}」が正解です。「${correctChoices.find((choice) => choice !== answer)}」も正解のため、両方の取り札を除去しました。`
-        : `正解！「${answer}」の札を取りました。`;
-    if (deck.length === 0) {
-        saveClear("calligraphy");
-        document.getElementById("remainingCount").textContent = "0";
-        gamePanel.hidden = true;
-        completePanel.hidden = false;
-        document.getElementById("completionMessage").textContent =
+        const resultMessage = currentCard.choices
+          ? `正解！「${answer}」が正解です。「${correctChoices.find((choice) => choice !== answer)}」も正解のため、両方の取り札を除去しました。`
+          : `正解！「${answer}」の札を取りました。`;
+        if (deck.length === 0) {
+          saveClear("calligraphy");
+          document.getElementById("remainingCount").textContent = "0";
+          gamePanel.hidden = true;
+          completePanel.hidden = false;
+          document.getElementById("completionMessage").textContent =
             `${resultMessage} すべての読み札を取ることができました。`;
-        return;
-    }
-    showNextCard(resultMessage);
-}
-
-function skipCard() {
-    if (!currentCard || penaltyTimer) {
-        return;
-    }
-    deck.push(deck.shift());
-    waitAndAdvance("スキップしました。");
-}
-
-function waitAndAdvance(message) {
-    setChoicesDisabled(true);
-    document.getElementById("skipButton").disabled = true;
-    let seconds = 5;
-    gameFeedback.classList.remove("calligraphy-feedback--correct");
-    gameFeedback.textContent = `${message} ${seconds}秒後に次の札へ進みます。`;
-    penaltyTimer = window.setInterval(() => {
-        seconds -= 1;
-        if (seconds === 0) {
+          return;
+        }
+        showNextCard(resultMessage);
+      }
+      function skipCard() {
+        if (!currentCard || penaltyTimer) {
+          return;
+        }
+        deck.push(deck.shift());
+        waitAndAdvance("スキップしました。");
+      }
+      function waitAndAdvance(message) {
+        setChoicesDisabled(true);
+        document.getElementById("skipButton").disabled = true;
+        let seconds = 5;
+        gameFeedback.classList.remove("calligraphy-feedback--correct");
+        gameFeedback.textContent = `${message} ${seconds}秒後に次の札へ進みます。`;
+        penaltyTimer = window.setInterval(() => {
+          seconds -= 1;
+          if (seconds === 0) {
             window.clearInterval(penaltyTimer);
             penaltyTimer = null;
             document.getElementById("skipButton").disabled = false;
             showNextCard();
             return;
-        }
-        gameFeedback.textContent = `${message} ${seconds}秒後に次の札へ進みます。`;
-    }, 1000);
-}
-
-function setChoicesDisabled(disabled) {
-    choiceCards.querySelectorAll("button").forEach((button) => {
-        button.disabled = disabled;
-    });
-}
-
-document.getElementById("beginGame").addEventListener("click", startGame);
-document.getElementById("skipButton").addEventListener("click", skipCard);
-</script>
-</body>
+          }
+          gameFeedback.textContent = `${message} ${seconds}秒後に次の札へ進みます。`;
+        }, 1000);
+      }
+      function setChoicesDisabled(disabled) {
+        choiceCards.querySelectorAll("button").forEach((button) => {
+          button.disabled = disabled;
+        });
+      }
+      document.getElementById("beginGame").addEventListener("click", startGame);
+      document.getElementById("skipButton").addEventListener("click", skipCard);
+    </script>
+  </body>
 </html>

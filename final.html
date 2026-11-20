@@ -1,175 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>最後の課題</title>
-
-<link rel="stylesheet" href="css/style.css">
-<script src="js/common.js"></script>
-
-</head>
-<body>
-
-<div class="container">
-
-<div class="page-card">
-
-<h1>🏆 最後の課題 🏆</h1>
-
-<p>
-
-ここまでの課題で、
-さまざまな文字を集めてきました。
-
-</p>
-
-<h2>取得済みキーワード</h2>
-
-<div
-id="keywordArea"
-class="keyword-progress">
-</div>
-
-<p>
-
-取得したキーワードを並び替え、
-さらに
-
-<strong>
-あなたの今の気持ちになるように
-不足している文字を補って
-</strong>
-
-10文字のカタカナで入力してください。
-
-入力欄の外にある「ナ」は、最後に加わります。
-
-</p>
-
-
-<br>
-
-<div class="final-answer-entry">
-<input
-id="answer"
-placeholder="カタカナで入力">
-<span class="keyword owned" aria-label="最後に加わる文字">ナ</span>
-</div>
-
-<br><br>
-
-<button onclick="checkAnswer()">
-回答する
-</button>
-
-<p id="answerFeedback" aria-live="polite"></p>
-
-<br><br>
-
-<button
-class="back-btn"
-onclick="location.href='start.html'">
-課題選択へ戻る
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-function showKeywords(){
-
-    const history = JSON.parse(
-        localStorage.getItem(
-            "keywordHistory"
-        ) || "[]"
-    );
-
-    let html = "";
-
-    if(history.length === 0){
-
-        html =
-        "<p>まだキーワードを取得していません。</p>";
-
-    }else{
-
-        history.forEach(char => {
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>最後の課題</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/common.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-card">
+        <h1>🏆 最後の課題 🏆</h1>
+        <p>ここまでの課題で、 さまざまな文字を集めてきました。</p>
+        <h2>取得済みキーワード</h2>
+        <div id="keywordArea" class="keyword-progress"></div>
+        <p>
+          取得したキーワードを並び替え、 さらに
+          <strong>
+            あなたの今の気持ちになるように 不足している文字を補って
+          </strong>
+          10文字のカタカナで入力してください。
+          入力欄の外にある「ナ」は、最後に加わります。
+        </p>
+        <br />
+        <div class="final-answer-entry">
+          <input id="answer" placeholder="カタカナで入力" />
+          <span class="keyword owned" aria-label="最後に加わる文字">ナ</span>
+        </div>
+        <br /><br />
+        <button onclick="checkAnswer()">回答する</button>
+        <p id="answerFeedback" aria-live="polite"></p>
+        <br /><br />
+        <button class="back-btn" onclick="location.href='start.html'">
+          課題選択へ戻る
+        </button>
+      </div>
+    </div>
+    <script>
+      function showKeywords() {
+        const history = JSON.parse(
+          localStorage.getItem("keywordHistory") || "[]",
+        );
+        let html = "";
+        if (history.length === 0) {
+          html = "<p>まだキーワードを取得していません。</p>";
+        } else {
+          history.forEach((char) => {
             html += `
             <span class="keyword owned">
                 ${char}
             </span>
             `;
-
-        });
-
-    }
-
-    document.getElementById(
-        "keywordArea"
-    ).innerHTML = html;
-}
-
-function checkAnswer(){
-
-    const ans =
-    document.getElementById(
-        "answer"
-    )
-    .value
-    .trim()
-    .replace(/\s/g,"");
-
-    if(
-        ans + "ナ" ===
-        "ボウネンカイタノシイナ"
-    ){
-
-        location.href =
-        "ending.html";
-
-    }else{
-        const isCorrectCharacters =
+          });
+        }
+        document.getElementById("keywordArea").innerHTML = html;
+      }
+      function checkAnswer() {
+        const ans = document
+          .getElementById("answer")
+          .value.trim()
+          .replace(/\s/g, "");
+        if (ans + "ナ" === "ボウネンカイタノシイナ") {
+          location.href = "ending.html";
+        } else {
+          const isCorrectCharacters =
             Array.from(ans).sort().join("") ===
             Array.from("ボウネンカイタノシイ").sort().join("");
-
-        startWrongAnswerCooldown({
+          startWrongAnswerCooldown({
             controls: [
-                document.getElementById("answer"),
-                document.querySelector('button[onclick="checkAnswer()"]')
+              document.getElementById("answer"),
+              document.querySelector('button[onclick="checkAnswer()"]'),
             ],
             feedback: document.getElementById("answerFeedback"),
             message: isCorrectCharacters
-                ? "使用する文字は合っています！順番を入れ替えて『気持ち』にしてくださいね！"
-                : "違うようです。",
-            seconds: 5
-        });
-    }
-
-}
-
-document
-.getElementById("answer")
-.addEventListener(
-    "keypress",
-    function(e){
-
-        if(
-            e.key === "Enter"
-        ){
-            checkAnswer();
+              ? "使用する文字は合っています！順番を入れ替えて『気持ち』にしてくださいね！"
+              : "違うようです。",
+            seconds: 5,
+          });
         }
-
-    }
-);
-
-showKeywords();
-
-</script>
-
-</body>
+      }
+      document
+        .getElementById("answer")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            checkAnswer();
+          }
+        });
+      showKeywords();
+    </script>
+  </body>
 </html>

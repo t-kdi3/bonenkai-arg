@@ -1,99 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<title>家庭の挑戦</title>
-<script src="js/common.js"></script>
-</head>
-
-<body class="home">
-
-<div class="container">
-<main class="page-card home-game">
-
-<h2>🍳 家庭の挑戦 🍳</h2>
-
-<p class="home-intro">
-朝6時に起きて、朝ごはんの準備からスタート。
-家事やパーティーのトラブルを乗り越えて、一日を過ごそう！
-</p>
-
-<div class="home-progress" aria-live="polite">
-    <span id="questionCount"></span>
-    <progress id="questionProgress" max="5" value="0"></progress>
-</div>
-
-<section id="questionArea" aria-live="polite"></section>
-
-<div id="feedback" class="home-feedback" aria-live="polite"></div>
-<div id="nextArea"></div>
-
-<button class="back-btn" onclick="location.href='start.html'">
-    課題選択へ戻る
-</button>
-
-</main>
-</div>
-
-<script>
-const questions = [
-    {
-        scene: "起床6時。まずは朝ごはんの味噌汁を作ろう。",
-        prompt: "だしの取り方について、間違っている説明はどれ？",
-        choices: [
-            { id: "a", text: "昆布を水につけておき、火にかけて沸騰する直前に取り出す。" },
-            { id: "b", text: "かつお節は沸騰した湯に入れ、短く煮てから火を止め、しばらくおいてこす。" },
-            { id: "c", text: "煮干しは水につけてから火にかけ、沸騰したらあくを取り、こす。" },
-            { id: "d", text: "昆布とかつお節を合わせると、うま味の相乗効果が得られる。" },
-            { id: "e", text: "昆布とかつお節の混合だしは、味の対比効果でうま味が2倍以上になる。" }
-        ],
-        answer: "e",
-        explanation: "昆布とかつお節を合わせたときに働くのは「うま味の相乗効果」です。「味の対比効果」ではありません。"
-    },
-    {
-        scene: "洗濯もしないと。洗濯表示を見て干し方を選ぼう。",
-        prompt: "「日陰でつり干し」を表している表示はどれ？",
-        choices: [
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>家庭の挑戦</title>
+    <script src="js/common.js"></script>
+  </head>
+  <body class="home">
+    <div class="container">
+      <main class="page-card home-game">
+        <h2>🍳 家庭の挑戦 🍳</h2>
+        <p class="home-intro">
+          朝6時に起きて、朝ごはんの準備からスタート。
+          家事やパーティーのトラブルを乗り越えて、一日を過ごそう！
+        </p>
+        <div class="home-progress" aria-live="polite">
+          <span id="questionCount"></span>
+          <progress id="questionProgress" max="5" value="0"></progress>
+        </div>
+        <section id="questionArea" aria-live="polite"></section>
+        <div id="feedback" class="home-feedback" aria-live="polite"></div>
+        <div id="nextArea"></div>
+        <button class="back-btn" onclick="location.href='start.html'">
+          課題選択へ戻る
+        </button>
+      </main>
+    </div>
+    <script>
+      const questions = [
+        {
+          scene: "起床6時。まずは朝ごはんの味噌汁を作ろう。",
+          prompt: "だしの取り方について、間違っている説明はどれ？",
+          choices: [
+            {
+              id: "a",
+              text: "昆布を水につけておき、火にかけて沸騰する直前に取り出す。",
+            },
+            {
+              id: "b",
+              text: "かつお節は沸騰した湯に入れ、短く煮てから火を止め、しばらくおいてこす。",
+            },
+            {
+              id: "c",
+              text: "煮干しは水につけてから火にかけ、沸騰したらあくを取り、こす。",
+            },
+            {
+              id: "d",
+              text: "昆布とかつお節を合わせると、うま味の相乗効果が得られる。",
+            },
+            {
+              id: "e",
+              text: "昆布とかつお節の混合だしは、味の対比効果でうま味が2倍以上になる。",
+            },
+          ],
+          answer: "e",
+          explanation:
+            "昆布とかつお節を合わせたときに働くのは「うま味の相乗効果」です。「味の対比効果」ではありません。",
+        },
+        {
+          scene: "洗濯もしないと。洗濯表示を見て干し方を選ぼう。",
+          prompt: "「日陰でつり干し」を表している表示はどれ？",
+          choices: [
             { id: "a", text: "", symbol: "line" },
             { id: "b", text: "", symbol: "shade-line" },
             { id: "c", text: "", symbol: "flat" },
-            { id: "d", text: "", symbol: "shade-flat" }
-        ],
-        answer: "b",
-        explanation: "四角の中の縦線はつり干し、横線は平干しを表します。日陰干しには、上部に日陰を示す線が加わります。"
-    },
-    {
-        scene: "今日はお菓子も作ろう。ゼリーを固める準備をしよう。",
-        prompt: "ゼラチンを固まりにくくするため、生のまま入れないほうがよい果物はどれ？",
-        choices: [
+            { id: "d", text: "", symbol: "shade-flat" },
+          ],
+          answer: "b",
+          explanation:
+            "四角の中の縦線はつり干し、横線は平干しを表します。日陰干しには、上部に日陰を示す線が加わります。",
+        },
+        {
+          scene: "今日はお菓子も作ろう。ゼリーを固める準備をしよう。",
+          prompt:
+            "ゼラチンを固まりにくくするため、生のまま入れないほうがよい果物はどれ？",
+          choices: [
             { id: "a", text: "生のキウイフルーツ" },
             { id: "b", text: "缶詰のみかん" },
             { id: "c", text: "缶詰のパイナップル" },
             { id: "d", text: "いちご" },
-            { id: "e", text: "缶詰のもも" }
-        ],
-        answer: "a",
-        explanation: "生のキウイフルーツに含まれる酵素はゼラチンを分解します。缶詰の果物は加熱処理で酵素の働きが失われているものが多いです。"
-    },
-    {
-        scene: "仮装パーティーに到着！食事の前に、アレルギー表示も確認しよう。",
-        prompt: "表示が義務づけられている「特定原材料」に含まれないものはどれ？",
-        choices: [
+            { id: "e", text: "缶詰のもも" },
+          ],
+          answer: "a",
+          explanation:
+            "生のキウイフルーツに含まれる酵素はゼラチンを分解します。缶詰の果物は加熱処理で酵素の働きが失われているものが多いです。",
+        },
+        {
+          scene:
+            "仮装パーティーに到着！食事の前に、アレルギー表示も確認しよう。",
+          prompt:
+            "表示が義務づけられている「特定原材料」に含まれないものはどれ？",
+          choices: [
             { id: "a", text: "えび" },
             { id: "b", text: "そば" },
             { id: "c", text: "落花生（ピーナッツ）" },
             { id: "d", text: "さば" },
-            { id: "e", text: "卵" }
-        ],
-        answer: "d",
-        explanation: "さばは表示が推奨されている品目ですが、表示義務のある特定原材料には含まれません。アレルギーがある場合は、必ず個々の食品表示を確認してください。"
-    },
-    {
-        scene: "パーティーで食事が始まった。洋食のマナーをチェックしよう。",
-        prompt: "次の行動のうち、マナー違反とされるものはいくつある？",
-        statements: [
+            { id: "e", text: "卵" },
+          ],
+          answer: "d",
+          explanation:
+            "さばは表示が推奨されている品目ですが、表示義務のある特定原材料には含まれません。アレルギーがある場合は、必ず個々の食品表示を確認してください。",
+        },
+        {
+          scene: "パーティーで食事が始まった。洋食のマナーをチェックしよう。",
+          prompt: "次の行動のうち、マナー違反とされるものはいくつある？",
+          statements: [
             "並んだカトラリーを好きな順序で使う。",
             "汁がたれないよう、ナプキンを襟元にはさんで使う。",
             "スープが残り少なくなったら、皿を傾けてすくう。",
@@ -102,195 +114,181 @@ const questions = [
             "大きなレタスはナイフで一口大に切って食べる。",
             "食事中に足を組んで座る。",
             "デザートのプティフールを手でつまんで食べる。",
-            "食後、ナプキンをきれいにたたんで元のように置く。"
-        ],
-        choices: [
+            "食後、ナプキンをきれいにたたんで元のように置く。",
+          ],
+          choices: [
             { id: "1", text: "1つ" },
             { id: "2", text: "2つ" },
             { id: "3", text: "3つ" },
             { id: "4", text: "4つ" },
             { id: "5", text: "5つ" },
             { id: "6", text: "6つ" },
-            { id: "7", text: "7つ" }
-        ],
-        answer: "6",
-        explanation: "マナー違反は、カトラリーを好きな順に使う・ナプキンを襟にはさむ・魚を裏返す・ステーキを全部先に切る・足を組む・ナプキンをきれいにたたむ、の6つです。"
-    },
-];
-
-let currentQuestion = 0;
-
-const questionArea = document.getElementById("questionArea");
-const questionCount = document.getElementById("questionCount");
-const questionProgress = document.getElementById("questionProgress");
-const feedback = document.getElementById("feedback");
-const nextArea = document.getElementById("nextArea");
-
-function makeDryingSymbol(type) {
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", "0 0 48 48");
-    svg.setAttribute("class", "drying-symbol");
-    svg.setAttribute("aria-hidden", "true");
-
-    const frame = document.createElementNS(svg.namespaceURI, "rect");
-    frame.setAttribute("x", "6");
-    frame.setAttribute("y", "8");
-    frame.setAttribute("width", "36");
-    frame.setAttribute("height", "36");
-    frame.setAttribute("fill", "none");
-    frame.setAttribute("stroke", "currentColor");
-    frame.setAttribute("stroke-width", "2");
-    svg.appendChild(frame);
-
-    const dryingLine = document.createElementNS(svg.namespaceURI, "line");
-    dryingLine.setAttribute("x1", type.includes("line") ? "24" : "15");
-    dryingLine.setAttribute("y1", type.includes("line") ? "15" : "26");
-    dryingLine.setAttribute("x2", type.includes("line") ? "24" : "33");
-    dryingLine.setAttribute("y2", type.includes("line") ? "37" : "26");
-    dryingLine.setAttribute("stroke", "currentColor");
-    dryingLine.setAttribute("stroke-width", "2");
-    svg.appendChild(dryingLine);
-
-    if (type.startsWith("shade")) {
-        const shadeLine = document.createElementNS(svg.namespaceURI, "line");
-        shadeLine.setAttribute("x1", "12");
-        shadeLine.setAttribute("y1", "4");
-        shadeLine.setAttribute("x2", "36");
-        shadeLine.setAttribute("y2", "4");
-        shadeLine.setAttribute("stroke", "currentColor");
-        shadeLine.setAttribute("stroke-width", "2");
-        svg.appendChild(shadeLine);
-    }
-
-    return svg;
-}
-
-function renderQuestion() {
-    const question = questions[currentQuestion];
-    questionCount.textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
-    questionProgress.value = currentQuestion;
-    feedback.textContent = "";
-    feedback.className = "home-feedback";
-    nextArea.replaceChildren();
-
-    const scene = document.createElement("p");
-    scene.className = "home-scene";
-    scene.textContent = question.scene;
-    questionArea.replaceChildren(scene);
-
-    if (question.listing) {
-        const listing = document.createElement("div");
-        listing.className = "property-listing";
-        const name = document.createElement("strong");
-        name.textContent = question.listing.name;
-        const details = document.createElement("p");
-        details.textContent = question.listing.details;
-        const costs = document.createElement("p");
-        costs.textContent = `${question.listing.rent}　${question.listing.fee}`;
-        listing.append(name, details, costs);
-        questionArea.appendChild(listing);
-    }
-
-    const heading = document.createElement("h3");
-    heading.className = "home-question";
-    heading.textContent = question.prompt;
-    questionArea.appendChild(heading);
-
-    if (question.statements) {
-        const list = document.createElement("ol");
-        list.className = "home-statements";
-        question.statements.forEach((statement) => {
+            { id: "7", text: "7つ" },
+          ],
+          answer: "6",
+          explanation:
+            "マナー違反は、カトラリーを好きな順に使う・ナプキンを襟にはさむ・魚を裏返す・ステーキを全部先に切る・足を組む・ナプキンをきれいにたたむ、の6つです。",
+        },
+      ];
+      let currentQuestion = 0;
+      const questionArea = document.getElementById("questionArea");
+      const questionCount = document.getElementById("questionCount");
+      const questionProgress = document.getElementById("questionProgress");
+      const feedback = document.getElementById("feedback");
+      const nextArea = document.getElementById("nextArea");
+      function makeDryingSymbol(type) {
+        const svg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg",
+        );
+        svg.setAttribute("viewBox", "0 0 48 48");
+        svg.setAttribute("class", "drying-symbol");
+        svg.setAttribute("aria-hidden", "true");
+        const frame = document.createElementNS(svg.namespaceURI, "rect");
+        frame.setAttribute("x", "6");
+        frame.setAttribute("y", "8");
+        frame.setAttribute("width", "36");
+        frame.setAttribute("height", "36");
+        frame.setAttribute("fill", "none");
+        frame.setAttribute("stroke", "currentColor");
+        frame.setAttribute("stroke-width", "2");
+        svg.appendChild(frame);
+        const dryingLine = document.createElementNS(svg.namespaceURI, "line");
+        dryingLine.setAttribute("x1", type.includes("line") ? "24" : "15");
+        dryingLine.setAttribute("y1", type.includes("line") ? "15" : "26");
+        dryingLine.setAttribute("x2", type.includes("line") ? "24" : "33");
+        dryingLine.setAttribute("y2", type.includes("line") ? "37" : "26");
+        dryingLine.setAttribute("stroke", "currentColor");
+        dryingLine.setAttribute("stroke-width", "2");
+        svg.appendChild(dryingLine);
+        if (type.startsWith("shade")) {
+          const shadeLine = document.createElementNS(svg.namespaceURI, "line");
+          shadeLine.setAttribute("x1", "12");
+          shadeLine.setAttribute("y1", "4");
+          shadeLine.setAttribute("x2", "36");
+          shadeLine.setAttribute("y2", "4");
+          shadeLine.setAttribute("stroke", "currentColor");
+          shadeLine.setAttribute("stroke-width", "2");
+          svg.appendChild(shadeLine);
+        }
+        return svg;
+      }
+      function renderQuestion() {
+        const question = questions[currentQuestion];
+        questionCount.textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
+        questionProgress.value = currentQuestion;
+        feedback.textContent = "";
+        feedback.className = "home-feedback";
+        nextArea.replaceChildren();
+        const scene = document.createElement("p");
+        scene.className = "home-scene";
+        scene.textContent = question.scene;
+        questionArea.replaceChildren(scene);
+        if (question.listing) {
+          const listing = document.createElement("div");
+          listing.className = "property-listing";
+          const name = document.createElement("strong");
+          name.textContent = question.listing.name;
+          const details = document.createElement("p");
+          details.textContent = question.listing.details;
+          const costs = document.createElement("p");
+          costs.textContent = `${question.listing.rent}　${question.listing.fee}`;
+          listing.append(name, details, costs);
+          questionArea.appendChild(listing);
+        }
+        const heading = document.createElement("h3");
+        heading.className = "home-question";
+        heading.textContent = question.prompt;
+        questionArea.appendChild(heading);
+        if (question.statements) {
+          const list = document.createElement("ol");
+          list.className = "home-statements";
+          question.statements.forEach((statement) => {
             const item = document.createElement("li");
             item.textContent = statement;
             list.appendChild(item);
-        });
-        questionArea.appendChild(list);
-    }
-
-    const form = document.createElement("form");
-    form.className = "home-answers";
-    const fieldset = document.createElement("fieldset");
-    const legend = document.createElement("legend");
-    legend.textContent = "答えを選んでください";
-    fieldset.appendChild(legend);
-
-    question.choices.forEach((choice, index) => {
-        const label = document.createElement("label");
-        label.className = "home-answer";
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = "answer";
-        input.value = choice.id;
-        input.required = true;
-        input.id = `answer-${index}`;
-        label.htmlFor = input.id;
-        label.appendChild(input);
-
-        if (choice.symbol) {
-            label.appendChild(makeDryingSymbol(choice.symbol));
+          });
+          questionArea.appendChild(list);
         }
-
-        const text = document.createElement("span");
-        text.textContent = choice.text;
-        label.appendChild(text);
-        fieldset.appendChild(label);
-    });
-
-    const submit = document.createElement("button");
-    submit.type = "submit";
-    submit.textContent = "回答する";
-    form.append(fieldset, submit);
-    form.addEventListener("submit", checkAnswer);
-    questionArea.appendChild(form);
-}
-
-function checkAnswer(event) {
-    event.preventDefault();
-    const selected = questionArea.querySelector('input[name="answer"]:checked');
-
-    if (!selected) {
-        return;
-    }
-
-    const question = questions[currentQuestion];
-    if (selected.value !== question.answer) {
-        feedback.className = "home-feedback is-incorrect";
-        startWrongAnswerCooldown({
+        const form = document.createElement("form");
+        form.className = "home-answers";
+        const fieldset = document.createElement("fieldset");
+        const legend = document.createElement("legend");
+        legend.textContent = "答えを選んでください";
+        fieldset.appendChild(legend);
+        question.choices.forEach((choice, index) => {
+          const label = document.createElement("label");
+          label.className = "home-answer";
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "answer";
+          input.value = choice.id;
+          input.required = true;
+          input.id = `answer-${index}`;
+          label.htmlFor = input.id;
+          label.appendChild(input);
+          if (choice.symbol) {
+            label.appendChild(makeDryingSymbol(choice.symbol));
+          }
+          const text = document.createElement("span");
+          text.textContent = choice.text;
+          label.appendChild(text);
+          fieldset.appendChild(label);
+        });
+        const submit = document.createElement("button");
+        submit.type = "submit";
+        submit.textContent = "回答する";
+        form.append(fieldset, submit);
+        form.addEventListener("submit", checkAnswer);
+        questionArea.appendChild(form);
+      }
+      function checkAnswer(event) {
+        event.preventDefault();
+        const selected = questionArea.querySelector(
+          'input[name="answer"]:checked',
+        );
+        if (!selected) {
+          return;
+        }
+        const question = questions[currentQuestion];
+        if (selected.value !== question.answer) {
+          feedback.className = "home-feedback is-incorrect";
+          startWrongAnswerCooldown({
             controls: [
-                questionArea.querySelector("button[type='submit']"),
-                ...questionArea.querySelectorAll('input[name="answer"]')
+              questionArea.querySelector("button[type='submit']"),
+              ...questionArea.querySelectorAll('input[name="answer"]'),
             ],
             feedback,
             message: "不正解です。",
-            seconds: 5
-        });
-        return;
-    }
-
-    feedback.textContent = `正解！ ${question.explanation}`;
-    feedback.className = "home-feedback is-correct";
-    questionArea.querySelectorAll('input[name="answer"]').forEach((input) => {
-        input.disabled = true;
-    });
-    questionArea.querySelector("button[type='submit']").disabled = true;
-
-    const nextButton = document.createElement("button");
-    nextButton.textContent = currentQuestion === questions.length - 1 ? "一日の挑戦を終える" : "次の場面へ";
-    nextButton.addEventListener("click", advance);
-    nextArea.appendChild(nextButton);
-}
-
-function advance() {
-    currentQuestion += 1;
-    if (currentQuestion === questions.length) {
-        location.href = "home-clear.html";
-        return;
-    }
-    renderQuestion();
-}
-
-renderQuestion();
-</script>
-
-</body>
+            seconds: 5,
+          });
+          return;
+        }
+        feedback.textContent = `正解！ ${question.explanation}`;
+        feedback.className = "home-feedback is-correct";
+        questionArea
+          .querySelectorAll('input[name="answer"]')
+          .forEach((input) => {
+            input.disabled = true;
+          });
+        questionArea.querySelector("button[type='submit']").disabled = true;
+        const nextButton = document.createElement("button");
+        nextButton.textContent =
+          currentQuestion === questions.length - 1
+            ? "一日の挑戦を終える"
+            : "次の場面へ";
+        nextButton.addEventListener("click", advance);
+        nextArea.appendChild(nextButton);
+      }
+      function advance() {
+        currentQuestion += 1;
+        if (currentQuestion === questions.length) {
+          location.href = "home-clear.html";
+          return;
+        }
+        renderQuestion();
+      }
+      renderQuestion();
+    </script>
+  </body>
 </html>

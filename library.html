@@ -1,230 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<title>司書の挑戦</title>
-<script src="js/common.js"></script>
-</head>
-
-<body class="library">
-
-<div class="container">
-
-<div class="page-card">
-
-<h2>📚 司書の挑戦 📚</h2>
-
-<p>
-本の冒頭文・作品名・作者の3枚をそろえよう！
-</p>
-
-<p>
-4作品すべて完成するとクリアです。
-</p>
-
-<div id="gameBoard" class="memory-board"></div>
-
-<div id="message"></div>
-
-<button
-class="back-btn"
-onclick="location.href='start.html'">
-前のページへ戻る
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-const cards = [
-
-  {
-    group:"A",
-    text:"祇園精舎の鐘の聲"
-  },
-  {
-    group:"A",
-    text:"平家物語"
-  },
-  {
-    group:"A",
-    text:"作者不詳"
-  },
-
-  {
-    group:"B",
-    text:"あるくにのやがいどうぶつえんに"
-  },
-  {
-    group:"B",
-    text:"やさしいライオン"
-  },
-  {
-    group:"B",
-    text:"やなせたかし"
-  },
-
-  {
-    group:"C",
-    text:"或る春の日暮れです。"
-  },
-  {
-    group:"C",
-    text:"杜子春"
-  },
-  {
-    group:"C",
-    text:"芥川龍之介"
-  },
-
-  {
-    group:"D",
-    text:"旧の正月が近くなると、"
-  },
-  {
-    group:"D",
-    text:"最後の胡弓弾き"
-  },
-  {
-    group:"D",
-    text:"新美南吉"
-  }
-
-];
-
-cards.sort(() => Math.random() - 0.5);
-
-const board =
-document.getElementById("gameBoard");
-
-let selected = [];
-let lock = false;
-let completedGroups = new Set();
-
-cards.forEach(cardData => {
-
-    const card =
-    document.createElement("div");
-
-    card.className = "memory-card";
-    card.dataset.group =
-    cardData.group;
-
-    card.textContent = "？";
-
-    card.dataset.text =
-    cardData.text;
-
-    card.addEventListener(
-        "click",
-        () => flipCard(card)
-    );
-
-    board.appendChild(card);
-
-});
-
-function flipCard(card){
-
-    if(lock) return;
-
-    if(card.classList.contains("open"))
-        return;
-
-    if(card.classList.contains("matched"))
-        return;
-
-    card.textContent =
-    card.dataset.text;
-
-    card.classList.add("open");
-
-    selected.push(card);
-
-    if(selected.length === 3){
-
-        checkMatch();
-
-    }
-
-}
-
-function checkMatch(){
-
-    lock = true;
-
-    const groups =
-    selected.map(
-      card => card.dataset.group
-    );
-
-    const sameGroup =
-    groups.every(
-      group => group === groups[0]
-    );
-
-    setTimeout(() => {
-
-        if(sameGroup){
-
-            selected.forEach(card => {
-
-                card.classList.add(
-                  "matched"
-                );
-
-            });
-
-            completedGroups.add(
-                groups[0]
-            );
-
-            document.getElementById(
-              "message"
-            ).innerHTML =
-            `✅ ${completedGroups.size}/4 組完成`;
-
-            if(
-              completedGroups.size === 4
-            ){
-
-                saveClear("library");
-
-                setTimeout(() => {
-
-                    location.href =
-                    "library-clear.html";
-
-                }, 800);
-
-            }
-
-        }else{
-
-            selected.forEach(card => {
-
-                card.textContent = "？";
-
-                card.classList.remove(
-                  "open"
-                );
-
-            });
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>司書の挑戦</title>
+    <script src="js/common.js"></script>
+  </head>
+  <body class="library">
+    <div class="container">
+      <div class="page-card">
+        <h2>📚 司書の挑戦 📚</h2>
+        <p>本の冒頭文・作品名・作者の3枚をそろえよう！</p>
+        <p>4作品すべて完成するとクリアです。</p>
+        <div id="gameBoard" class="memory-board"></div>
+        <div id="message"></div>
+        <button class="back-btn" onclick="location.href='start.html'">
+          前のページへ戻る
+        </button>
+      </div>
+    </div>
+    <script>
+      const cards = [
+        {
+          group: "A",
+          text: "祇園精舎の鐘の聲",
+        },
+        {
+          group: "A",
+          text: "平家物語",
+        },
+        {
+          group: "A",
+          text: "作者不詳",
+        },
+        {
+          group: "B",
+          text: "あるくにのやがいどうぶつえんに",
+        },
+        {
+          group: "B",
+          text: "やさしいライオン",
+        },
+        {
+          group: "B",
+          text: "やなせたかし",
+        },
+        {
+          group: "C",
+          text: "或る春の日暮れです。",
+        },
+        {
+          group: "C",
+          text: "杜子春",
+        },
+        {
+          group: "C",
+          text: "芥川龍之介",
+        },
+        {
+          group: "D",
+          text: "旧の正月が近くなると、",
+        },
+        {
+          group: "D",
+          text: "最後の胡弓弾き",
+        },
+        {
+          group: "D",
+          text: "新美南吉",
+        },
+      ];
+      cards.sort(() => Math.random() - 0.5);
+      const board = document.getElementById("gameBoard");
+      let selected = [];
+      let lock = false;
+      let completedGroups = new Set();
+      cards.forEach((cardData) => {
+        const card = document.createElement("div");
+        card.className = "memory-card";
+        card.dataset.group = cardData.group;
+        card.textContent = "？";
+        card.dataset.text = cardData.text;
+        card.addEventListener("click", () => flipCard(card));
+        board.appendChild(card);
+      });
+      function flipCard(card) {
+        if (lock) return;
+        if (card.classList.contains("open")) return;
+        if (card.classList.contains("matched")) return;
+        card.textContent = card.dataset.text;
+        card.classList.add("open");
+        selected.push(card);
+        if (selected.length === 3) {
+          checkMatch();
         }
-
-        selected = [];
-        lock = false;
-
-    }, 1000);
-
-}
-
-</script>
-
-</body>
+      }
+      function checkMatch() {
+        lock = true;
+        const groups = selected.map((card) => card.dataset.group);
+        const sameGroup = groups.every((group) => group === groups[0]);
+        setTimeout(() => {
+          if (sameGroup) {
+            selected.forEach((card) => {
+              card.classList.add("matched");
+            });
+            completedGroups.add(groups[0]);
+            document.getElementById("message").innerHTML =
+              `✅ ${completedGroups.size}/4 組完成`;
+            if (completedGroups.size === 4) {
+              saveClear("library");
+              setTimeout(() => {
+                location.href = "library-clear.html";
+              }, 800);
+            }
+          } else {
+            selected.forEach((card) => {
+              card.textContent = "？";
+              card.classList.remove("open");
+            });
+          }
+          selected = [];
+          lock = false;
+        }, 1000);
+      }
+    </script>
+  </body>
 </html>

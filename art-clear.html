@@ -1,39 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
-<title>美術クリア</title>
-<script src="js/common.js"></script>
-</head>
-
-<body class="art">
-
-<div class="container">
-<div class="page-card">
-
-<h2>🎉 青の美術館を制覇！ 🎉</h2>
-
-<p>5つの展示室をすべて巡りました。キーワードを手に入れた！</p>
-
-<div class="keyword-box">ボ</div>
-
-
-<button onclick="saveClear('art');goStart();">
-課題選択へ戻る
-</button>
-
-</div>
-</div>
-
-<script>
-if (Number(localStorage.getItem("artProgress")) !== 5) {
-    location.replace("art.html");
-} else {
-    saveClear("art");
-}
-</script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>美術クリア</title>
+    <script src="js/common.js"></script>
+  </head>
+  <body class="art">
+    <div class="container">
+      <div class="page-card">
+        <h2>🎉 青の美術館を制覇！ 🎉</h2>
+        <p>5つの展示室をすべて巡りました。キーワードを手に入れた！</p>
+        <div class="keyword-box">ボ</div>
+        <button onclick="saveClear('art');goStart();">課題選択へ戻る</button>
+      </div>
+    </div>
+    <script>
+      if (Number(localStorage.getItem("artProgress")) !== 5) {
+        location.replace("art.html");
+      } else {
+        saveClear("art");
+      }
+    </script>
+  </body>
 </html>
